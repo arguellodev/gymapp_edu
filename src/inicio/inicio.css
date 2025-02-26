@@ -1,0 +1,487 @@
+/* Inicio.css - Estilos para la página de inicio de la app de gimnasio */
+
+:root {
+    --color-primario: #000000;
+    --color-primario-oscuro: #e83a48;
+    --color-secundario: #2ed573;
+    --color-acento: #5352ed;
+    --color-fondo: #f8f9fa;
+    --color-tarjeta: #ffffff;
+    --color-texto: #2f3542;
+    --color-texto-claro: #747d8c;
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --radio: 12px;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .inicio-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+    padding-bottom: 80px; /* Espacio para la navegación */
+    overflow-x: hidden; /* Prevenir scroll horizontal */
+  }
+  
+  /* Encabezado */
+  .inicio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap; /* Permitir wrap en pantallas muy pequeñas */
+    gap: 12px;
+  }
+  
+  .perfil-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%; /* Asegurar que no se desborde */
+  }
+  
+  .avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px; /* Evitar que se comprima */
+    background-color: var(--color-acento);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .perfil-info h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    word-break: break-word; /* Permitir romper palabras largas */
+  }
+  
+  .perfil-info p {
+    color: var(--color-texto-claro);
+    font-size: 14px;
+  }
+  
+  .notificacion-badge {
+    position: relative;
+    margin-left: auto; /* Asegurar alineación derecha */
+  }
+  
+  .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--color-primario);
+    color: white;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  
+  /* Tarjetas */
+  .tarjeta {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--sombra);
+    width: 100%;
+    overflow: hidden; /* Contener hijos flotantes */
+  }
+  
+  .tarjeta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .tarjeta-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  /* Próxima clase */
+  .clase-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .clase-info {
+    flex: 1;
+    min-width: 150px; /* Asegurar que tenga suficiente espacio */
+  }
+  
+  .clase-info h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    white-space: normal; /* Permitir múltiples líneas */
+    word-break: break-word;
+  }
+  
+  .clase-info p {
+    color: var(--color-texto-claro);
+    font-size: 14px;
+  }
+  
+  /* Botones */
+  .boton-primario {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+  }
+  
+  .boton-primario:hover {
+    background-color: var(--color-primario-oscuro);
+  }
+  
+  .boton-secundario {
+    background-color: rgba(83, 82, 237, 0.1);
+    color: var(--color-acento);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+  }
+  
+  .boton-secundario:hover {
+    background-color: rgba(83, 82, 237, 0.2);
+  }
+  
+  .boton-plano {
+    background: none;
+    color: var(--color-acento);
+    border: none;
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 8px;
+  }
+  
+  .boton-plano:hover {
+    background-color: rgba(83, 82, 237, 0.05);
+  }
+  
+  /* Resumen de actividad */
+  .metricas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .metrica {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .metrica-icono {
+    background-color: rgba(46, 213, 115, 0.1);
+    color: var(--color-secundario);
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .metrica-icono.fuego {
+    background-color: rgba(255, 71, 87, 0.1);
+    color: var(--color-primario);
+  }
+  
+  .metrica-texto {
+    width: calc(100% - 44px);
+    overflow: hidden;
+  }
+  
+  .metrica-valor {
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .metrica-label {
+    color: var(--color-texto-claro);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .progreso-contenedor {
+    margin-top: 16px;
+    width: 100%;
+  }
+  
+  .progreso-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  .barra-progreso {
+    height: 6px;
+    background-color: rgba(116, 125, 140, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .barra-progreso-relleno {
+    height: 100%;
+    background-color: var(--color-secundario);
+    border-radius: 3px;
+  }
+  
+  /* Progreso de peso (Gráfico) */
+  .progreso-peso {
+    padding-bottom: 16px;
+  }
+  
+  .resumen-peso {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .peso-stat {
+    flex: 1;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(83, 82, 237, 0.05);
+  }
+  
+  .peso-stat.actual {
+    background-color: rgba(46, 213, 115, 0.05);
+  }
+  
+  .peso-stat.perdida {
+    background-color: rgba(255, 71, 87, 0.05);
+  }
+  
+  .peso-valor {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .peso-label {
+    font-size: 12px;
+    color: var(--color-texto-claro);
+  }
+  
+  .grafico-contenedor {
+    width: 100%;
+    height: 220px;
+    margin-top: 10px;
+  }
+  
+  .grafico-tooltip {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tooltip-label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  
+  .tooltip-data {
+    font-size: 14px;
+    color: var(--color-acento);
+  }
+  
+  /* Navegación */
+  .navegacion {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-tarjeta);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+    width: 100vw;
+  }
+  
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-texto-claro);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 8px;
+    width: 25%;
+    text-align: center;
+  }
+  
+  .nav-item.activo {
+    color: var(--color-primario);
+  }
+  
+  .nav-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 11px;
+  }
+  
+  /* Responsive adicional */
+  @media (max-width: 480px) {
+    .inicio-container {
+      padding: 12px;
+      padding-bottom: 76px;
+    }
+    
+    .tarjeta {
+      padding: 14px;
+    }
+    
+    .clase-info {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
+    
+    .boton-secundario {
+      min-width: 70px;
+      padding: 6px 12px;
+    }
+    
+    /* Ajustar métricas para pantallas pequeñas */
+    .metricas {
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    
+    .metrica {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .metrica-icono {
+      margin-bottom: 4px;
+    }
+    
+    .metrica-texto {
+      width: 100%;
+    }
+    
+    /* Ajustes para el gráfico */
+    .resumen-peso {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .peso-stat {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 10px 15px;
+      width: 100%;
+      min-width: 0;
+    }
+    
+    .peso-valor {
+      margin-bottom: 0;
+    }
+    
+    .grafico-contenedor {
+      height: 250px;
+    }
+  }
+  
+  /* Pantallas muy pequeñas */
+  @media (max-width: 320px) {
+    .inicio-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .notificacion-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+    }
+    
+    .nav-item span {
+      display: none;
+    }
+    
+    .nav-item {
+      padding: 8px 0;
+    }
+    
+    .grafico-contenedor {
+      height:250px;
+    }
+  }
+  
+  /* Prevent content overflow */
+  img, svg, video, canvas, audio, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+  }

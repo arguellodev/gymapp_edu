@@ -1,0 +1,461 @@
+/* perfil.css */
+:root {
+    --color-primario: #0b267a;
+    --color-primario-oscuro: #3a77e8;
+    --color-secundario: #2ed573;
+    --color-acento: #5352ed;
+    --color-fondo: #f8f9fa;
+    --color-tarjeta: #ffffff;
+    --color-texto: #2f3542;
+    --color-texto-claro: #747d8c;
+    --color-borde: #e5e7eb;
+    --color-exito: #2ed573;
+    --color-peligro: #e83a48;
+    --color-advertencia: #feca57;
+    --color-info: #5352ed;
+    --color-quema-grasa: #ff6b81;
+    --color-cardio: #5352ed;
+    --color-alta: #e83a48;
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --radio: 12px;
+  }
+  
+  .perfil-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--color-fondo);
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    color: var(--color-texto);
+  }
+  
+  /* Header del perfil */
+  .perfil-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 24px;
+    box-shadow: var(--sombra);
+  }
+  
+  .perfil-foto-container {
+    position: relative;
+    margin-right: 24px;
+  }
+  
+  .perfil-foto {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-primario);
+  }
+  
+  .btn-cambiar-foto {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+  }
+  
+  .btn-cambiar-foto:hover {
+    transform: scale(1.1);
+    background-color: var(--color-primario-oscuro);
+  }
+  
+  .perfil-info-principal {
+    flex: 1;
+  }
+  
+  .perfil-info-principal h1 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .perfil-nivel {
+    display: flex;
+    align-items: center;
+    color: var(--color-primario-oscuro);
+    margin-bottom: 16px;
+  }
+  
+  .perfil-nivel svg {
+    margin-right: 8px;
+  }
+  
+  .btn-editar-perfil {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: var(--color-acento);
+    border: 1px solid var(--color-acento);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .btn-editar-perfil svg {
+    margin-right: 8px;
+  }
+  
+  .btn-editar-perfil:hover {
+    background-color: var(--color-acento);
+    color: white;
+  }
+  
+  /* Estadísticas */
+  .perfil-estadisticas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .estadistica-card {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--sombra);
+    transition: transform 0.2s;
+  }
+  
+  .estadistica-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .estadistica-card svg {
+    color: var(--color-primario-oscuro);
+    margin-bottom: 8px;
+  }
+  
+  .estadistica-card h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  .estadistica-card p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--color-texto-claro);
+  }
+  
+  /* Frecuencia Cardíaca Card */
+  .frecuencia-cardiaca-card {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio);
+    margin-bottom: 24px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+  }
+  
+  .fc-card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-borde);
+    position: relative;
+  }
+  
+  .fc-card-header h2 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-texto);
+  }
+  
+  .fc-card-header svg {
+    margin-right: 10px;
+    color: var(--color-primario-oscuro);
+  }
+  
+  .info-button {
+    background: none;
+    border: none;
+    color: var(--color-texto-claro);
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .info-tooltip {
+    position: absolute;
+    top: 100%;
+    right: 20px;
+    width: 280px;
+    background-color: var(--color-acento);
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .info-tooltip p {
+    margin: 0;
+  }
+  
+  .info-tooltip:after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    background: var(--color-acento);
+    transform: rotate(45deg);
+  }
+  
+  .fc-card-content {
+    padding: 20px;
+  }
+  
+  .fc-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--color-borde);
+  }
+  
+  .fc-stat-item {
+    text-align: center;
+  }
+  
+  .fc-label {
+    display: block;
+    font-size: 14px;
+    color: var(--color-texto-claro);
+    margin-bottom: 5px;
+  }
+  
+  .fc-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-primario);
+  }
+  
+  .fc-zones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  
+  .fc-zone {
+    background-color: var(--color-fondo);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    transition: transform 0.2s;
+  }
+  
+  .fc-zone:hover {
+    transform: translateY(-3px);
+  }
+  
+  .fc-zone-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .fc-zone-header svg {
+    margin-right: 8px;
+  }
+  
+  .fc-zone-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    flex-grow: 1;
+  }
+  
+  .fc-zone:nth-child(1) .fc-zone-header svg {
+    color: var(--color-quema-grasa);
+  }
+  
+  .fc-zone:nth-child(2) .fc-zone-header svg {
+    color: var(--color-cardio);
+  }
+  
+  .fc-zone:nth-child(3) .fc-zone-header svg {
+    color: var(--color-alta);
+  }
+  
+  .fc-zone-range {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+  }
+  
+  .fc-zone-percent {
+    font-size: 14px;
+    color: var(--color-texto-claro);
+    margin-left: 6px;
+  }
+  
+  .fc-zone-desc {
+    font-size: 13px;
+    color: var(--color-texto-claro);
+    margin: 0;
+    line-height: 1.4;
+  }
+  
+  .fc-recommended {
+    border: 2px solid var(--color-secundario);
+    background-color: rgba(46, 213, 115, 0.05);
+  }
+  
+  .recommended-tag {
+    background-color: var(--color-secundario);
+    color: white;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+  
+  /* Secciones del perfil */
+  .perfil-secciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .perfil-seccion {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 20px;
+    box-shadow: var(--sombra);
+  }
+  
+  .perfil-seccion h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: var(--color-texto);
+    border-bottom: 2px solid var(--color-borde);
+    padding-bottom: 10px;
+  }
+  
+  /* Datos personales */
+  .perfil-datos {
+    display: grid;
+    gap: 12px;
+  }
+  
+  .dato-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dato-item svg {
+    color: var(--color-primario-oscuro);
+    margin-right: 12px;
+  }
+  
+  .dato-item p {
+    margin: 0;
+  }
+  
+  /* Sección de progreso */
+  .progreso-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .progreso-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-borde);
+  }
+  
+  .progreso-fecha {
+    width: 30%;
+    font-size: 14px;
+    color: var(--color-texto-claro);
+  }
+  
+  .progreso-valor {
+    width: 30%;
+    font-weight: 600;
+  }
+  
+  .progreso-cambio {
+    width: 40%;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .progreso-cambio.positivo {
+    color: var(--color-peligro);
+  }
+  
+  .progreso-cambio.negativo {
+    color: var(--color-exito);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .perfil-estadisticas {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .perfil-secciones {
+      grid-template-columns: 1fr;
+    }
+    
+    .perfil-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .perfil-foto-container {
+      margin-right: 0;
+      margin-bottom: 16px;
+    }
+    
+    .btn-editar-perfil {
+      margin: 0 auto;
+    }
+    
+    .fc-zones {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .perfil-estadisticas {
+      grid-template-columns: 1fr;
+    }
+    
+    .fc-stats {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }

@@ -1,0 +1,71 @@
+{
+    "rutina": [
+      {
+        "dia": "Lunes",
+        "descripcion": "Pecho y Tríceps",
+        "series": [
+          {
+            "nombre": "Serie A",
+            "repeticionesSerie": 5,
+            "ejercicios": [
+              {
+                "nombre": "Press de banca",
+                "repeticionesEjercicio": 10,
+                "url": "ejercicio1.mp4"
+              },
+              {
+                "nombre": "Press pecho",
+                "repeticionesEjercicio": 12,
+                "url": "ejercicio2.mp4"
+              }
+            ]
+          },
+          {
+            "nombre": "Serie B",
+            "repeticionesSerie": 4,
+            "ejercicios": [
+              {
+                "nombre": "Aperturas con mancuernas",
+                "repeticionesEjercicio": 15,
+                "url": "ejercicio3.mp4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "dia": "Martes",
+        "descripcion": "Espalda y Bíceps",
+        "series": [
+          {
+            "nombre": "Serie A",
+            "repeticionesSerie": 3,
+            "ejercicios": [
+              {
+                "nombre": "Dominadas",
+                "repeticionesEjercicio": 8,
+                "url": "https://www.example.com/videos/dominadas.mp4"
+              },
+              {
+                "nombre": "Remo con barra",
+                "repeticionesEjercicio": 10,
+                "url": "https://www.example.com/videos/remo.mp4"
+              }
+            ]
+          },
+          {
+            "nombre": "Serie B",
+            "repeticionesSerie": 4,
+            "ejercicios": [
+              {
+                "nombre": "Curl de bíceps",
+                "repeticionesEjercicio": 12,
+                "url": "https://www.example.com/videos/curl.mp4"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
