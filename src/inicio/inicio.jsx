@@ -196,25 +196,7 @@ const Inicio = ({setActiveIndex}) => {
         </div>
       </div>
 
-      {/* Barra de navegación */}
-      <nav className="navegacion">
-        <div className="nav-item activo">
-          <Dumbbell size={24} />
-          <span>Inicio</span>
-        </div>
-        <div className="nav-item">
-          <Calendar size={24} />
-          <span>Clases</span>
-        </div>
-        <div className="nav-item">
-          <BarChart2 size={24} />
-          <span>Progreso</span>
-        </div>
-        <div className="nav-item">
-          <Users size={24} />
-          <span>Comunidad</span>
-        </div>
-      </nav>
+     
     </div>
   );
 };

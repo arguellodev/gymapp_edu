@@ -1,60 +1,18 @@
-import React, { useState } from "react";
-import { FaArrowLeft, FaArrowRight, FaCheckCircle, FaPlay, FaPause, FaRedo } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
+import Lottie from "lottie-react";
 import "./ejercicio.css";
 
-const Ejercicio = ({ 
-  ejercicio, 
-  onClose, 
-  onNext, 
-  onComplete,
-  diaClase,
-  index, 
-  totalEjercicios 
-}) => {
+const Ejercicio = ({ ejercicio, onClose, onNext, onComplete, diaClase, index, totalEjercicios }) => {
   const [completado, setCompletado] = useState(false);
-  const [tiempoRestante, setTiempoRestante] = useState(ejercicio.duracion || 45);
-  const [timerActivo, setTimerActivo] = useState(false);
-  const [series, setSeries] = useState(Array(ejercicio.series || 1).fill(false));
+  const [animacion, setAnimacion] = useState(null);
 
-  // Maneja el clic en el botón de completar
-  const handleCompletar = () => {
-    setCompletado(true);
-    if (onComplete) {
-      onComplete(ejercicio);
-    }
-  };
-
-  // Maneja el clic en el botón de siguiente
-  const handleSiguiente = () => {
-    if (onNext) {
-      onNext(ejercicio);
-    }
-  };
-
-  // Alterna el estado del temporizador
-  const toggleTimer = () => {
-    setTimerActivo(!timerActivo);
-  };
-
-  // Reinicia el temporizador
-  const resetTimer = () => {
-    setTiempoRestante(ejercicio.duracion || 45);
-    setTimerActivo(false);
-  };
-
-  // Marca una serie como completada
-  const completarSerie = (index) => {
-    const nuevasSeries = [...series];
-    nuevasSeries[index] = !nuevasSeries[index];
-    setSeries(nuevasSeries);
-  };
-
-  // Formatea el tiempo en formato MM:SS
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+  useEffect(() => {
+    fetch("/ejercicio1.json") // ✅ Cargar JSON en vez de .lottie
+      .then((res) => res.json())
+      .then((data) => setAnimacion(data))
+      .catch((err) => console.error("Error cargando la animación:", err));
+  }, []);
 
   return (
     <div className={`ejercicio-modal ${diaClase}`}>
@@ -71,84 +29,15 @@ const Ejercicio = ({
         <div className="ejercicio-detalle">
           <h2 className="ejercicio-detalle-titulo">{ejercicio.nombre}</h2>
 
-      {/* Imagen o Video del ejercicio */}
-      <div className="ejercicio-media-container">
-  {ejercicio.url.includes(".mp4") ? (
-    <video 
-      className="ejercicio-detalle-media" 
-      controls 
-      autoPlay 
-      loop 
-      poster={ejercicio.thumbnail || null}
-      key={ejercicio.url}  // Esto forzará la recarga del video cuando cambie la URL
-    >
-      <source src={ejercicio.url} type="video/mp4" />
-      Tu navegador no soporta el video.
-    </video>
-  ) : (
-    <img 
-      src={ejercicio.url} 
-      alt={ejercicio.nombre} 
-      className="ejercicio-detalle-media" 
-      key={ejercicio.url}  // También se puede hacer con la imagen
-    />
-  )}
-</div>
-
-
-          {/* Información del ejercicio */}
-          <div className="ejercicio-info-container">
-            <div className="ejercicio-info-item">
-              <span className="info-label">Repeticiones:</span>
-              <span className="info-value">{ejercicio.repeticionesEjercicio}</span>
-            </div>
-            
-            {ejercicio.peso && (
-              <div className="ejercicio-info-item">
-                <span className="info-label">Peso:</span>
-                <span className="info-value">{ejercicio.peso} kg</span>
-              </div>
-            )}
-            
-            {ejercicio.descanso && (
-              <div className="ejercicio-info-item">
-                <span className="info-label">Descanso:</span>
-                <span className="info-value">{ejercicio.descanso} seg</span>
-              </div>
-            )}
+          <div className="ejercicio-media-container">
+            {animacion ? <Lottie animationData={animacion} loop={true} style={{ width: 300, height: 300 }} /> : <p>Cargando animación...</p>}
           </div>
 
-          {/* Temporizador 
-          <div className="temporizador-container">
-            <div className="temporizador-display">
-              {formatTime(tiempoRestante)}
-            </div>
-            <div className="temporizador-controles">
-              <button className="timer-btn" onClick={toggleTimer}>
-                {timerActivo ? <FaPause /> : <FaPlay />}
-              </button>
-              <button className="timer-btn" onClick={resetTimer}>
-                <FaRedo />
-              </button>
-            </div>
-          </div>
-          */}
-          
-
-          
-
-         
-
-          {/* Botones de acción */}
           <div className="ejercicio-acciones">
-            <button 
-              className={`completar-btn ${completado ? 'btn-completado' : ''}`} 
-              onClick={handleCompletar}
-              disabled={completado}
-            >
-              <FaCheckCircle /> {completado ? 'Completado' : 'Completar ejercicio'}
+            <button className={`completar-btn ${completado ? "btn-completado" : ""}`} onClick={() => setCompletado(true)} disabled={completado}>
+              <FaCheckCircle /> {completado ? "Completado" : "Completar ejercicio"}
             </button>
-            <button className="siguiente-btn" onClick={handleSiguiente}>
+            <button className="siguiente-btn" onClick={onNext}>
               Siguiente ejercicio <FaArrowRight />
             </button>
           </div>
