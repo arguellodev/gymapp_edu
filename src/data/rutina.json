@@ -1,71 +1,136 @@
 {
-    "rutina": [
-      {
-        "dia": "Lunes",
-        "descripcion": "Pecho y Tríceps",
-        "series": [
-          {
-            "nombre": "Serie A",
-            "repeticionesSerie": 5,
-            "ejercicios": [
-              {
-                "nombre": "Press de banca",
-                "repeticionesEjercicio": 10,
-                "url": "ejercicio1.mp4"
-              },
-              {
-                "nombre": "Press pecho",
-                "repeticionesEjercicio": 12,
-                "url": "ejercicio2.mp4"
-              }
-            ]
-          },
-          {
-            "nombre": "Serie B",
-            "repeticionesSerie": 4,
-            "ejercicios": [
-              {
-                "nombre": "Aperturas con mancuernas",
-                "repeticionesEjercicio": 15,
-                "url": "ejercicio3.mp4"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "dia": "Martes",
-        "descripcion": "Espalda y Bíceps",
-        "series": [
-          {
-            "nombre": "Serie A",
-            "repeticionesSerie": 3,
-            "ejercicios": [
-              {
-                "nombre": "Dominadas",
-                "repeticionesEjercicio": 8,
-                "url": "https://www.example.com/videos/dominadas.mp4"
-              },
-              {
-                "nombre": "Remo con barra",
-                "repeticionesEjercicio": 10,
-                "url": "https://www.example.com/videos/remo.mp4"
-              }
-            ]
-          },
-          {
-            "nombre": "Serie B",
-            "repeticionesSerie": 4,
-            "ejercicios": [
-              {
-                "nombre": "Curl de bíceps",
-                "repeticionesEjercicio": 12,
-                "url": "https://www.example.com/videos/curl.mp4"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-  
+  "rutina": [
+    {
+      "dia": "Lunes",
+      "descripcion": "Pecho y Tríceps",
+      "bloques": [
+        {
+          "nombre": "Bloque A",
+          "tipo": "serie",
+          "repeticionesSerie": 5,
+          "ejercicios": [
+            {
+              "nombre": "Press de banca",
+              "repeticionesEjercicio": 10,
+              "peso": 60,
+              "unidadPeso": "kg",
+              "unidadTiempo": "segundos",
+              "url": "ejercicio1.json"
+            },
+            {
+              "nombre": "Press sadasd",
+              "repeticionesEjercicio": 2,
+              "peso": 12,
+              "unidadPeso": "kg",
+              "tiempo": 45,
+              "unidadTiempo": "segundos",
+              "url": "ejercicio2.json"
+            }
+          ]
+        },
+        {
+          "nombre": "Bloque B",
+          "tipo": "superserie",
+          "repeticionesSerie": 4,
+          "ejercicios": [
+            {
+              "nombre": "Press pecho",
+              "repeticionesEjercicio": 12,
+              "peso": 40,
+              "unidadPeso": "kg",
+              "tiempo": 60,
+              "unidadTiempo": "segundos",
+              "url": "ejercicio3.json"
+            },
+            {
+              "nombre": "Aperturas con mancuernas",
+              "repeticionesEjercicio": 15,
+              "peso": 12,
+              "unidadPeso": "kg",
+              "tiempo": 50,
+              "unidadTiempo": "segundos",
+              "url": "ejercicio3.mp4"
+            }
+          ]
+        },
+        {
+          "nombre": "Bloque C",
+          "tipo": "cardio",
+          "duracion": 10,
+          "unidadDuracion": "minutos",
+          "ejercicios": [
+            {
+              "nombre": "Carrera en cinta",
+              "intensidad": "moderada",
+              "tiempo": 600,
+              "unidadTiempo": "segundos",
+              "url": "ejercicio4.mp4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dia": "Martes",
+      "descripcion": "Espalda y Bíceps",
+      "bloques": [
+        {
+          "nombre": "Bloque A",
+          "tipo": "serie",
+          "repeticionesSerie": 3,
+          "ejercicios": [
+            {
+              "nombre": "Dominadas",
+              "repeticionesEjercicio": 8,
+              "peso": 0,
+              "unidadPeso": "kg",
+              "tiempo": 40,
+              "unidadTiempo": "segundos",
+              "url": "https://www.example.com/videos/dominadas.mp4"
+            }
+          ]
+        },
+        {
+          "nombre": "Bloque B",
+          "tipo": "superserie",
+          "repeticionesSerie": 4,
+          "ejercicios": [
+            {
+              "nombre": "Remo con barra",
+              "repeticionesEjercicio": 10,
+              "peso": 50,
+              "unidadPeso": "kg",
+              "tiempo": 55,
+              "unidadTiempo": "segundos",
+              "url": "https://www.example.com/videos/remo.mp4"
+            },
+            {
+              "nombre": "Curl de bíceps",
+              "repeticionesEjercicio": 12,
+              "peso": 15,
+              "unidadPeso": "kg",
+              "tiempo": 45,
+              "unidadTiempo": "segundos",
+              "url": "https://www.example.com/videos/curl.mp4"
+            }
+          ]
+        },
+        {
+          "nombre": "Bloque C",
+          "tipo": "cardio",
+          "duracion": 15,
+          "unidadDuracion": "minutos",
+          "ejercicios": [
+            {
+              "nombre": "Elíptica",
+              "intensidad": "alta",
+              "tiempo": 900,
+              "unidadTiempo": "segundos",
+              "url": "https://www.example.com/videos/eliptica.mp4"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

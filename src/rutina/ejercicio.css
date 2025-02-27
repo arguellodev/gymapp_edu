@@ -1,396 +1,294 @@
-/* Estilos para el modal de ejercicio */
-.ejercicio-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease;
-  }
+/* Estilos generales */
+.ejercicio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Título del ejercicio */
+.ejercicio-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Contenedor de la animación */
+.ejercicio-animacion-container {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 24px;
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.ejercicio-animacion-placeholder {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+}
+
+/* Contenedor de métricas */
+.ejercicio-metricas {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
   
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+ margin-bottom: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 12px;
+  width: 100%;
+ 
+}
+
+.ejercicio-metrica {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width:80px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ejercicio-metrica-titulo {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.ejercicio-metrica-valor {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+/* Temporizador */
+.temporizador-container {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.temporizador-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background-color: #f1f2f3;
+  padding: 16px 24px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  color: #333;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.temporizador-controles {
+  display: flex;
+  gap: 12px;
+}
+
+.timer-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background-color: #333;
+  color: white;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timer-btn:hover {
+  transform: scale(1.05);
+  background-color: #555;
+}
+
+/* Recomendaciones desplegables */
+.ejercicio-recomendaciones {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 24px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.ejercicio-recomendaciones-titulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding: 16px;
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.ejercicio-recomendaciones-titulo:hover {
+  background-color: #f8f9fa;
+}
+
+.ejercicio-recomendaciones-titulo::after {
+  content: '▼';
+  font-size: 0.875rem;
+  transition: transform 0.3s ease;
+}
+
+.ejercicio-recomendaciones-titulo.active::after {
+  transform: rotate(180deg);
+}
+
+.ejercicio-recomendaciones-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.ejercicio-recomendaciones-lista.active {
+  max-height: 500px; /* Ajusta según el contenido */
+  padding: 16px;
+}
+
+.ejercicio-recomendaciones-lista li {
+  font-size: 0.875rem;
+  color: #555;
+  margin-bottom: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.ejercicio-recomendaciones-lista li:last-child {
+  border-bottom: none;
+}
+
+/* Botones de acción */
+.ejercicio-botones {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.ejercicio-boton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.ejercicio-boton.salir {
+  background-color: #6c757d;
+  color: white;
+}
+
+.ejercicio-boton.salir:hover {
+  background-color: #5a6268;
+}
+
+.ejercicio-boton.siguiente {
+  background-color: #2196F3;
+  color: white;
+}
+
+.ejercicio-boton.siguiente:hover {
+  background-color: #0b7dda;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ejercicio-titulo {
+    font-size: 1.5rem;
   }
-  
-  .ejercicio-modal-contenido {
-    background-color: white;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 768px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    animation: slideUp 0.3s ease;
-  }
-  
-  @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
-  .ejercicio-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 10;
-    border-radius: 16px 16px 0 0;
-  }
-  
-  .cerrar-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f1f2f3;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 500;
-    color: #333;
-    transition: all 0.2s ease;
-  }
-  
-  .cerrar-btn:hover {
-    background-color: #e5e7e9;
-  }
-  
-  .ejercicio-contador {
-    background-color: #f1f2f3;
-    padding: 6px 12px;
-    border-radius: 50px;
-    font-size: 0.875rem;
-    color: #555;
-    font-weight: 500;
-  }
-  
-  .ejercicio-detalle {
-    padding: 20px;
-  }
-  
-  .ejercicio-detalle-titulo {
-    font-size: 1.75rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .ejercicio-media-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
-  }
-  
-  .ejercicio-detalle-media {
-    max-width: 100%;
-    max-height: 400px;
-   
-  }
-  
-  .ejercicio-info-container {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-    background-color: #f8f9fa;
-    padding: 16px;
-    border-radius: 12px;
-  }
-  
-  .ejercicio-info-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 120px;
-  }
-  
-  .info-label {
-    font-size: 0.875rem;
-    color: #666;
-    margin-bottom: 4px;
-  }
-  
-  .info-value {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #333;
-  }
-  
-  /* Temporizador */
-  .temporizador-container {
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+
   .temporizador-display {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background-color: #f1f2f3;
-    padding: 16px 24px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-    color: #333;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 2rem;
   }
+
+  .ejercicio-botones {
+    flex-direction: column;
+  }
+}
+
+/* Estilos para los botones con iconos */
+.ejercicio-cronometro-controles {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+
+
+.ejercicio-boton.iniciar {
   
-  .temporizador-controles {
-    display: flex;
-    gap: 12px;
-  }
-  
-  .timer-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
-    background-color: #333;
-    color: white;
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .timer-btn:hover {
-    transform: scale(1.05);
-    background-color: #555;
-  }
-  
-  /* Series */
-  .series-container {
-    margin-bottom: 24px;
-  }
-  
-  .series-titulo {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    text-align: center;
-    color: #444;
-  }
-  
-  .series-checkboxes {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .serie-checkbox {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 2px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    background-color: white;
-  }
-  
-  .serie-checkbox span {
-    position: absolute;
-    font-weight: 500;
-    color: #555;
-    transition: all 0.2s ease;
-  }
-  
-  .serie-checkbox.serie-completada {
-    border-color: #4CAF50;
-    background-color: #EEFFEE;
-  }
-  
-  .serie-checkbox.serie-completada span {
-    opacity: 0;
-  }
-  
-  .serie-checkbox svg {
-    color: #4CAF50;
-    font-size: 1.25rem;
-  }
-  
-  /* Instrucciones y consejos */
-  .instrucciones-container,
-  .consejos-container {
-    margin-bottom: 24px;
-    background-color: #f8f9fa;
-    padding: 16px;
-    border-radius: 12px;
-  }
-  
-  .instrucciones-titulo,
-  .consejos-titulo {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #444;
-  }
-  
-  .instrucciones-texto,
-  .consejos-texto {
-    color: #555;
-    line-height: 1.5;
-  }
-  
-  /* Botones de acción */
-  .ejercicio-acciones {
-    display: flex;
-    gap: 12px;
-    margin-top: 30px;
-  }
-  
-  .completar-btn,
-  .siguiente-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
-  }
-  
-  .completar-btn {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .completar-btn:hover:not(:disabled) {
-    background-color: #3a9c3f;
-  }
-  
-  .completar-btn:disabled {
-    opacity: 0.7;
-    cursor: default;
-  }
-  
-  .btn-completado {
-    background-color: #dff2e0;
-    color: #4CAF50;
-  }
-  
-  .siguiente-btn {
-    background-color: #2196F3;
-    color: white;
-  }
-  
-  .siguiente-btn:hover {
-    background-color: #0b7dda;
-  }
-  
-  /* Aplicar colores de tema por día */
-  .dia-lunes .completar-btn {
-    background-color: var(--color-principal);
-  }
-  
-  .dia-lunes .completar-btn:hover:not(:disabled) {
-    background-color: var(--color-principal);
-    opacity: 0.9;
-  }
-  
-  .dia-lunes .completar-btn.btn-completado {
-    background-color: var(--color-claro);
-    color: var(--color-principal);
-  }
-  
-  .dia-lunes .serie-checkbox.serie-completada {
-    border-color: var(--color-principal);
-    background-color: var(--color-claro);
-  }
-  
-  .dia-lunes .serie-checkbox svg {
-    color: var(--color-principal);
-  }
-  
-  /* Repetir para cada día de la semana */
-  .dia-martes .completar-btn,
-  .dia-miercoles .completar-btn,
-  .dia-jueves .completar-btn,
-  .dia-viernes .completar-btn,
-  .dia-sabado .completar-btn,
-  .dia-domingo .completar-btn {
-    background-color: var(--color-principal);
-  }
-  
-  .dia-martes .completar-btn:hover:not(:disabled),
-  .dia-miercoles .completar-btn:hover:not(:disabled),
-  .dia-jueves .completar-btn:hover:not(:disabled),
-  .dia-viernes .completar-btn:hover:not(:disabled),
-  .dia-sabado .completar-btn:hover:not(:disabled),
-  .dia-domingo .completar-btn:hover:not(:disabled) {
-    background-color: var(--color-principal);
-    opacity: 0.9;
-  }
-  
-  .dia-martes .completar-btn.btn-completado,
-  .dia-miercoles .completar-btn.btn-completado,
-  .dia-jueves .completar-btn.btn-completado,
-  .dia-viernes .completar-btn.btn-completado,
-  .dia-sabado .completar-btn.btn-completado,
-  .dia-domingo .completar-btn.btn-completado {
-    background-color: var(--color-claro);
-    color: var(--color-principal);
-  }
-  
-  .dia-martes .serie-checkbox.serie-completada,
-  .dia-miercoles .serie-checkbox.serie-completada,
-  .dia-jueves .serie-checkbox.serie-completada,
-  .dia-viernes .serie-checkbox.serie-completada,
-  .dia-sabado .serie-checkbox.serie-completada,
-  .dia-domingo .serie-checkbox.serie-completada {
-    border-color: var(--color-principal);
-    background-color: var(--color-claro);
-  }
-  
-  .dia-martes .serie-checkbox svg,
-  .dia-miercoles .serie-checkbox svg,
-  .dia-jueves .serie-checkbox svg,
-  .dia-viernes .serie-checkbox svg,
-  .dia-sabado .serie-checkbox svg,
-  .dia-domingo .serie-checkbox svg {
-    color: var(--color-principal);
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .ejercicio-modal-contenido {
-      width: 95%;
-    }
-    
-    .ejercicio-detalle-titulo {
-      font-size: 1.5rem;
-    }
-    
-    .temporizador-display {
-      font-size: 2rem;
-    }
-    
-    .ejercicio-acciones {
-      flex-direction: column;
-    }
-  }
+  background-color: #28a745;
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+}
+
+.ejercicio-boton.iniciar svg {
+ 
+}
+
+.ejercicio-boton.pausar {
+  background-color: #e57373;
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+}
+
+.ejercicio-boton.reiniciar {
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+  background-color: #FFEB3B;
+}
+
+.ejercicio-boton:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
