@@ -19,7 +19,7 @@ const App = () => {
     
   ];
   const [isLoading, setIsLoading] = useState(true);
-  
+ 
   useEffect(() => {
     // Simulamos un tiempo de carga o podemos esperar a que se carguen recursos reales
     setTimeout(() => {
@@ -37,7 +37,7 @@ const App = () => {
       {isLoading ? <LoadingScreen />
       :
       <>
-      <div className="main" style={{width: "100%", height:"auto", marginBottom:'100px', marginTop:'20px'}}>
+      <div className="main" style={{width: "100%", height:"calc(100% - 55px", marginBottom:'100px', marginTop:'20px'}}>
       {activeIndex == 0 && <Inicio setActiveIndex={setActiveIndex}/> }
       {activeIndex == 1 && <Rutina activeIndex={activeIndex} /> }
       {activeIndex == 2 && <Perfil></Perfil>}

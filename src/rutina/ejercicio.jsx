@@ -117,9 +117,7 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
       </div>
 
       <div className="ejercicio-botones">
-        <button onClick={onFinalizar} className="ejercicio-boton salir">
-          Salir
-        </button>
+        
 
         <button onClick={esUltimoEjercicio && esUltimaSerie ? onFinalizar : onSiguiente} className="ejercicio-boton siguiente">
           {esUltimoEjercicio && esUltimaSerie ? 'Finalizar serie' : 'Siguiente ejercicio'}

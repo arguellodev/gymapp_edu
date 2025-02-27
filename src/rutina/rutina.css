@@ -388,7 +388,8 @@
   font-weight: 500;
 }
 
-/* ===== VISTA EJERCICIO ===== */
+/* ===== VISTA EJERCICIO ===== 
+
 .ejercicio-container {
  position: fixed;
  height: auto;
@@ -398,6 +399,8 @@
  margin-bottom: -1000px;
   
 }
+*/
+
 
 .ejercicio-header {
   z-index: 200;
@@ -453,7 +456,7 @@
   align-items: center;
   width: 100%;
   margin-left: 16px; /* Margen a la izquierda */
-  padding: 12px; /* Espaciado interno */
+  padding: 5px; /* Espaciado interno */
   background: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
   border-radius: 12px; /* Bordes redondeados */
   backdrop-filter: blur(5px); /* Efecto de desenfoque de fondo */
@@ -466,7 +469,7 @@
 /* Texto dentro del contenedor de información */
 .ejercicio-info h2 {
   width: 70%;
-  font-size: 1.5rem; /* Tamaño del título */
+  font-size: 1.2rem; /* Tamaño del título */
   font-weight: 600; /* Grosor de la fuente */
   color: white; /* Color del texto */
   margin-bottom: 8px; /* Margen inferior */
@@ -503,8 +506,8 @@
 }
 
 .ejercicio-actual {
- height: 400px;
- background: red;
+ height: 50vh;
+ 
 
 }
 
