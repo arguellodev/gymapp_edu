@@ -16,7 +16,25 @@ const Rutina = ({ data = null }) => {
   const [cargando, setCargando] = useState(true);
   const [mostrarProgreso, setMostrarProgreso] = useState(false);
   
-  // Cargar datos de rutina
+  // Guardar estado de navegación actual
+  const guardarEstadoNavegacion = () => {
+    const estadoNavegacion = {
+      diaSeleccionadoId: diaSeleccionado?.dia,
+      bloqueSeleccionadoId: bloqueSeleccionado?.nombre,
+      ejercicioActualIndex: ejercicioActual,
+      serieActualIndex: serieActual
+    };
+    localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
+  };
+  
+  // Efecto para guardar estado de navegación cuando cambia
+  useEffect(() => {
+    if (diaSeleccionado || bloqueSeleccionado || ejercicioActual !== null) {
+      guardarEstadoNavegacion();
+    }
+  }, [diaSeleccionado, bloqueSeleccionado, ejercicioActual, serieActual]);
+  
+  // Cargar datos de rutina y restaurar navegación
   useEffect(() => {
     const cargarRutina = async () => {
       setCargando(true);
@@ -29,6 +47,34 @@ const Rutina = ({ data = null }) => {
         const progresoGuardado = localStorage.getItem('rutina-progreso');
         if (progresoGuardado) {
           setBloquesCompletados(JSON.parse(progresoGuardado));
+        }
+        
+        // Recuperar estado de navegación si existe
+        const navegacionGuardada = localStorage.getItem('rutina-navegacion');
+        if (navegacionGuardada) {
+          const estadoNavegacion = JSON.parse(navegacionGuardada);
+          
+          // Restaurar día seleccionado
+          if (estadoNavegacion.diaSeleccionadoId && datosRutina.rutina) {
+            const dia = datosRutina.rutina.find(d => d.dia === estadoNavegacion.diaSeleccionadoId);
+            if (dia) {
+              setDiaSeleccionado(dia);
+              
+              // Restaurar bloque seleccionado
+              if (estadoNavegacion.bloqueSeleccionadoId) {
+                const bloque = dia.bloques.find(b => b.nombre === estadoNavegacion.bloqueSeleccionadoId);
+                if (bloque) {
+                  setBloqueSeleccionado(bloque);
+                  
+                  // Restaurar ejercicio actual y serie actual
+                  if (estadoNavegacion.ejercicioActualIndex !== null) {
+                    setEjercicioActual(estadoNavegacion.ejercicioActualIndex);
+                    setSerieActual(estadoNavegacion.serieActualIndex || 0);
+                  }
+                }
+              }
+            }
+          }
         }
       } catch (error) {
         console.error('Error al cargar la rutina:', error);
@@ -106,6 +152,15 @@ const Rutina = ({ data = null }) => {
     // Volver a la vista de bloques
     setEjercicioActual(null);
     setSerieActual(0);
+    
+    // Actualizar navegación guardada
+    const estadoNavegacion = {
+      diaSeleccionadoId: diaSeleccionado?.dia,
+      bloqueSeleccionadoId: null,
+      ejercicioActualIndex: null,
+      serieActualIndex: 0
+    };
+    localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
   };
 
   // Salir del ejercicio actual
@@ -115,10 +170,28 @@ const Rutina = ({ data = null }) => {
       if (window.confirm('¿Seguro que quieres salir? Perderás el progreso de este bloque.')) {
         setEjercicioActual(null);
         setSerieActual(0);
+        
+        // Actualizar navegación guardada
+        const estadoNavegacion = {
+          diaSeleccionadoId: diaSeleccionado?.dia,
+          bloqueSeleccionadoId: null,
+          ejercicioActualIndex: null,
+          serieActualIndex: 0
+        };
+        localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
       }
     } else {
       setEjercicioActual(null);
       setSerieActual(0);
+      
+      // Actualizar navegación guardada
+      const estadoNavegacion = {
+        diaSeleccionadoId: diaSeleccionado?.dia,
+        bloqueSeleccionadoId: null,
+        ejercicioActualIndex: null,
+        serieActualIndex: 0
+      };
+      localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
     }
   };
 
@@ -178,6 +251,14 @@ const Rutina = ({ data = null }) => {
     if (window.confirm('¿Estás seguro de reiniciar todo tu progreso? Esta acción no se puede deshacer.')) {
       setBloquesCompletados({});
       localStorage.removeItem('rutina-progreso');
+      
+      // También limpiamos la navegación guardada
+      localStorage.removeItem('rutina-navegacion');
+      setDiaSeleccionado(null);
+      setBloqueSeleccionado(null);
+      setEjercicioActual(null);
+      setSerieActual(0);
+      
       mostrarNotificacion('Progreso reiniciado', 1500);
     }
   };
@@ -271,7 +352,11 @@ const Rutina = ({ data = null }) => {
       <div className="bloques-container">
         <div className="bloques-header">
           <button 
-            onClick={() => setDiaSeleccionado(null)} 
+            onClick={() => {
+              setDiaSeleccionado(null);
+              // Actualizar navegación guardada
+              localStorage.removeItem('rutina-navegacion');
+            }} 
             className="back-button"
             aria-label="Volver a días"
           >
