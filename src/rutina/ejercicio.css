@@ -19,12 +19,13 @@
 
 /* Contenedor de la animación */
 .ejercicio-animacion-container {
+  
   width: 100%;
   max-width: 100%;
   margin-bottom: 24px;
-  background-color: white;
+  margin-left: 0;
   border-radius: 16px;
-  padding: 20px;
+  padding: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.3s ease;
 }
@@ -42,15 +43,20 @@
 
 /* Contenedor de métricas */
 .ejercicio-metricas {
+  
+  
   display: flex;
+  flex-direction: row;
+
   justify-content: center;
   gap: 16px;
   
- margin-bottom: 10px;
+ 
   background-color: white;
   padding: 10px;
   border-radius: 12px;
-  width: 100%;
+  
+ 
  
 }
 
@@ -79,6 +85,7 @@
 
 /* Temporizador */
 .temporizador-container {
+  display: none;
   margin-bottom: 24px;
   display: flex;
   flex-direction: column;
@@ -88,6 +95,7 @@
 }
 
 .temporizador-display {
+  display: none;
   font-size: 2.5rem;
   font-weight: 700;
   background-color: #f1f2f3;
@@ -102,7 +110,7 @@
 
 .temporizador-controles {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .timer-btn {
@@ -222,7 +230,7 @@
 }
 
 .ejercicio-boton.siguiente {
-  display: none;
+  margin-top: 10px;
   background-color: #2196F3;
   color: white;
 }
@@ -249,8 +257,9 @@
 /* Estilos para los botones con iconos */
 .ejercicio-cronometro-controles {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   margin-top: 15px;
 }
 
@@ -264,9 +273,7 @@
   padding: 5px;
 }
 
-.ejercicio-boton.iniciar svg {
- 
-}
+
 
 .ejercicio-boton.pausar {
   background-color: #e57373;
@@ -285,4 +292,21 @@
 .ejercicio-boton:hover {
   transform: scale(1.05);
   opacity: 0.9;
+}
+
+.tiempo{
+ ;
+}
+
+.ejercicio-cronometro-controles{
+  position: absolute;
+  top: 40%;
+  right: 30px;
+  gap: 20px;
+  
+}
+
+.ejercicio-boton iniciar{
+  width: 70px;
+  height: 70px;
 }
