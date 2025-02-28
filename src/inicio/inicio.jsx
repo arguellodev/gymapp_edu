@@ -3,16 +3,17 @@ import './inicio.css';
 import { Calendar, Clock, Award, Dumbbell, Users, Bell, Heart, BarChart2, TrendingDown } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const Inicio = ({setActiveIndex}) => {
+const Inicio = ({setActiveIndex, userData}) => {
   // Estado para datos de usuario y gimnasio (normalmente vendría de una API)
+  /*
   const [userData, setUserData] = useState({
-    nombre: "Eduardo",
+    nombre: datosUsuario.informacionPersonal.nombre,
     proximaClase: "Pecho y Tríceps",
     ultimoEntrenamiento: "Hace 2 días",
     progresoSemana: 75,
     calorias: 2340,
     minutosEntrenados: 143,
-  });
+  });*/
 
   // Datos de progreso de peso (ejemplo)
   const [datosProgresoPeso, setDatosProgresoPeso] = useState([
@@ -59,10 +60,10 @@ const Inicio = ({setActiveIndex}) => {
       <header className="inicio-header">
         <div className="perfil-info">
           <div className="avatar">
-            {userData.nombre.charAt(0)}
+            {userData.informacionPersonal.nombre.charAt(0)}
           </div>
           <div>
-            <h1>Hola, {userData.nombre}</h1>
+            <h1>Hola, {userData.informacionPersonal.nombre}</h1>
             <p>¡Hoy es un gran día para entrenar!</p>
           </div>
         </div>
@@ -83,7 +84,7 @@ const Inicio = ({setActiveIndex}) => {
         </div>
         <div className="clase-content">
           <div className="clase-info">
-            <h3>{userData.proximaClase}</h3>
+            <h3>{'userData.proximaClase'}</h3>
           </div>
           <button className="boton-primario" onClick={()=>{setActiveIndex(1)}}>Ir a entrenamiento</button>
         </div>
@@ -102,7 +103,7 @@ const Inicio = ({setActiveIndex}) => {
             </div>
             <div className="metrica-texto">
               <p className="metrica-valor">Último entrenamiento</p>
-              <p className="metrica-label">{userData.ultimoEntrenamiento}</p>
+              <p className="metrica-label">{'userData.ultimoEntrenamiento'}</p>
             </div>
           </div>
           <div className="metrica">
@@ -110,7 +111,7 @@ const Inicio = ({setActiveIndex}) => {
               <Heart size={20} />
             </div>
             <div className="metrica-texto">
-              <p className="metrica-valor">{userData.calorias}</p>
+              <p className="metrica-valor">{'userData.calorias'}</p>
               <p className="metrica-label">Calorías quemadas</p>
             </div>
           </div>
@@ -119,7 +120,7 @@ const Inicio = ({setActiveIndex}) => {
               <Clock size={20} />
             </div>
             <div className="metrica-texto">
-              <p className="metrica-valor">{userData.minutosEntrenados} min</p>
+              <p className="metrica-valor">{'userData.minutosEntrenados'} min</p>
               <p className="metrica-label">Tiempo entrenado</p>
             </div>
           </div>
@@ -128,7 +129,7 @@ const Inicio = ({setActiveIndex}) => {
         <div className="progreso-contenedor">
           <div className="progreso-header">
             <p>Progreso semanal</p>
-            <p>{userData.progresoSemana}%</p>
+            <p>{'userData.progresoSemana'}%</p>
           </div>
           <div className="barra-progreso">
             <div 

@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { User, Clock, Calendar, Trophy, Activity, Heart, TrendingUp, Weight, Edit, Camera, Target, AlertCircle, Info } from 'lucide-react';
 import './perfil.css';
 
-const Perfil = () => {
+const Perfil = ({userData}) => {
+  console.log(userData);
   const [usuario, setUsuario] = useState({
     nombre: "Eduardo",
     edad: 28,
@@ -38,7 +39,7 @@ const Perfil = () => {
   // Cálculo de la frecuencia cardíaca
   const calcularFrecuenciaCardiaca = () => {
     // Fórmula de Karvonen para calcular la frecuencia cardíaca máxima
-    const fcMaxima = 220 - usuario.edad;
+    const fcMaxima = 220 - (new Date().getFullYear() - new Date(userData.informacionPersonal.fechaNacimiento).getFullYear() - (new Date() < new Date(new Date().getFullYear(), 4, 16) ? 1 : 0));
     
     // Zona de quema de grasa: típicamente entre 60-70% de la FC máxima
     const fcMinQuemaGrasa = Math.round(fcMaxima * 0.6);
@@ -53,8 +54,8 @@ const Perfil = () => {
     const fcMaxAlta = Math.round(fcMaxima * 0.9);
 
     // Cálculo del IMC
-    const alturaEnMetros = usuario.altura / 100;
-    const imc = (usuario.peso / (alturaEnMetros * alturaEnMetros)).toFixed(1);
+    const alturaEnMetros = userData.medidasCorporales.inicial.altura / 100;
+    const imc = (userData.medidasCorporales.actual.peso / (alturaEnMetros * alturaEnMetros)).toFixed(1);
     
     // Determinar la zona recomendada basada en el IMC
     let zonaRecomendada = '';
@@ -86,7 +87,7 @@ const Perfil = () => {
         
         
         <div className="perfil-info-principal">
-          <h1>{usuario.nombre}</h1>
+          <h1>{userData.informacionPersonal.nombre}</h1>
          
           <button className="btn-editar-perfil">
             <Edit size={16} />
@@ -199,15 +200,15 @@ const Perfil = () => {
           <div className="perfil-datos">
             <div className="dato-item">
               <User size={16} />
-              <p><strong>Edad:</strong> {usuario.edad} años</p>
+              <p><strong>Edad:</strong> {(new Date().getFullYear() - new Date(userData.informacionPersonal.fechaNacimiento).getFullYear() - (new Date() < new Date(new Date().getFullYear(), 4, 16) ? 1 : 0))} años</p>
             </div>
             <div className="dato-item">
               <Weight size={16} />
-              <p><strong>Peso:</strong> {usuario.peso} kg</p>
+              <p><strong>Peso:</strong> {userData.medidasCorporales.actual.peso} kg</p>
             </div>
             <div className="dato-item">
               <TrendingUp size={16} />
-              <p><strong>Altura:</strong> {usuario.altura} cm</p>
+              <p><strong>Altura:</strong> {userData.medidasCorporales.inicial.altura} cm</p>
             </div>
             <div className="dato-item">
               <Trophy size={16} />

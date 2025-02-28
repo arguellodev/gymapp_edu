@@ -55,7 +55,7 @@
 }
 
 /* Título del ejercicio con mejora visual */
-.ejercicio-titulo {
+.ejercicio-titulo-rutina {
   font-size: 1.75rem;
   font-weight: 700;
   text-align: center;
@@ -65,7 +65,7 @@
   padding-bottom: var(--spacing-md);
 }
 
-.ejercicio-titulo::after {
+.ejercicio-titulo-rutina::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -420,7 +420,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .ejercicio-titulo {
+  .ejercicio-titulo-rutina {
     font-size: 1.5rem;
     margin-bottom: var(--spacing-md);
   }

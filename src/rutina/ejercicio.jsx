@@ -74,7 +74,7 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
 
   return (
     <div className="ejercicio-container">
-      <h2 className="ejercicio-titulo">{nombreEjercicio}</h2> {/* Nombre extraído del JSON */}
+      <h2 className="ejercicio-titulo-rutina">{nombreEjercicio}</h2> {/* Nombre extraído del JSON */}
 
       <div className="ejercicio-animacion-container">
         <div className="ejercicio-animacion">

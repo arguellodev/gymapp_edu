@@ -1,0 +1,119 @@
+{
+    "usuario": {
+      "informacionPersonal": {
+        "id": "usr123456",
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "fechaNacimiento": "1990-05-15",
+        "sexo": "masculino",
+        "correo": "juan.perez@ejemplo.com",
+        "telefono": "+569XXXXXXXX",
+        "hipertension":false
+      },
+      "medidasCorporales": {
+        "inicial": {
+          "fecha": "2023-01-10",
+          "peso": 75.5,
+          "altura": 175,
+          "porcentajeGrasaCorporal": 18.2,
+          "porcentajeMusculatura": 42.1,
+          "imc": 24.6
+        },
+        "actual": {
+          "fecha": "2024-02-27",
+          "peso": 72.3,
+          "porcentajeGrasaCorporal": 15.8,
+          "porcentajeMusculatura": 45.3,
+          "imc": 23.6
+        }
+      },
+      "seguimientoPeso": [
+        {
+          "fecha": "2023-01-10",
+          "peso": 75.5
+        },
+        {
+          "fecha": "2023-01-17",
+          "peso": 74.8
+        },
+        {
+          "fecha": "2023-01-24",
+          "peso": 74.2
+        },
+        {
+          "fecha": "2023-01-31",
+          "peso": 73.5
+        },
+        {
+          "fecha": "2024-02-20",
+          "peso": 72.5
+        },
+        {
+          "fecha": "2024-02-27",
+          "peso": 72.3
+        }
+      ],
+      "seguimientoMusculatura": [
+        {
+          "fecha": "2023-01-10",
+          "porcentaje": 42.1
+        },
+        {
+          "fecha": "2023-02-10",
+          "porcentaje": 42.8
+        },
+        {
+          "fecha": "2023-03-10",
+          "porcentaje": 43.5
+        },
+        {
+          "fecha": "2024-01-10",
+          "porcentaje": 44.7
+        },
+        {
+          "fecha": "2024-02-10",
+          "porcentaje": 45.1
+        },
+        {
+          "fecha": "2024-02-27",
+          "porcentaje": 45.3
+        }
+      ],
+      "ultimoEntrenamiento": {
+        "fecha": "2024-02-26",
+        "duracion": 65
+      },
+      "objetivos": [
+        {
+          "tipo": "peso",
+          "valor": 70,
+          "fechaInicio": "2023-01-10",
+          "fechaObjetivo": "2023-06-10",
+          "completado": true,
+          "fechaCompletado": "2023-05-28"
+        },
+        {
+          "tipo": "porcentajeGrasa",
+          "valor": 15,
+          "fechaInicio": "2024-01-01",
+          "fechaObjetivo": "2024-04-01",
+          "completado": false
+        }
+      ],
+      "medidasAdicionales": {
+        "fechaMedicion": "2024-02-27",
+        "contornoPecho": 98,
+        "contornoCintura": 82,
+        "contornoCadera": 95,
+        "contornoBrazoRelajado": 32,
+        "contornoBrazoFlexionado": 36,
+        "contornoMuslo": 58,
+        "contornoPantorrilla": 38
+      },
+      "preferencias": {
+        "notificaciones": true,
+        "unidadesMedida": "metrico",
+        "temaPrefererido": "oscuro"
+      }
+    }
+  }

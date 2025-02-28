@@ -473,7 +473,7 @@ const Rutina = ({ data = null }) => {
             </svg>
           </button>
           <div className="ejercicio-info">
-            <h2 className="ejercicio-titulo">{bloque.nombre}</h2>
+            <h2 className="ejercicio-titulo-rutina">{bloque.nombre}</h2>
             <div className="ejercicio-progreso-info">
               <p className="ejercicio-subtitulo">
                 {bloque.tipo !== 'cardio' ? 
