@@ -4,6 +4,9 @@ import './rutina.css';
 
 // Importamos directamente el archivo JSON
 import rutinaData from '../data/rutina.json';
+import rutinaData2 from '../data/rutina2.json';
+
+const rutinasDisponibles = [rutinaData, rutinaData2];
 
 const Rutina = ({ data = null }) => {
   // Estados
@@ -15,10 +18,14 @@ const Rutina = ({ data = null }) => {
   const [bloquesCompletados, setBloquesCompletados] = useState({});
   const [cargando, setCargando] = useState(true);
   const [mostrarProgreso, setMostrarProgreso] = useState(false);
+  const [mostrarSelectorRutinas, setMostrarSelectorRutinas] = useState(true);
+  const [rutinaSeleccionadaIndex, setRutinaSeleccionadaIndex] = useState(null);
+  const [mostrarCambioRutina, setMostrarCambioRutina] = useState(false);
   
   // Guardar estado de navegación actual
   const guardarEstadoNavegacion = () => {
     const estadoNavegacion = {
+      rutinaIndex: rutinaSeleccionadaIndex,
       diaSeleccionadoId: diaSeleccionado?.dia,
       bloqueSeleccionadoId: bloqueSeleccionado?.nombre,
       ejercicioActualIndex: ejercicioActual,
@@ -29,52 +36,65 @@ const Rutina = ({ data = null }) => {
   
   // Efecto para guardar estado de navegación cuando cambia
   useEffect(() => {
-    if (diaSeleccionado || bloqueSeleccionado || ejercicioActual !== null) {
+    if (rutinaSeleccionadaIndex !== null) {
       guardarEstadoNavegacion();
     }
-  }, [diaSeleccionado, bloqueSeleccionado, ejercicioActual, serieActual]);
+  }, [rutinaSeleccionadaIndex, diaSeleccionado, bloqueSeleccionado, ejercicioActual, serieActual]);
   
   // Cargar datos de rutina y restaurar navegación
   useEffect(() => {
     const cargarRutina = async () => {
       setCargando(true);
       try {
-        // Usar datos de props o del JSON importado
-        const datosRutina = data || rutinaData;
-        setRutina(datosRutina);
-        
-        // Recuperar progreso del localStorage si existe
-        const progresoGuardado = localStorage.getItem('rutina-progreso');
-        if (progresoGuardado) {
-          setBloquesCompletados(JSON.parse(progresoGuardado));
-        }
-        
-        // Recuperar estado de navegación si existe
+        // Recuperar navegación guardada
         const navegacionGuardada = localStorage.getItem('rutina-navegacion');
+        
         if (navegacionGuardada) {
           const estadoNavegacion = JSON.parse(navegacionGuardada);
           
-          // Restaurar día seleccionado
-          if (estadoNavegacion.diaSeleccionadoId && datosRutina.rutina) {
-            const dia = datosRutina.rutina.find(d => d.dia === estadoNavegacion.diaSeleccionadoId);
-            if (dia) {
-              setDiaSeleccionado(dia);
-              
-              // Restaurar bloque seleccionado
-              if (estadoNavegacion.bloqueSeleccionadoId) {
-                const bloque = dia.bloques.find(b => b.nombre === estadoNavegacion.bloqueSeleccionadoId);
-                if (bloque) {
-                  setBloqueSeleccionado(bloque);
-                  
-                  // Restaurar ejercicio actual y serie actual
-                  if (estadoNavegacion.ejercicioActualIndex !== null) {
-                    setEjercicioActual(estadoNavegacion.ejercicioActualIndex);
-                    setSerieActual(estadoNavegacion.serieActualIndex || 0);
+          // Restaurar rutina seleccionada
+          if (estadoNavegacion.rutinaIndex !== null && estadoNavegacion.rutinaIndex >= 0) {
+            setRutinaSeleccionadaIndex(estadoNavegacion.rutinaIndex);
+            setMostrarSelectorRutinas(false);
+            
+            // Usar datos de la rutina guardada
+            const datosRutina = rutinasDisponibles[estadoNavegacion.rutinaIndex];
+            setRutina(datosRutina);
+            
+            // Recuperar progreso específico para esta rutina
+            const progresoGuardado = localStorage.getItem(`rutina-progreso-${estadoNavegacion.rutinaIndex}`);
+            if (progresoGuardado) {
+              setBloquesCompletados(JSON.parse(progresoGuardado));
+            }
+            
+            // Restaurar día seleccionado
+            if (estadoNavegacion.diaSeleccionadoId && datosRutina.rutina) {
+              const dia = datosRutina.rutina.find(d => d.dia === estadoNavegacion.diaSeleccionadoId);
+              if (dia) {
+                setDiaSeleccionado(dia);
+                
+                // Restaurar bloque seleccionado
+                if (estadoNavegacion.bloqueSeleccionadoId) {
+                  const bloque = dia.bloques.find(b => b.nombre === estadoNavegacion.bloqueSeleccionadoId);
+                  if (bloque) {
+                    setBloqueSeleccionado(bloque);
+                    
+                    // Restaurar ejercicio actual y serie actual
+                    if (estadoNavegacion.ejercicioActualIndex !== null) {
+                      setEjercicioActual(estadoNavegacion.ejercicioActualIndex);
+                      setSerieActual(estadoNavegacion.serieActualIndex || 0);
+                    }
                   }
                 }
               }
             }
+          } else {
+            // Si no hay rutina guardada, mostrar selector
+            setMostrarSelectorRutinas(true);
           }
+        } else {
+          // Si no hay navegación guardada, mostrar selector
+          setMostrarSelectorRutinas(true);
         }
       } catch (error) {
         console.error('Error al cargar la rutina:', error);
@@ -89,10 +109,50 @@ const Rutina = ({ data = null }) => {
   
   // Guardar progreso en localStorage cuando cambia
   useEffect(() => {
-    if (Object.keys(bloquesCompletados).length > 0) {
-      localStorage.setItem('rutina-progreso', JSON.stringify(bloquesCompletados));
+    if (Object.keys(bloquesCompletados).length > 0 && rutinaSeleccionadaIndex !== null) {
+      localStorage.setItem(`rutina-progreso-${rutinaSeleccionadaIndex}`, JSON.stringify(bloquesCompletados));
     }
-  }, [bloquesCompletados]);
+  }, [bloquesCompletados, rutinaSeleccionadaIndex]);
+
+  // Seleccionar una rutina
+  const seleccionarRutina = (index) => {
+    setCargando(true);
+    
+    // Simular carga
+    setTimeout(() => {
+      setRutinaSeleccionadaIndex(index);
+      setRutina(rutinasDisponibles[index]);
+      setMostrarSelectorRutinas(false);
+      setDiaSeleccionado(null);
+      setBloqueSeleccionado(null);
+      setEjercicioActual(null);
+      setSerieActual(0);
+      
+      // Cargar progreso específico para esta rutina
+      const progresoGuardado = localStorage.getItem(`rutina-progreso-${index}`);
+      if (progresoGuardado) {
+        setBloquesCompletados(JSON.parse(progresoGuardado));
+      } else {
+        setBloquesCompletados({});
+      }
+      
+      setCargando(false);
+    }, 600);
+  };
+  
+  // Cambiar rutina actual
+  const cambiarRutina = () => {
+    if (window.confirm('¿Estás seguro de cambiar de rutina? Perderás tu navegación actual, aunque el progreso quedará guardado.')) {
+      setMostrarSelectorRutinas(true);
+      setMostrarCambioRutina(false);
+      setDiaSeleccionado(null);
+      setBloqueSeleccionado(null);
+      setEjercicioActual(null);
+      setSerieActual(0);
+    } else {
+      setMostrarCambioRutina(false);
+    }
+  };
 
   // Seleccionar un día de la rutina
   const seleccionarDia = (dia) => {
@@ -155,6 +215,7 @@ const Rutina = ({ data = null }) => {
     
     // Actualizar navegación guardada
     const estadoNavegacion = {
+      rutinaIndex: rutinaSeleccionadaIndex,
       diaSeleccionadoId: diaSeleccionado?.dia,
       bloqueSeleccionadoId: null,
       ejercicioActualIndex: null,
@@ -173,6 +234,7 @@ const Rutina = ({ data = null }) => {
         
         // Actualizar navegación guardada
         const estadoNavegacion = {
+          rutinaIndex: rutinaSeleccionadaIndex,
           diaSeleccionadoId: diaSeleccionado?.dia,
           bloqueSeleccionadoId: null,
           ejercicioActualIndex: null,
@@ -186,6 +248,7 @@ const Rutina = ({ data = null }) => {
       
       // Actualizar navegación guardada
       const estadoNavegacion = {
+        rutinaIndex: rutinaSeleccionadaIndex,
         diaSeleccionadoId: diaSeleccionado?.dia,
         bloqueSeleccionadoId: null,
         ejercicioActualIndex: null,
@@ -250,7 +313,7 @@ const Rutina = ({ data = null }) => {
   const reiniciarProgreso = () => {
     if (window.confirm('¿Estás seguro de reiniciar todo tu progreso? Esta acción no se puede deshacer.')) {
       setBloquesCompletados({});
-      localStorage.removeItem('rutina-progreso');
+      localStorage.removeItem(`rutina-progreso-${rutinaSeleccionadaIndex}`);
       
       // También limpiamos la navegación guardada
       localStorage.removeItem('rutina-navegacion');
@@ -263,6 +326,34 @@ const Rutina = ({ data = null }) => {
     }
   };
 
+  // Renderizar selector de rutinas
+  const renderizarSelectorRutinas = () => {
+    return (
+      <div className="selector-rutinas">
+        <h2 className="selector-titulo">Selecciona tu rutina</h2>
+        <div className="rutinas-grid">
+          {rutinasDisponibles.map((rutinaItem, index) => (
+            <div 
+              key={index} 
+              className="rutina-item"
+              onClick={() => seleccionarRutina(index)}
+            >
+              <h3 className="rutina-item-titulo">{rutinaItem.nombre || `Rutina ${index + 1}`}</h3>
+              <p className="rutina-item-descripcion">{rutinaItem.descripcion || "Plan de entrenamiento personalizado"}</p>
+              <div className="rutina-item-info">
+                <span className="rutina-item-dias">{rutinaItem.rutina ? rutinaItem.rutina.length : 0} días</span>
+                <span className="rutina-item-nivel">
+                  {rutinaItem.nivel || (index === 0 ? "Principiante" : "Intermedio")}
+                </span>
+              </div>
+              <button className="btn btn-primary rutina-item-btn">Seleccionar</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // Renderizar vista de días
   const renderizarDias = () => {
     if (!rutina || !rutina.rutina) return <div className="loading-container">Cargando rutina...</div>;
@@ -271,37 +362,44 @@ const Rutina = ({ data = null }) => {
     
     return (
       <div className="vista-principal">
-        <div className="progreso-container">
-          <div className="progreso-info" onClick={() => setMostrarProgreso(!mostrarProgreso)}>
-            <div className="progreso-circulo">
-              <svg viewBox="0 0 36 36" className="progreso-svg">
-                <path
-                  className="progreso-circulo-bg"
-                  d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  className="progreso-circulo-valor"
-                  strokeDasharray={`${progreso.porcentaje}, 100`}
-                  d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <text x="18" y="20.35" className="progreso-texto">{progreso.porcentaje}%</text>
-              </svg>
+        <div className="cabecera-rutina">
+          <div className="progreso-container">
+            <div className="progreso-info" onClick={() => setMostrarProgreso(!mostrarProgreso)}>
+              <div className="progreso-circulo">
+                <svg viewBox="0 0 36 36" className="progreso-svg">
+                  <path
+                    className="progreso-circulo-bg"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className="progreso-circulo-valor"
+                    strokeDasharray={`${progreso.porcentaje}, 100`}
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" className="progreso-texto">{progreso.porcentaje}%</text>
+                </svg>
+              </div>
+              <span className="progreso-label">Tu progreso</span>
             </div>
-            <span className="progreso-label">Tu progreso</span>
+            
+           
+              <div className="progreso-detalles">
+                <p>Has completado {progreso.completados} de {progreso.total} bloques</p>
+                <div className="progreso-acciones">
+                  <button className="btn btn-outline btn-sm" onClick={reiniciarProgreso}>
+                    Reiniciar progreso
+                  </button>
+                  <button className="btn btn-outline btn-sm" onClick={() => setMostrarCambioRutina(true)}>
+                    Cambiar rutina
+                  </button>
+                </div>
+              </div>
+            
           </div>
-          
-          {mostrarProgreso && (
-            <div className="progreso-detalles">
-              <p>Has completado {progreso.completados} de {progreso.total} bloques</p>
-              <button className="btn btn-outline btn-sm" onClick={reiniciarProgreso}>
-                Reiniciar progreso
-              </button>
-            </div>
-          )}
         </div>
         
         <h2 className="seccion-titulo">Elige un día para entrenar</h2>
@@ -355,7 +453,14 @@ const Rutina = ({ data = null }) => {
             onClick={() => {
               setDiaSeleccionado(null);
               // Actualizar navegación guardada
-              localStorage.removeItem('rutina-navegacion');
+              const estadoNavegacion = {
+                rutinaIndex: rutinaSeleccionadaIndex,
+                diaSeleccionadoId: null,
+                bloqueSeleccionadoId: null,
+                ejercicioActualIndex: null,
+                serieActualIndex: 0
+              };
+              localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
             }} 
             className="back-button"
             aria-label="Volver a días"
@@ -506,11 +611,38 @@ const Rutina = ({ data = null }) => {
     );
   };
 
+  // Renderizar modal de cambio de rutina
+  const renderizarModalCambioRutina = () => {
+    if (!mostrarCambioRutina) return null;
+
+    return (
+      <div className="modal-cambio-rutina">
+        <div className="modal-contenido">
+          <h3 className="modal-titulo">Cambiar rutina</h3>
+          <p className="modal-mensaje">¿Estás seguro de que quieres cambiar de rutina? Tu navegación actual se perderá, aunque el progreso quedará guardado.</p>
+          <div className="modal-acciones">
+            <button 
+              className="btn btn-secondary" 
+              onClick={() => setMostrarCambioRutina(false)}
+            >
+              Cancelar
+            </button>
+            <button 
+              className="btn btn-primary" 
+              onClick={cambiarRutina}
+            >
+              Cambiar rutina
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Renderizar pantalla de carga
   if (cargando) {
     return (
       <div className="rutina-container loading">
-        
         <div className="loading-box">
           <div className="loader"></div>
           <p>Cargando tu rutina...</p>
@@ -519,11 +651,10 @@ const Rutina = ({ data = null }) => {
     );
   }
 
-  // Si la rutina no se pudo cargar
-  if (!rutina) {
+  // Si la rutina no se pudo cargar y no estamos en el selector
+  if (!rutina && !mostrarSelectorRutinas) {
     return (
       <div className="rutina-container error">
-        
         <div className="error-box">
           <h2>No se pudo cargar la rutina</h2>
           <p>Ha ocurrido un error al intentar cargar tus datos.</p>
@@ -540,14 +671,17 @@ const Rutina = ({ data = null }) => {
 
   return (
     <div className="rutina-container">
-      
-      {ejercicioActual !== null ? (
+      {mostrarSelectorRutinas ? (
+        renderizarSelectorRutinas()
+      ) : ejercicioActual !== null ? (
         renderizarEjercicioActual()
       ) : diaSeleccionado ? (
         renderizarBloques()
       ) : (
         renderizarDias()
       )}
+      
+      {renderizarModalCambioRutina()}
     </div>
   );
 };

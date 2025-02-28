@@ -32,8 +32,8 @@ const Inicio = ({setActiveIndex, userData}) => {
   // Calcular estadísticas de peso
   const pesoInicial = datosProgresoPeso[0]?.peso || 0;
   const pesoActual = datosProgresoPeso[datosProgresoPeso.length - 1]?.peso || 0;
-  const perdidaPeso = (pesoInicial - pesoActual).toFixed(1);
-  const porcentajePerdido = ((pesoInicial - pesoActual) / pesoInicial * 100).toFixed(1);
+  const perdidaPeso = (userData.medidasCorporales.inicial.peso - userData.medidasCorporales.actual.peso).toFixed(1);
+  const porcentajePerdido = ((userData.medidasCorporales.inicial.peso - userData.medidasCorporales.actual.peso) / userData.medidasCorporales.inicial.peso * 100).toFixed(1);
 
   // Simular carga de datos
   useEffect(() => {
@@ -149,11 +149,11 @@ const Inicio = ({setActiveIndex, userData}) => {
         
         <div className="resumen-peso">
           <div className="peso-stat">
-            <span className="peso-valor">{pesoInicial} kg</span>
+            <span className="peso-valor">{userData.medidasCorporales.inicial.peso} kg</span>
             <span className="peso-label">Peso inicial</span>
           </div>
           <div className="peso-stat actual">
-            <span className="peso-valor">{pesoActual} kg</span>
+            <span className="peso-valor">{userData.medidasCorporales.actual.peso} kg</span>
             <span className="peso-label">Peso actual</span>
           </div>
           <div className="peso-stat perdida">
