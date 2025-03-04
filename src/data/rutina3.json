@@ -1,0 +1,36 @@
+{
+    "nombre": "Mi Rutina",
+    "dias": {
+      "Lunes": [
+        {
+          "tipo": "Serie",
+          "series": 2,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Alternating Dumbbell Bicep Curl 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "23",
+              "tiempo": ""
+            },
+            {
+              "nombre": "Alternating Dumbbell Hammer Curl 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "tiempo": ""
+            },
+            {
+              "nombre": "Dumbbell Behind Back Wrist Curl 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "8",
+              "tiempo": ""
+            }
+          ]
+        }
+      ]
+    }
+  }

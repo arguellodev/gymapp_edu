@@ -3,7 +3,7 @@ import "./crearrutina.css";
 import libreriaDatos from "../data/libreria.json";
 import LottieAnimation from "../visualizador_lottie/visualizador";
 
-const CrearRutina = () => {
+const CrearRutina = ({setCrearRutina}) => {
   
   const categorias = Object.keys(libreriaDatos);
   console.log(categorias);
@@ -276,12 +276,12 @@ const CrearRutina = () => {
     dias.forEach((dia) => {
       rutina.dias[dia] = bloquesPorDia[dia].map((bloque) => ({
         tipo: bloque.tipo,
-        series: bloque.series || 3,
-        descansoEntreSeries: bloque.descansoEntreSeries || 60,
-        descansoEntreEjercicios: bloque.descansoEntreEjercicios || 90,
+        series: bloque.series || '',
+        descansoEntreSeries: bloque.descansoEntreSeries || '',
+        descansoEntreEjercicios: bloque.descansoEntreEjercicios || '',
         ejercicios: bloque.ejercicios.map((ejercicio) => ({
           nombre: ejercicio.nombre,
-          repeticiones: ejercicio.repeticiones,
+          repeticiones: ejercicio.repeticiones || "",
           descanso: ejercicio.descanso,
           peso: ejercicio.peso || "",
           tiempo: ejercicio.tiempo || "",
@@ -471,11 +471,11 @@ const CrearRutina = () => {
                     <div className="bloque-config">
                       {/* Configuración de series para todo el bloque */}
                       <label>
-                        Número de series:
+                        Número de veces:
                         <input
                           type="number"
-                          min="0"
-                          value={bloqueActualData.series || 3}
+                          placeholder="Opcional"
+                          value={bloqueActualData.series || ''}
                           onChange={(e) =>
                             actualizarBloque(
                               "series",
@@ -489,8 +489,8 @@ const CrearRutina = () => {
                         Descanso entre series (seg):
                         <input
                           type="number"
-                          min="0"
-                          value={bloqueActualData.descansoEntreSeries || 60}
+                          placeholder="Opcional"
+                          value={bloqueActualData.descansoEntreSeries || ''}
                           onChange={(e) =>
                             actualizarBloque(
                               "descansoEntreSeries",
@@ -503,8 +503,8 @@ const CrearRutina = () => {
                         Descanso entre ejercicios (seg):
                         <input
                           type="number"
-                          min="0"
-                          value={bloqueActualData.descansoEntreEjercicios || 90}
+                          placeholder="Opcional"
+                          value={bloqueActualData.descansoEntreEjercicios || ''}
                           onChange={(e) =>
                             actualizarBloque(
                               "descansoEntreEjercicios",
@@ -535,8 +535,9 @@ const CrearRutina = () => {
                                 Repeticiones:
                                 <input
                                   type="number"
-                                  min="1"
-                                  value={ejercicio.repeticiones}
+                                  placeholder="Opcional"
+                                  
+                                  value={ejercicio.repeticiones || ""}
                                   onChange={(e) =>
                                     actualizarEjercicio(ejercicio.id, "repeticiones", parseInt(e.target.value))
                                   }
@@ -606,7 +607,7 @@ const CrearRutina = () => {
                 </div>
               ))}
             </div>
-            <button className="guardar-rutina-btn" onClick={generarRutinaJSON}>
+            <button className="guardar-rutina-btn" onClick={()=>{setCrearRutina(false); generarRutinaJSON()}}>
               Guardar Rutina
             </button>
 
@@ -632,20 +633,23 @@ const CrearRutina = () => {
               Atrás
             </button>
           )}
-
+          {menuRutina < dias.length +1 ?
           <button
-            className="next-button"
-            disabled={!puedeAvanzar() && menuRutina <= dias.length}
-            onClick={() => {
-              if (menuRutina <= dias.length) {
-                setMenuRutina(menuRutina + 1);
-                setBloqueActual(null);
-                setMostrarEditorEjercicios(false);
-              }
-            }}
-          >
-            {menuRutina > dias.length ? "Finalizar" : "Siguiente"}
-          </button>
+          className="next-button"
+          disabled={!puedeAvanzar() && menuRutina <= dias.length}
+          onClick={() => {
+            if (menuRutina <= dias.length) {
+              setMenuRutina(menuRutina + 1);
+              setBloqueActual(null);
+              setMostrarEditorEjercicios(false);
+            }
+          }}
+        >
+          {menuRutina > dias.length ? "Guardar Rutina" : "Siguiente"}
+        </button>
+          
+          :null}
+          
         </div>
       </div>
 

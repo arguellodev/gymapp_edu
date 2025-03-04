@@ -6,7 +6,7 @@ import CrearRutina from '../crearRutina/crearRutina';
 // Importamos directamente el archivo JSON
 import rutinaData from '../data/rutina.json';
 import rutinaData2 from '../data/rutina2.json';
-
+import rutinaData3 from '../data/rutina3.json';
 const rutinasDisponibles = [rutinaData, rutinaData2];
 
 const Rutina = ({ data = null }) => {
@@ -355,7 +355,7 @@ const Rutina = ({ data = null }) => {
             </div>
           ))}
         </div>
-        {crearRutina && <CrearRutina></CrearRutina>}
+        {crearRutina && <CrearRutina setCrearRutina={setCrearRutina}></CrearRutina>}
       </div>
     );
   };
