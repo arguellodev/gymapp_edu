@@ -8,7 +8,7 @@ import LoadingScreen from './entrada/entrada';
 import { CgHome, CgPerformance, CgGym, CgProfile } from "react-icons/cg";
 import { FaSearchengin } from "react-icons/fa";
 import Formulario from './formulario/formulario';
-
+import CrearRutina from './crearRutina/crearRutina';
 const App = () => {
   const [activeIndex, setActiveIndex] = useState(0); // Índice activo del menú
   const [isLoading, setIsLoading] = useState(true); // Estado de carga

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Ejercicio from './ejercicio';
 import './rutina.css';
+import CrearRutina from '../crearRutina/crearRutina';
 
 // Importamos directamente el archivo JSON
 import rutinaData from '../data/rutina.json';
@@ -21,6 +22,7 @@ const Rutina = ({ data = null }) => {
   const [mostrarSelectorRutinas, setMostrarSelectorRutinas] = useState(true);
   const [rutinaSeleccionadaIndex, setRutinaSeleccionadaIndex] = useState(null);
   const [mostrarCambioRutina, setMostrarCambioRutina] = useState(false);
+  const [crearRutina,setCrearRutina] = useState(false);
   
   // Guardar estado de navegación actual
   const guardarEstadoNavegacion = () => {
@@ -331,6 +333,9 @@ const Rutina = ({ data = null }) => {
     return (
       <div className="selector-rutinas">
         <h2 className="selector-titulo">Selecciona tu rutina</h2>
+        <div className='creador de rutina'>
+          <button onClick={()=>{setCrearRutina(true)}}>Crear nueva rutina</button>
+        </div>
         <div className="rutinas-grid">
           {rutinasDisponibles.map((rutinaItem, index) => (
             <div 
@@ -350,6 +355,7 @@ const Rutina = ({ data = null }) => {
             </div>
           ))}
         </div>
+        {crearRutina && <CrearRutina></CrearRutina>}
       </div>
     );
   };
