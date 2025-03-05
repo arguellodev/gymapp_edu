@@ -1,0 +1,24 @@
+
+
+.crossfit-container{
+    width: 100%;
+    height: 80vh;
+    background: lightcyan;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.crossfit-container div{
+    border: 5px solid black;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    flex-direction: column;
+
+}

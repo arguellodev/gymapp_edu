@@ -8,7 +8,8 @@ import LoadingScreen from './entrada/entrada';
 import { CgHome, CgPerformance, CgGym, CgProfile } from "react-icons/cg";
 import { FaSearchengin } from "react-icons/fa";
 import Formulario from './formulario/formulario';
-import CrearRutina from './crearRutina/crearRutina';
+import { RiTimerFlashFill } from "react-icons/ri";
+import Crossfit from './crossfit/crossfit';
 const App = () => {
   const [activeIndex, setActiveIndex] = useState(0); // Índice activo del menú
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
@@ -22,6 +23,7 @@ const App = () => {
     { icon: <CgGym />, texto: 'Rutina', link: '/about' },
     { icon: <CgPerformance />, texto: 'Progreso', link: '/services' },
     { icon: <FaSearchengin />, texto: 'Ejercicios' },
+    {icon: <RiTimerFlashFill />, texto: 'Crossfit'}
   ];
   
   // Verificar estado del usuario
@@ -86,6 +88,7 @@ const App = () => {
             {activeIndex === 1 && <Rutina activeIndex={activeIndex} />}
             {activeIndex === 2 && <Perfil userData={userData}/> }
             {activeIndex === 3 && <Libreria />}
+            {activeIndex === 4 && <Crossfit />}
           </div>
           
           <Navbar items={navItems} activeIndex={activeIndex} onNavItemClick={handleNavItemClick} />
