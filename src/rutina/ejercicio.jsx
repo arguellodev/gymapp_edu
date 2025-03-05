@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, RefreshCw } from "lucide-react";
+import Timer from "./timer";
 import Lottie from "lottie-react";
 import "./ejercicio.css";
 import LottieAnimation from "../visualizador_lottie/visualizador";
@@ -10,6 +11,20 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
   const [animacionData, setAnimacionData] = useState(null);
   const [nombreEjercicio, setNombreEjercicio] = useState(""); // Nuevo estado para el nombre
   const timerRef = useRef(null);
+  const [showTimer, setShowTimer] = useState(false);
+
+  const handleTimerComplete = () => {
+    // Esto debe quitar el temporizador de la pantalla
+    setShowTimer(false);
+    
+    // Puedes agregar lógica adicional aquí si es necesario
+    onSiguiente(); // Por ejemplo, ir al siguiente ejercicio
+  };
+
+  const handleSiguienteClick = () => {
+    // Activar el temporizador
+    setShowTimer(true);
+  };
 
   useEffect(() => {
     return () => {
@@ -101,15 +116,27 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
           </div>
         )}
       </div>
-
+        
       <div className="ejercicio-botones">
-        <button
-          onClick={esUltimoEjercicio && esUltimaSerie ? onFinalizar : onSiguiente}
-          className="ejercicio-boton siguiente"
-        >
-          {esUltimoEjercicio && esUltimaSerie ? "Finalizar Bloque" : "Siguiente ejercicio"}
-        </button>
-      </div>
+      <button
+        onClick={handleSiguienteClick}
+        className="ejercicio-boton siguiente"
+      >
+        {esUltimoEjercicio && esUltimaSerie ? "Finalizar Bloque" : "Siguiente ejercicio"}
+      </button>
+
+      {showTimer ?
+      
+      <Timer 
+      seconds={ esUltimoEjercicio ? ejercicio.descansoSerie : ejercicio.descansoEjercicio}  // Duración del temporizador
+      onComplete={handleTimerComplete} 
+      esUltimoEjercicio={esUltimoEjercicio}
+      />
+      :null
+        
+      }
+      {console.log(ejercicio)}
+    </div>
     </div>
   );
 };

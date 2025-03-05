@@ -1,0 +1,72 @@
+.timer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    gap: 20px;
+  }
+  .timer-overlay h2{
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .timer-container {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .timer-svg {
+    transform: rotate(-90deg);
+  }
+  
+  .timer-progress {
+
+    transition: stroke-dashoffset 1s linear;
+  }
+  
+  .timer-text {
+    transform: translateY(150%);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+   
+  }
+  
+  .timer-time {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .timer-milliseconds {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+  
+  .timer-skip-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .timer-skip-button:hover {
+    background-color: #d32f2f;
+  }

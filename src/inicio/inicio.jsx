@@ -26,7 +26,8 @@ const Inicio = ({setActiveIndex, userData}) => {
     { semana: 7, peso: 81.3 },
     { semana: 8, peso: 80.6 }
   ]);
-
+  const navegacionGuardada = localStorage.getItem('rutina-navegacion');
+  console.log(navegacionGuardada);
   const [notificaciones, setNotificaciones] = useState(3);
 
   // Calcular estadísticas de peso

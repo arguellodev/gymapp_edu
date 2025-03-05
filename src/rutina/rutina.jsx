@@ -40,8 +40,11 @@ const Rutina = ({ data = null }) => {
             tiempo: ejercicio.tiempo,
             unidadPeso: ejercicio.unidadPeso,
             repeticiones: ejercicio.repeticiones,
+            descanso: ejercicio.descanso,
             peso: ejercicio.peso,
-            descanso: ejercicio.descanso
+            descansoEjercicio: bloque.descansoEntreEjercicios,
+            descansoSerie: bloque.descansoEntreSeries
+          
           }))
         }))
       }))
@@ -598,8 +601,9 @@ const Rutina = ({ data = null }) => {
     
     // Calcular progreso del ejercicio actual
     const totalEjercicios = bloque.ejercicios.length;
-    const progresoActual = ((ejercicioActual / totalEjercicios) + (serieActual / bloque.repeticionesSerie / totalEjercicios)) * 100;
-
+    const progresoActual = (1/(totalEjercicios*bloque.repeticionesSerie)*((totalEjercicios * serieActual)+(ejercicioActual))) * 100;
+    
+  
     return (
       <div className="ejercicio-container">
         <div className="ejercicio-header">
