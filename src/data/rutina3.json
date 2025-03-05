@@ -12,8 +12,9 @@
               "nombre": "Alternating Dumbbell Bicep Curl 2",
               "repeticiones": 12,
               "descanso": 60,
-              "peso": "23",
-              "tiempo": ""
+              "peso": "24",
+              "unidadPeso":"Kg",
+              "tiempo": "10"
             },
             {
               "nombre": "Alternating Dumbbell Hammer Curl 2",

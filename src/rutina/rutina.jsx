@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Ejercicio from './ejercicio';
 import './rutina.css';
 import CrearRutina from '../crearRutina/crearRutina';
-
+import LottieAnimation from '../visualizador_lottie/visualizador';
 // Importamos directamente el archivo JSON
 import rutinaData from '../data/rutina.json';
 import rutinaData2 from '../data/rutina2.json';
 import rutinaData3 from '../data/rutina3.json';
-const rutinasDisponibles = [rutinaData, rutinaData2];
+const rutinasDisponibles = [rutinaData, rutinaData2, rutinaData3];
 
 const Rutina = ({ data = null }) => {
   // Estados
@@ -24,6 +24,32 @@ const Rutina = ({ data = null }) => {
   const [mostrarCambioRutina, setMostrarCambioRutina] = useState(false);
   const [crearRutina,setCrearRutina] = useState(false);
   
+  const transformarRutina = (rutina) => {
+    // Transform the new JSON structure to match the existing component's expectations
+    const rutinaProcesada = {
+      nombre: rutina.nombre,
+      rutina: Object.entries(rutina.dias).map(([dia, bloques]) => ({
+        dia: dia,
+        descripcion: `Entrenamiento de ${dia}`,
+        bloques: bloques.map((bloque, index) => ({
+          nombre: `Bloque ${index + 1}`,
+          tipo: bloque.tipo === 'Serie' ? 'fuerza' : 'cardio',
+          repeticionesSerie: bloque.series,
+          ejercicios: bloque.ejercicios.map(ejercicio => ({
+            nombre: ejercicio.nombre,
+            tiempo: ejercicio.tiempo,
+            unidadPeso: ejercicio.unidadPeso,
+            repeticiones: ejercicio.repeticiones,
+            peso: ejercicio.peso,
+            descanso: ejercicio.descanso
+          }))
+        }))
+      }))
+    };
+
+    return rutinaProcesada;
+  };
+
   // Guardar estado de navegación actual
   const guardarEstadoNavegacion = () => {
     const estadoNavegacion = {
@@ -56,12 +82,12 @@ const Rutina = ({ data = null }) => {
           
           // Restaurar rutina seleccionada
           if (estadoNavegacion.rutinaIndex !== null && estadoNavegacion.rutinaIndex >= 0) {
-            setRutinaSeleccionadaIndex(estadoNavegacion.rutinaIndex);
-            setMostrarSelectorRutinas(false);
+            // Transformar los datos de la rutina
+            const datosRutina = transformarRutina(rutinasDisponibles[estadoNavegacion.rutinaIndex]);
             
-            // Usar datos de la rutina guardada
-            const datosRutina = rutinasDisponibles[estadoNavegacion.rutinaIndex];
+            setRutinaSeleccionadaIndex(estadoNavegacion.rutinaIndex);
             setRutina(datosRutina);
+            setMostrarSelectorRutinas(false);
             
             // Recuperar progreso específico para esta rutina
             const progresoGuardado = localStorage.getItem(`rutina-progreso-${estadoNavegacion.rutinaIndex}`);
@@ -122,8 +148,11 @@ const Rutina = ({ data = null }) => {
     
     // Simular carga
     setTimeout(() => {
+      // Transformar los datos de la rutina seleccionada
+      const datosRutina = transformarRutina(rutinasDisponibles[index]);
+      
       setRutinaSeleccionadaIndex(index);
-      setRutina(rutinasDisponibles[index]);
+      setRutina(datosRutina);
       setMostrarSelectorRutinas(false);
       setDiaSeleccionado(null);
       setBloqueSeleccionado(null);

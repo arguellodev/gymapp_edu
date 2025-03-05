@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, RefreshCw } from "lucide-react";
 import Lottie from "lottie-react";
 import "./ejercicio.css";
-
+import LottieAnimation from "../visualizador_lottie/visualizador";
 const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, onFinalizar }) => {
   const [tiempo, setTiempo] = useState(ejercicio.tiempo || 0);
   const [cronometroActivo, setCronometroActivo] = useState(false);
@@ -23,24 +23,7 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
     if (timerRef.current) clearInterval(timerRef.current);
   }, [ejercicio]);
 
-  useEffect(() => {
-    const cargarAnimacion = async () => {
-      try {
-        const response = await fetch(ejercicio.url);
-        const data = await response.json();
-
-        setAnimacionData(data);
-        setNombreEjercicio(data.nm || "Ejercicio sin nombre"); // Extraer el nombre del JSON
-      } catch (error) {
-        console.error("Error al cargar la animación:", error);
-        setNombreEjercicio("Error al cargar nombre");
-      }
-    };
-
-    setAnimacionData(null);
-    setNombreEjercicio("");
-    cargarAnimacion();
-  }, [ejercicio.url]);
+  
 
   const toggleCronometro = () => {
     if (cronometroActivo) {
@@ -74,20 +57,12 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
 
   return (
     <div className="ejercicio-container">
-      <h2 className="ejercicio-titulo-rutina">{nombreEjercicio}</h2> {/* Nombre extraído del JSON */}
+      <h2 className="ejercicio-titulo-rutina">{ejercicio.nombre}</h2> {/* Nombre extraído del JSON */}
 
       <div className="ejercicio-animacion-container">
         <div className="ejercicio-animacion">
-          {animacionData ? (
-            <Lottie
-              animationData={animacionData}
-              loop={true}
-              key={ejercicio.url}
-              style={{ width: 300, height: 300,  filter: ' hue-rotate(10deg) saturate(0.8) brightness(1.1) contrast(1)' }}
-            />
-          ) : (
-            <p className="ejercicio-animacion-placeholder">Cargando animación...</p>
-          )}
+          <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio.nombre}.json`}></LottieAnimation>
+          {console.log(ejercicio.nombre)}
         </div>
       </div>
 
@@ -101,10 +76,10 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
           </div>
         )}
 
-        {ejercicio.repeticionesEjercicio > 0 && (
+        {ejercicio.repeticiones > 0 && (
           <div className="ejercicio-metrica repeticiones">
             <h3 className="ejercicio-metrica-titulo">Repeticiones</h3>
-            <p className="ejercicio-metrica-valor">{ejercicio.repeticionesEjercicio}</p>
+            <p className="ejercicio-metrica-valor">{ejercicio.repeticiones}</p>
           </div>
         )}
 
@@ -132,7 +107,7 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
           onClick={esUltimoEjercicio && esUltimaSerie ? onFinalizar : onSiguiente}
           className="ejercicio-boton siguiente"
         >
-          {esUltimoEjercicio && esUltimaSerie ? "Finalizar serie" : "Siguiente ejercicio"}
+          {esUltimoEjercicio && esUltimaSerie ? "Finalizar Bloque" : "Siguiente ejercicio"}
         </button>
       </div>
     </div>
