@@ -1,110 +1,104 @@
 {
-    "Abdomen": [
-      "Dumbbell Overhead Weighted Sit-Up 2",
-      "Dumbbell Overhead Weighted Sit-Up 3",
-      "Dumbbell Weighted Cocoons 2",
-      "Dumbbell Weighted Crunch 2",
-      "Dumbbell Weighted Decline Crunch 2",
-      "Dumbbell Weighted Decline Sit-Up 2",
-      "Dumbbell Weighted Decline Sit-Up Overhead Press 2",
-      "Dumbbell Weighted Leg Vertical Crunch 2",
-      "Dumbbell Weighted Sit-Up Overhead Press 2",
-      "Dumbbell Weighted V-Up 2"
-    ],
-    "Antebrazo": [
-      "Dumbbell Radial Deviation 2",
-      "Dumbbell Ulnar Deviation 2"
-    ],
-    "Biceps": [
-      "Alternating Dumbbell Bicep Curl 2",
-      "Alternating Dumbbell Hammer Curl 2",
-      "Dumbbell Behind Back Wrist Curl 2",
-      "Dumbbell Bench Wrist Curl 2",
-      "Dumbbell Bench Wrist Hammer Curl 2",
-      "Dumbbell Bicep Curl 2",
-      "Dumbbell Cross-Body Hammer Curl 2",
-      "Dumbbell Hammer Curl 2",
-      "Dumbbell Incline Bicep Curl 2",
-      "Dumbbell Incline Hammer Curl 2",
-      "Dumbbell One Arm Preacher Curl 2",
-      "Dumbbell Spider Bicep Curl 2",
-      "Dumbbell Spider Hammer Curl 2",
-      "Hammer Grip Dumbbell Bench Press 2",
-      "Seated Dumbbell Bicep Curl 2",
-      "Seated Dumbbell Bicep Curl 3",
-      "Seated Dumbbell Preacher Curl 2",
-      "Seated Dumbbell Preacher Hammer Curl 2",
-      "Seated Dumbbell Shoulders Hammer Press 2",
-      "Seated Dumbbell Wrist Curl 2",
-      "Shoulder Hammer Press 2"
-    ],
-    "Espalda": [
-      "Alternating Renegade Row 2",
-      "Bench One-Arm Dumbbell Row 2",
-      "Dumbbell Bent-Over Row 2",
-      "Dumbbell Deadlift 2",
-      "Dumbbell Rear Delt Row 2",
-      "Dumbbell Upright Row Exercise Men 2",
-      "Romanian Dumbbell Deadlift 2",
-      "Seated Dumbbell Rear Delt Row 2",
-      "Single Leg Dumbbell Deadlift 2",
-      "Standing Dumbbell Shrug 2"
-    ],
-    "Hombro": [
-      "Calf Raises 2",
-      "Decline Dumbbell Bench Press 2",
-      "Dumbbell Bench Press 2",
-      "Incline Dumbbell Bench Press 2",
-      "Leaning Dumbbell Lateral Raise 2",
-      "Seated Dumbbell Calf Raise 2",
-      "Seated Dumbbell Shoulders Front Raise 2",
-      "Seated Dumbbell Shoulders Lateral Raise 2",
-      "Seated Dumbbell Shoulders Press 2",
-      "Standing Dumbbell Lateral Raise 2",
-      "Standing Dumbbell Shoulders Front Raise 2",
-      "Standing Dumbbell Shoulders Press 2"
-    ],
-    "Otros": [
-      "Dumbbell Donkey Kicks 2",
-      "Dumbbell Glute Bridge Exercise Men 2",
-      "Dumbbell Good Morning 2",
-      "Dumbbell Hip Thrust 2",
-      "Dumbbell Side Bend 2",
-      "Dumbbell Side Bridge 2",
-      "Dumbbell Swing 2"
-    ],
-    "Pecho": [
-      "Bench Dumbbell Fly 2",
-      "Bench Dumbbell Pullover 2",
-      "Reverse Dumbbell Fly 2",
-      "Seated Reverse Dumbbell Fly 2"
-    ],
-    "Pierna": [
-      "Dumbbell Bulgarian Split Squat 2",
-      "Dumbbell Front Squat 2",
-      "Dumbbell Left Leg Forward Lunge 2",
-      "Dumbbell Left Leg Reverse Lunge 2",
-      "Dumbbell Narrow Squat 2",
-      "Dumbbell Overhead Squat 2",
-      "Dumbbell Reverse Lunges Alternating 2",
-      "Dumbbell Right Leg Forward Lunge 2",
-      "Dumbbell Right Leg Reverse Lunge 2",
-      "Dumbbell Side Lunges 2",
-      "Dumbbell Split Squat 2",
-      "Dumbbell Squat 2",
-      "Dumbbell Squat 3D 2",
-      "Dumbbell Step-Up 2",
-      "Forward Lunges Alternating 2",
-      "Sumo Dumbbell Squat 2"
-    ],
-    "Triceps": [
-      "Bench One Arm Tricep Kickback 2",
-      "Dumbbell Tricep Kickback 2",
-      "Lying Dumbbell Tricep Extension 2",
-      "Overhead Tricep Extension 2",
-      "Seated Dumbbell Tricep Extension 2",
-      "Seated One Arm Tricep Extension 2",
-      "Standing Dumbbell Tricep Extension 2"
-    ]
-  }
-  
+  "Abdomen": [
+    "Dumbbell Weighted Cocoons 2",
+    "Dumbbell Weighted Crunch 2",
+    "Dumbbell Weighted Decline Crunch 2",
+    "Dumbbell Weighted Decline Sit-Up 2",
+    "Dumbbell Weighted Decline Sit-Up Overhead Press 2",
+    "Dumbbell Weighted Leg Vertical Crunch 2",
+    "Dumbbell Weighted Sit-Up Overhead Press 2",
+    "Dumbbell Weighted V-Up 2",
+    "Dumbbell Side Bend 2",
+    "Dumbbell Side Bridge 2"
+  ],
+  "Cardio": [
+    "Dumbbell Swing 2"
+  ],
+  "Antebrazo": [
+    "Dumbbell Radial Deviation 2",
+    "Dumbbell Ulnar Deviation 2",
+    "Dumbbell Behind Back Wrist Curl 2",
+    "Dumbbell Bench Wrist Curl 2",
+    "Dumbbell Bench Wrist Hammer Curl 2",
+    "Seated Dumbbell Wrist Curl 2"
+  ],
+  "Biceps": [
+    "Alternating Dumbbell Bicep Curl 2",
+    "Alternating Dumbbell Hammer Curl 2",
+    "Dumbbell Bicep Curl 2",
+    "Dumbbell Cross-Body Hammer Curl 2",
+    "Dumbbell Hammer Curl 2",
+    "Dumbbell Incline Bicep Curl 2",
+    "Dumbbell Incline Hammer Curl 2",
+    "Dumbbell One Arm Preacher Curl 2",
+    "Dumbbell Spider Bicep Curl 2",
+    "Dumbbell Spider Hammer Curl 2",
+    "Seated Dumbbell Bicep Curl 2",
+    "Seated Dumbbell Bicep Curl 3",
+    "Seated Dumbbell Preacher Curl 2",
+    "Seated Dumbbell Preacher Hammer Curl 2"
+  ],
+  "Espalda": [
+    "Alternating Renegade Row 2",
+    "Bench One-Arm Dumbbell Row 2",
+    "Dumbbell Bent-Over Row 2",
+    "Dumbbell Deadlift 2",
+    "Dumbbell Rear Delt Row 2",
+    "Romanian Dumbbell Deadlift 2",
+    "Seated Dumbbell Rear Delt Row 2",
+    "Single Leg Dumbbell Deadlift 2",
+    "Standing Dumbbell Shrug 2"
+  ],
+  "Hombro": [
+    "Leaning Dumbbell Lateral Raise 2",
+    "Seated Dumbbell Shoulders Front Raise 2",
+    "Seated Dumbbell Shoulders Lateral Raise 2",
+    "Seated Dumbbell Shoulders Press 2",
+    "Standing Dumbbell Lateral Raise 2",
+    "Standing Dumbbell Shoulders Front Raise 2",
+    "Standing Dumbbell Shoulders Press 2"
+  ],
+  "Otros": [
+    "Dumbbell Donkey Kicks 2",
+    "Dumbbell Glute Bridge Exercise Men 2",
+    "Dumbbell Good Morning 2",
+    "Dumbbell Hip Thrust 2"
+  ],
+  "Pecho": [
+    "Bench Dumbbell Fly 2",
+    "Bench Dumbbell Pullover 2",
+    "Decline Dumbbell Bench Press 2",
+    "Dumbbell Bench Press 2",
+    "Hammer Grip Dumbbell Bench Press 2",
+    "Incline Dumbbell Bench Press 2"
+  ],
+  "Pierna": [
+    "Calf Raises 2",
+    "Seated Dumbbell Calf Raise 2",
+    "Dumbbell Bulgarian Split Squat 2",
+    "Dumbbell Front Squat 2",
+    "Dumbbell Left Leg Forward Lunge 2",
+    "Dumbbell Left Leg Reverse Lunge 2",
+    "Dumbbell Narrow Squat 2",
+    "Dumbbell Overhead Squat 2",
+    "Dumbbell Reverse Lunges Alternating 2",
+    "Dumbbell Right Leg Forward Lunge 2",
+    "Dumbbell Right Leg Reverse Lunge 2",
+    "Dumbbell Side Lunges 2",
+    "Dumbbell Split Squat 2",
+    "Dumbbell Squat 2",
+    "Dumbbell Squat 3D 2",
+    "Dumbbell Step-Up 2",
+    "Forward Lunges Alternating 2",
+    "Sumo Dumbbell Squat 2"
+  ],
+  "Triceps": [
+    "Bench One Arm Tricep Kickback 2",
+    "Dumbbell Tricep Kickback 2",
+    "Lying Dumbbell Tricep Extension 2",
+    "Overhead Tricep Extension 2",
+    "Seated Dumbbell Tricep Extension 2",
+    "Seated One Arm Tricep Extension 2",
+    "Standing Dumbbell Tricep Extension 2"
+  ]
+}

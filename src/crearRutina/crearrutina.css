@@ -94,7 +94,7 @@
   
   /* Selección de días */
   .container-dias {
-    margin-bottom: 30px;
+    
   }
   
   .nombre-rutina {
@@ -210,14 +210,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background-color: var(--primary-light);
+   
+    background: linear-gradient(90deg, var(--text-color), var(--primary-color));
+
+    color: white;
     border-radius: 6px;
     transition: var(--transition);
     cursor: pointer;
-    border-left: 4px solid transparent;
+    
   }
-  
+
+  .bloque-item .bloque-info{}
+
+  .bloque-item .bloque-info .bloque-tipo{
+    font-weight: 600;
+  }
+
+  .bloque-item .bloque-info .bloque-ejercicios{}
+
   .bloque-item:hover {
     background-color: rgba(52, 152, 219, 0.15);
   }
@@ -260,10 +270,18 @@
   
   /* Botones de bloques */
   .agregar-bloque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 10px;
+    
   }
   
   .botones-bloques {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -1014,4 +1032,32 @@
 .seleccionar-ejercicio-container p{
   width: auto;
   font-weight: 600;
+}
+
+
+/* NUEVOS ESTILOS*/
+
+
+td input[type="checkbox"]{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.bloque-acciones{
+  margin-right: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  gap: 20px;
+  
+}
+
+.bloque-acciones .editar-btn{
+width: auto;
+}
+
+.bloque-acciones .delete-btn{
+  width: auto;
+  background: var(--accent-color);
+  color: white;
 }

@@ -7,14 +7,6 @@ const CrearRutina = ({setCrearRutina}) => {
   
   const categorias = Object.keys(libreriaDatos);
   console.log(categorias);
-  const ejerciciosData = {
-    Abdomen: [
-      "Dumbbell Overhead Weighted Sit-Up 2",
-      "Dumbbell Overhead Weighted Sit-Up 3",
-      "Dumbbell Weighted Cocoons 2",
-    ],
-    Biceps: ["Alternating Dumbbell Bicep Curl 2", "Dumbbell Bicep Curl 2"],
-  };
   const [ejercicioAbierto, setEjercicioAbierto] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoriasExpandidas, setCategoriasExpandidas] = useState({});
@@ -98,8 +90,8 @@ const CrearRutina = ({setCrearRutina}) => {
       tipo,
       ejercicios: [],
       series: 3, // Número de series para todo el bloque
-      descansoEntreSeries: 60, // Descanso entre series predeterminado (60 segundos)
-      descansoEntreEjercicios: 90, // Descanso entre ejercicios predeterminado (90 segundos)
+      descansoEntreSeries: 90, // Descanso entre series predeterminado (60 segundos)
+      descansoEntreEjercicios: 40, // Descanso entre ejercicios predeterminado (90 segundos)
     };
 
     setBloquesPorDia({
@@ -306,12 +298,32 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
 
   // Función para validar si podemos avanzar al siguiente paso
   const puedeAvanzar = () => {
+    // Si estamos en la pantalla inicial de creación de rutina
     if (menuRutina === 0) {
-      return dias.length > 0;
-    } else {
-      const diaActual = dias[menuRutina - 1];
-      return bloquesPorDia[diaActual] && bloquesPorDia[diaActual].length > 0;
+      return nombreRutina.trim().length >= 3 && dias.length > 0;
     }
+    
+    // Si estamos configurando días
+    if (menuRutina > 0 && menuRutina <= dias.length) {
+      const diaActual = dias[menuRutina - 1];
+      const bloquesDiaActual = bloquesPorDia[diaActual] || [];
+      
+      // Verificar que hay al menos un bloque
+      if (bloquesDiaActual.length === 0) {
+        return false;
+      }
+      
+      // Verificar que cada bloque tenga al menos un ejercicio 
+      // Y que los bloques no estén vacíos
+      const bloquesSinEjercicios = bloquesDiaActual.some(
+        bloque => !bloque.ejercicios || bloque.ejercicios.length === 0
+      );
+      
+      return !bloquesSinEjercicios;
+    }
+    
+    // Para la pantalla final de resumen
+    return true;
   };
 
   // Determinar si estamos en el último día
@@ -367,6 +379,7 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                 value={nombreRutina}
                 onChange={(e) => setNombreRutina(e.target.value)}
                 placeholder="Mi rutina de entrenamiento"
+                required
               />
             </div>
             <h3>Selecciona los días de entrenamiento</h3>
@@ -382,14 +395,13 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                   <tr key={dia}>
                     <td>{dia}</td>
                     <td>
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={dias.includes(dia)}
-                          onChange={() => toggleDia(dia)}
-                        />
-                        <span className="slider"></span>
-                      </label>
+                      <input
+                        type="checkbox"
+                        id={`dia-${dia}`}
+                        checked={dias.includes(dia)}
+                        onChange={() => toggleDia(dia)}
+                      />
+                      <label htmlFor={`dia-${dia}`}></label>
                     </td>
                   </tr>
                 ))}
@@ -416,7 +428,7 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                             <div className="bloque-info">
                               <span className="bloque-tipo">{bloque.tipo}</span>
                               <span className="bloque-ejercicios">
-                                {bloque.ejercicios.length} ejercicios
+                                {bloque.ejercicios.length} Ejercicios
                               </span>
                             </div>
                             <div className="bloque-acciones">
@@ -427,7 +439,7 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                                 Editar
                               </button>
                               <button
-                                className="eliminar-btn"
+                                className="delete-btn"
                                 onClick={() => eliminarBloque(bloque.id)}
                               >
                                 Eliminar
