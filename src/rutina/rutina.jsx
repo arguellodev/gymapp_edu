@@ -7,9 +7,13 @@ import LottieAnimation from '../visualizador_lottie/visualizador';
 import rutinaData from '../data/rutina.json';
 import rutinaData2 from '../data/rutina2.json';
 import rutinaData3 from '../data/rutina3.json';
-const rutinasDisponibles = [rutinaData, rutinaData2, rutinaData3];
+
+
 
 const Rutina = ({ data = null }) => {
+  
+  // Para recuperar
+  const rutinasDisponibles = JSON.parse(localStorage.getItem('rutinas')) || [rutinaData, rutinaData2];
   // Estados
   const [rutina, setRutina] = useState(null);
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);

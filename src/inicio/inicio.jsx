@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './inicio.css';
 import { Calendar, Clock, Award, Dumbbell, Users, Bell, Heart, BarChart2, TrendingDown } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
+import rutinaData from '../data/rutina.json';
+import rutinaData2 from '../data/rutina2.json';
+import rutinaData3 from '../data/rutina3.json';
 const Inicio = ({setActiveIndex, userData}) => {
+
+  
   // Estado para datos de usuario y gimnasio (normalmente vendría de una API)
   /*
   const [userData, setUserData] = useState({
@@ -14,7 +18,16 @@ const Inicio = ({setActiveIndex, userData}) => {
     calorias: 2340,
     minutosEntrenados: 143,
   });*/
-
+  useEffect(() => {
+    // Verificar si ya están en localStorage
+    const rutinasGuardadas = localStorage.getItem('rutinas');
+    
+    if (!rutinasGuardadas) {
+      // Si no existen, guardar los JSON iniciales
+      localStorage.setItem('rutinas', JSON.stringify([rutinaData3]));
+    }
+  }, []);
+  
   // Datos de progreso de peso (ejemplo)
   const [datosProgresoPeso, setDatosProgresoPeso] = useState([
     { semana: 1, peso: 85 },
@@ -26,8 +39,9 @@ const Inicio = ({setActiveIndex, userData}) => {
     { semana: 7, peso: 81.3 },
     { semana: 8, peso: 80.6 }
   ]);
-  const navegacionGuardada = localStorage.getItem('rutina-navegacion');
-  console.log(navegacionGuardada);
+  const ultimoEntrenamiento = JSON.parse(localStorage.getItem('rutina-navegacion'));
+  console.log(ultimoEntrenamiento.diaSeleccionadoId);
+  
   const [notificaciones, setNotificaciones] = useState(3);
 
   // Calcular estadísticas de peso
@@ -85,9 +99,9 @@ const Inicio = ({setActiveIndex, userData}) => {
         </div>
         <div className="clase-content">
           <div className="clase-info">
-            <h3>{'userData.proximaClase'}</h3>
+            <h3>{ultimoEntrenamiento.diaSeleccionadoId} - {ultimoEntrenamiento.bloqueSeleccionadoId}</h3>
           </div>
-          <button className="boton-primario" onClick={()=>{setActiveIndex(1)}}>Ir a entrenamiento</button>
+          <button className="boton-primario" onClick={()=>{setActiveIndex(1)}}>Continuar entrenamiento</button>
         </div>
       </div>
 

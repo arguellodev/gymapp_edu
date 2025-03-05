@@ -290,8 +290,18 @@ const CrearRutina = ({setCrearRutina}) => {
     });
 
     setRutinaCompleta(rutina);
-    console.log("Rutina creada:", JSON.stringify(rutina, null, 2));
+    console.log(rutina);
     // Aquí podrías enviar el JSON a tu API o hacer lo que necesites con él
+    // Obtener las rutinas existentes
+let rutinas = JSON.parse(localStorage.getItem('rutinas')) || [];
+
+// Nueva rutina que quieres agregar
+
+// Agregar la nueva rutina al arreglo
+rutinas.push(rutina);
+
+// Guardar el arreglo actualizado en localStorage
+localStorage.setItem('rutinas', JSON.stringify(rutinas));
   };
 
   // Función para validar si podemos avanzar al siguiente paso
