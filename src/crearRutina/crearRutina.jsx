@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import "./crearrutina.css";
 import libreriaDatos from "../data/libreria.json";
 import LottieAnimation from "../visualizador_lottie/visualizador";
+import { RiRunLine } from "react-icons/ri";
+import { IoFitness } from "react-icons/io5";
+import { GrYoga } from "react-icons/gr";
 
 const CrearRutina = ({setCrearRutina}) => {
   
@@ -26,7 +29,7 @@ const CrearRutina = ({setCrearRutina}) => {
   const [rutinaCompleta, setRutinaCompleta] = useState({});
 
   // Tipos de bloques disponibles
-  const bloques = ["Serie", "Superserie", "Cardio"];
+  const bloques = ["Cardio", "Estiramiento", "Serie"];
 
   // Estado para manejar los bloques por día
   const [bloquesPorDia, setBloquesPorDia] = useState({});
@@ -89,9 +92,9 @@ const CrearRutina = ({setCrearRutina}) => {
       id: `bloque-${Date.now()}`,
       tipo,
       ejercicios: [],
-      series: 3, // Número de series para todo el bloque
-      descansoEntreSeries: 90, // Descanso entre series predeterminado (60 segundos)
-      descansoEntreEjercicios: 40, // Descanso entre ejercicios predeterminado (90 segundos)
+      series:'', // Número de series para todo el bloque
+      descansoEntreSeries:'', // Descanso entre series predeterminado (60 segundos)
+      descansoEntreEjercicios:'' // Descanso entre ejercicios predeterminado (90 segundos)
     };
 
     setBloquesPorDia({
@@ -354,16 +357,29 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
   };
 
   // Filtrar los grupos y ejercicios según el término de búsqueda
-  const getGruposFiltrados = () => {
-    return Object.entries(libreriaDatos).map(([grupo, ejercicios]) => {
-      const ejerciciosFiltrados = ejercicios.filter(ejercicio => 
-        ejercicio.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      
-      return { grupo, ejerciciosFiltrados };
-    }).filter(({ ejerciciosFiltrados }) => ejerciciosFiltrados.length > 0);
+  const getGruposFiltrados = (categoriaFiltro) => {
+    return Object.entries(libreriaDatos)
+      .filter(([grupo, _]) => {
+        // Filtrar por categoría
+        if (categoriaFiltro === 'Cardio') {
+          return grupo.includes('Cardio');
+        } else if (categoriaFiltro === 'Estiramiento') {
+          return grupo.includes('Estiramiento');
+        } else if (categoriaFiltro === 'Serie') {
+          return true; // Mostrar todos los grupos
+        } else {
+          return true; // Si no hay filtro o es inválido, mostrar todos
+        }
+      })
+      .map(([grupo, ejercicios]) => {
+        const ejerciciosFiltrados = ejercicios.filter(ejercicio => 
+          ejercicio.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        return { grupo, ejerciciosFiltrados };
+      })
+      .filter(({ ejerciciosFiltrados }) => ejerciciosFiltrados.length > 0);
   };
-
   return (
     <>
       
@@ -426,7 +442,13 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                         {bloquesPorDia[dias[menuRutina - 1]].map((bloque) => (
                           <div key={bloque.id} className="bloque-item">
                             <div className="bloque-info">
-                              <span className="bloque-tipo">{bloque.tipo}</span>
+                              <span className="bloque-tipo">{bloque.tipo}
+                              {bloque.tipo === 'Cardio' ? <IoFitness />:
+                                  bloque.tipo === 'Serie'? <RiRunLine/>:
+                                  bloque.tipo === 'Estiramiento'? <GrYoga />
+                          
+                          :null}
+                              </span>
                               <span className="bloque-ejercicios">
                                 {bloque.ejercicios.length} Ejercicios
                               </span>
@@ -464,7 +486,11 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                           className="boton-bloque"
                           onClick={() => agregarBloque(tipo)}
                         >
-                          {tipo}
+                          {tipo} {tipo === 'Cardio' ? <IoFitness />:
+                                  tipo === 'Serie'? <RiRunLine/>:
+                                  tipo === 'Estiramiento'? <GrYoga />
+                          
+                          :null}
                         </button>
                       ))}
                     </div>
@@ -492,7 +518,9 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                     <h4>Configuración del bloque</h4>
                     <div className="bloque-config">
                       {/* Configuración de series para todo el bloque */}
-                      <label>
+                      {bloqueActualData.tipo !== 'Cardio' && 
+                      <>
+                        <label>
                         Número de veces:
                         <input
                           type="number"
@@ -535,6 +563,9 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                           }
                         />
                       </label>
+                      </>
+                      }
+                      
                     </div>
                   </div>
 
@@ -547,35 +578,43 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                             
                             <div className="ejercicio-nombre">{ejercicio.nombre}
                             <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio.nombre}.json`}/>
-                            {console.log(ejercicio)}
+                  
                             </div>
                             <div className="ejercicio-config">
                             <button className="eliminar-btn" onClick={() => eliminarEjercicio(ejercicio.id)}>
                                 X
                               </button>
+                              {bloqueActualData.tipo !== 'Cardio' &&
+                              <>
                               <label>
-                                Repeticiones:
-                                <input
-                                  type="number"
-                                  placeholder="Opcional"
-                                  
-                                  value={ejercicio.repeticiones || ""}
-                                  onChange={(e) =>
-                                    actualizarEjercicio(ejercicio.id, "repeticiones", parseInt(e.target.value))
-                                  }
-                                />
-                              </label>
-                              <label>
-                                Peso (kg):
-                                <input
-                                  type="text"
-                                  placeholder="Opcional"
-                                  value={ejercicio.peso || ""}
-                                  onChange={(e) =>
-                                    actualizarEjercicio(ejercicio.id, "peso", e.target.value)
-                                  }
-                                />
-                              </label>
+                              Repeticiones:
+                              <input
+                                type="number"
+                                placeholder="Opcional"
+                                
+                                value={ejercicio.repeticiones || ""}
+                                onChange={(e) =>
+                                  actualizarEjercicio(ejercicio.id, "repeticiones", parseInt(e.target.value))
+                                }
+                              />
+                            </label>
+                            <label>
+                            Peso (kg):
+                            <input
+                              type="text"
+                              placeholder="Opcional"
+                              value={ejercicio.peso || ""}
+                              onChange={(e) =>
+                                actualizarEjercicio(ejercicio.id, "peso", e.target.value)
+                              }
+                            />
+                          </label>
+                              </>
+                              
+
+                              }
+                              
+                              
                               <label>
                                 Tiempo (seg):
                                 <input
@@ -684,6 +723,7 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
           >
             <div className="header-ejercicio">
               <h4>Añadir ejercicio</h4>
+              {console.log(bloqueActualData.tipo)}
               <button
                 className="cerrar-btn"
                 onClick={() => setEjercicioAbierto(false)}
@@ -702,8 +742,8 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
             </div>
             
             <div className="categorias-container">
-              {getGruposFiltrados().length > 0 ? (
-                getGruposFiltrados().map(({ grupo, ejerciciosFiltrados }) => (
+              {getGruposFiltrados(bloqueActualData.tipo).length > 0 ? (
+                getGruposFiltrados(bloqueActualData.tipo).map(({ grupo, ejerciciosFiltrados }) => (
                   <div key={grupo} className="categoria-item">
                     <div 
                       className={`categoria-header ${categoriasExpandidas[grupo] ? 'expandido' : ''}`}

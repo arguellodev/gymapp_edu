@@ -40,7 +40,7 @@ const Inicio = ({setActiveIndex, userData}) => {
     { semana: 8, peso: 80.6 }
   ]);
   const ultimoEntrenamiento = JSON.parse(localStorage.getItem('rutina-navegacion'));
-  console.log(ultimoEntrenamiento.diaSeleccionadoId);
+ 
   
   const [notificaciones, setNotificaciones] = useState(3);
 
@@ -99,7 +99,7 @@ const Inicio = ({setActiveIndex, userData}) => {
         </div>
         <div className="clase-content">
           <div className="clase-info">
-            <h3>{ultimoEntrenamiento.diaSeleccionadoId} - {ultimoEntrenamiento.bloqueSeleccionadoId}</h3>
+            <h3></h3>
           </div>
           <button className="boton-primario" onClick={()=>{setActiveIndex(1)}}>Continuar entrenamiento</button>
         </div>

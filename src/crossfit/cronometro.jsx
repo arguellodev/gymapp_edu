@@ -176,7 +176,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador }) => {
           <span className="button-text">Resetear</span>
         </button>
       </div>
-      {type === "AMRAP" && !isRestPhase && isActive ?
+      {type === "AMRAP" && !isRestPhase && isActive && !isPaused?
       <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>Contador de rondas: {contador}</button>
         :
         <p className='texto-contador-rondas'> Llevas {contador} rondas</p>
