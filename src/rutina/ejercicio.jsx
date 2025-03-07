@@ -4,8 +4,20 @@ import Timer from "./timer";
 import Lottie from "lottie-react";
 import "./ejercicio.css";
 import LottieAnimation from "../visualizador_lottie/visualizador";
+
 const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, onFinalizar }) => {
-  const [tiempo, setTiempo] = useState(ejercicio.tiempo || 0);
+  console.log(ejercicio);
+  
+  // Inicialización correcta del estado tiempo
+  const [tiempo, setTiempo] = useState(() => {
+    // Si la unidad es minutos, convertir a segundos
+    if (ejercicio.unidadTiempo === 'min' && ejercicio.tiempo) {
+      return ejercicio.tiempo * 60;
+    }
+    // Si no, usar el valor tal cual está
+    return ejercicio.tiempo || 0;
+  });
+  
   const [cronometroActivo, setCronometroActivo] = useState(false);
   const [recomendacionesAbiertas, setRecomendacionesAbiertas] = useState(false);
   const [animacionData, setAnimacionData] = useState(null);
@@ -23,7 +35,10 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
 
   const handleSiguienteClick = () => {
     // Activar el temporizador
-    setShowTimer(true);
+    clearInterval(timerRef.current);
+    setCronometroActivo(false);
+     setShowTimer(true);
+    
   };
 
   useEffect(() => {
@@ -32,13 +47,18 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
     };
   }, []);
 
+  // Este useEffect ahora aplica la misma lógica de conversión cuando el ejercicio cambia
   useEffect(() => {
-    setTiempo(ejercicio.tiempo || 0);
+    // Aplicar la misma lógica de conversión cuando ejercicio cambia
+    if (ejercicio.unidadTiempo === 'min' && ejercicio.tiempo) {
+      setTiempo(ejercicio.tiempo * 60);
+    } else {
+      setTiempo(ejercicio.tiempo || 0);
+    }
+    
     setCronometroActivo(false);
     if (timerRef.current) clearInterval(timerRef.current);
   }, [ejercicio]);
-
-  
 
   const toggleCronometro = () => {
     if (cronometroActivo) {
@@ -61,7 +81,13 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
   const reiniciarCronometro = () => {
     clearInterval(timerRef.current);
     setCronometroActivo(false);
-    setTiempo(ejercicio.tiempo || 0);
+    
+    // Reiniciar aplicando la misma lógica de conversión
+    if (ejercicio.unidadTiempo === 'min' && ejercicio.tiempo) {
+      setTiempo(ejercicio.tiempo * 60);
+    } else {
+      setTiempo(ejercicio.tiempo || 0);
+    }
   };
 
   const formatearTiempo = (segundos) => {
@@ -101,7 +127,8 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
         {ejercicio.tiempo > 0 && (
           <div className="ejercicio-metrica tiempo">
             <h3 className="ejercicio-metrica-titulo">Tiempo</h3>
-            <p className="ejercicio-metrica-valor">{formatearTiempo(tiempo)}</p>
+            <p className="ejercicio-metrica-valor">
+              {formatearTiempo(tiempo)}</p>
             <div className="ejercicio-cronometro-controles">
               <button
                 onClick={toggleCronometro}
@@ -118,25 +145,23 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
       </div>
         
       <div className="ejercicio-botones">
-      <button
-        onClick={handleSiguienteClick}
-        className="ejercicio-boton siguiente"
-      >
-        {esUltimoEjercicio && esUltimaSerie ? "Finalizar Bloque" : "Siguiente ejercicio"}
-      </button>
+        <button
+          onClick={handleSiguienteClick}
+          className="ejercicio-boton siguiente"
+        >
+          {esUltimoEjercicio && esUltimaSerie ? "Finalizar Bloque" : "Siguiente ejercicio"}
+        </button>
 
-      {showTimer ?
-      
-      <Timer 
-      seconds={ esUltimoEjercicio ? ejercicio.descansoSerie : ejercicio.descansoEjercicio}  // Duración del temporizador
-      onComplete={handleTimerComplete} 
-      esUltimoEjercicio={esUltimoEjercicio}
-      />
-      :null
-        
-      }
-      {console.log(ejercicio)}
-    </div>
+        {showTimer ?
+          <Timer 
+            seconds={esUltimoEjercicio ? ejercicio.descansoSerie : ejercicio.descansoEjercicio}  // Duración del temporizador
+            onComplete={handleTimerComplete} 
+            esUltimoEjercicio={esUltimoEjercicio}
+          />
+          : null
+        }
+        {console.log(ejercicio)}
+      </div>
     </div>
   );
 };

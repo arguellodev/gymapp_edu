@@ -1,0 +1,64 @@
+{
+  "Abdomen": [
+    "Dumbbell Weighted Cocoons 2",
+    "Dumbbell Weighted Crunch 2",
+    "Dumbbell Weighted Decline Crunch 2"
+  ],
+  "Cardio": [
+    "Dumbbell Swing 2"
+  ],
+  "Antebrazo": [
+    "Dumbbell Radial Deviation 2",
+    "Dumbbell Ulnar Deviation 2"
+    
+  ],
+  "Biceps": [
+    "Alternating Dumbbell Bicep Curl 2",
+    "Alternating Dumbbell Hammer Curl 2",
+    "Dumbbell Bicep Curl 2",
+    "Dumbbell Cross-Body Hammer Curl 2"
+     
+  ],
+  "Espalda": [
+    "Alternating Renegade Row 2",
+    "Bench One-Arm Dumbbell Row 2"
+   
+    
+  ],
+  "Hombro": [
+    "Leaning Dumbbell Lateral Raise 2",
+    "Seated Dumbbell Shoulders Front Raise 2",
+    "Seated Dumbbell Shoulders Lateral Raise 2",
+    "Seated Dumbbell Shoulders Press 2",
+    "Standing Dumbbell Lateral Raise 2",
+    "Standing Dumbbell Shoulders Front Raise 2",
+    "Standing Dumbbell Shoulders Press 2",
+    "Barbell Half-Kneeling Shoulder Press",
+    "Barbell Incline Front Raise"
+  ],
+  "Otros": [
+    "Dumbbell Donkey Kicks 2"
+  ],
+  "Pecho": [
+    "Bench Dumbbell Fly 2",
+    "Bench Dumbbell Pullover 2",
+    "Decline Dumbbell Bench Press 2"
+    
+  ],
+  "Pierna": [
+    "Calf Raises 2",
+    "Seated Dumbbell Calf Raise 2",
+    "Dumbbell Bulgarian Split Squat 2",
+    "Dumbbell Front Squat 2"
+    
+    
+    
+  ],
+  "Triceps": [
+    "Bench One Arm Tricep Kickback 2",
+    "Dumbbell Tricep Kickback 2",
+    "Lying Dumbbell Tricep Extension 2",
+    "Overhead Tricep Extension 2"
+    
+  ]
+}

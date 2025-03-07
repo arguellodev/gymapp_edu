@@ -27,6 +27,7 @@ const CrearRutina = ({setCrearRutina}) => {
   const [dias, setDias] = useState([]);
   const [nombreRutina, setNombreRutina] = useState("");
   const [rutinaCompleta, setRutinaCompleta] = useState({});
+  const [descripcionesDias, setDescripcionesDias] = useState({});
 
   // Tipos de bloques disponibles
   const bloques = ["Cardio", "Estiramiento", "Serie"];
@@ -149,9 +150,11 @@ const CrearRutina = ({setCrearRutina}) => {
       id: `ejercicio-${Date.now()}`,
       nombre: ejercicio,
       repeticiones: "",
-      descanso: 60,
-      peso: "", // Campo opcional para el peso
-      tiempo: "", // Campo opcional para el tiempo
+      descanso: "",
+      peso: "", 
+      unidadPeso: "kg", // Agregar valor por defecto
+      tiempo: "",
+      unidadTiempo: "seg", // Agregar valor por defecto
     };
 
     const bloqueActualIndex = bloquesPorDia[diaActual].findIndex(
@@ -267,7 +270,7 @@ const CrearRutina = ({setCrearRutina}) => {
       nombre: nombreRutina || "Mi Rutina",
       dias: {},
     };
-
+  
     dias.forEach((dia) => {
       rutina.dias[dia] = bloquesPorDia[dia].map((bloque) => ({
         tipo: bloque.tipo,
@@ -279,24 +282,24 @@ const CrearRutina = ({setCrearRutina}) => {
           repeticiones: ejercicio.repeticiones || "",
           descanso: ejercicio.descanso,
           peso: ejercicio.peso || "",
+          unidadPeso: ejercicio.unidadPeso || "kg", // Agregar la unidad de peso
           tiempo: ejercicio.tiempo || "",
+          unidadTiempo: ejercicio.unidadTiempo || "seg", // Agregar la unidad de tiempo
         })),
       }));
     });
-
+  
     setRutinaCompleta(rutina);
     console.log(rutina);
-    // Aquí podrías enviar el JSON a tu API o hacer lo que necesites con él
+    
     // Obtener las rutinas existentes
-let rutinas = JSON.parse(localStorage.getItem('rutinas')) || [];
-
-// Nueva rutina que quieres agregar
-
-// Agregar la nueva rutina al arreglo
-rutinas.push(rutina);
-
-// Guardar el arreglo actualizado en localStorage
-localStorage.setItem('rutinas', JSON.stringify(rutinas));
+    let rutinas = JSON.parse(localStorage.getItem('rutinas')) || [];
+  
+    // Agregar la nueva rutina al arreglo
+    rutinas.push(rutina);
+  
+    // Guardar el arreglo actualizado en localStorage
+    localStorage.setItem('rutinas', JSON.stringify(rutinas));
   };
 
   // Función para validar si podemos avanzar al siguiente paso
@@ -573,63 +576,85 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                     <h4>Ejercicios en este bloque</h4>
                     {ejerciciosBloque.length > 0 ? (
                       <div className="lista-ejercicios">
-                        {ejerciciosBloque.map((ejercicio) => (
-                          <div key={ejercicio.id} className="ejercicio-item">
-                            
-                            <div className="ejercicio-nombre">{ejercicio.nombre}
-                            <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio.nombre}.json`}/>
-                  
-                            </div>
-                            <div className="ejercicio-config">
-                            <button className="eliminar-btn" onClick={() => eliminarEjercicio(ejercicio.id)}>
-                                X
-                              </button>
-                              {bloqueActualData.tipo !== 'Cardio' &&
-                              <>
-                              <label>
-                              Repeticiones:
-                              <input
-                                type="number"
-                                placeholder="Opcional"
-                                
-                                value={ejercicio.repeticiones || ""}
-                                onChange={(e) =>
-                                  actualizarEjercicio(ejercicio.id, "repeticiones", parseInt(e.target.value))
-                                }
-                              />
-                            </label>
-                            <label>
-                            Peso (kg):
-                            <input
-                              type="text"
-                              placeholder="Opcional"
-                              value={ejercicio.peso || ""}
-                              onChange={(e) =>
-                                actualizarEjercicio(ejercicio.id, "peso", e.target.value)
-                              }
-                            />
-                          </label>
-                              </>
-                              
+                       {ejerciciosBloque.map((ejercicio) => (
+  <div key={ejercicio.id} className="ejercicio-item">
+    <div className="ejercicio-nombre">
+      {ejercicio.nombre}
+      <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio.nombre}.json`} />
+    </div>
+    <div className="ejercicio-config">
+      <button className="eliminar-btn" onClick={() => eliminarEjercicio(ejercicio.id)}>
+        X
+      </button>
+      {bloqueActualData.tipo !== 'Cardio' && (
+        <>
+          <label>
+            Repeticiones:
+            <input
+              type="number"
+              placeholder="Opcional"
+              value={ejercicio.repeticiones || ""}
+              onChange={(e) =>
+                actualizarEjercicio(ejercicio.id, "repeticiones", parseInt(e.target.value))
+              }
+            />
+          </label>
 
-                              }
-                              
-                              
-                              <label>
-                                Tiempo (seg):
-                                <input
-                                  type="text"
-                                  placeholder="Opcional"
-                                  value={ejercicio.tiempo || ""}
-                                  onChange={(e) =>
-                                    actualizarEjercicio(ejercicio.id, "tiempo", e.target.value)
-                                  }
-                                />
-                              </label>
-                              
-                            </div>
-                          </div>
-                        ))}
+          <div className="input-con-unidad">
+            <label>
+              Peso: (Opcional)
+              <div className="input-unidad-container">
+                <input
+                className="input-peso"
+                  type="number"
+                  placeholder=""
+                  value={ejercicio.peso || ""}
+                  onChange={(e) =>
+                    actualizarEjercicio(ejercicio.id, "peso", e.target.value)
+                  }
+                />
+                <select 
+                  value={ejercicio.unidadPeso || "kg"}
+                  onChange={(e) =>
+                    actualizarEjercicio(ejercicio.id, "unidadPeso", e.target.value)
+                  }
+                >
+                  <option value="kg">kg</option>
+                  <option value="lb">lb</option>
+                </select>
+              </div>
+            </label>
+          </div>
+        </>
+      )}
+      
+      <div className="input-con-unidad">
+        <label>
+          Tiempo: (Opcional)
+          <div className="input-unidad-container">
+            <input
+              type="number"
+              placeholder=""
+              value={ejercicio.tiempo || ""}
+              onChange={(e) =>
+                actualizarEjercicio(ejercicio.id, "tiempo", e.target.value)
+              }
+            />
+            <select 
+              value={ejercicio.unidadTiempo || "seg"}
+              onChange={(e) =>
+                actualizarEjercicio(ejercicio.id, "unidadTiempo", e.target.value)
+              }
+            >
+              <option value="seg">seg</option>
+              <option value="min">min</option>
+            </select>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+))}
                       </div>
                     ) : (
                       <p>Aún no has añadido ejercicios a este bloque.</p>
@@ -721,6 +746,7 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
             className="agregar-ejercicio-content" 
             onClick={handleContentClick}
           >
+            <div className="header-ejercicio-container">
             <div className="header-ejercicio">
               <h4>Añadir ejercicio</h4>
               {console.log(bloqueActualData.tipo)}
@@ -740,6 +766,8 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
+            </div>
+           
             
             <div className="categorias-container">
               {getGruposFiltrados(bloqueActualData.tipo).length > 0 ? (
@@ -775,7 +803,10 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
                             >
                               <div className="seleccionar-ejercicio-container">
                                 <p>{ejercicio}</p>
-                                <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`}/>
+                                <div style={{width:'calc(100% - 100px)'}}>
+                                <LottieAnimation  jsonPath={`./Ejerciciosall/${ejercicio}.json`}/>
+                                </div>
+                                
                               </div>
                              
                              
@@ -793,9 +824,7 @@ localStorage.setItem('rutinas', JSON.stringify(rutinas));
               )}
             </div>
             
-            <div className="modal-actions">
-              <button onClick={() => setEjercicioAbierto(false)}>Cerrar</button>
-            </div>
+            
           </div>
         </div>
       )}

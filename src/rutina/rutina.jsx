@@ -43,6 +43,7 @@ const Rutina = ({ data = null }) => {
             nombre: ejercicio.nombre,
             tiempo: ejercicio.tiempo,
             unidadPeso: ejercicio.unidadPeso,
+            unidadTiempo: ejercicio.unidadTiempo,
             repeticiones: ejercicio.repeticiones,
             descanso: ejercicio.descanso,
             peso: ejercicio.peso,
@@ -364,6 +365,30 @@ const Rutina = ({ data = null }) => {
     }
   };
 
+  // Función para descargar la rutina en formato JSON
+const descargarRutinaJSON = (e, index) => {
+  e.stopPropagation(); // Evitar que el clic se propague al div padre
+  
+  const rutinaParaDescargar = rutinasDisponibles[index];
+  const nombreArchivo = `${rutinaParaDescargar.nombre || 'Rutina'}.json`;
+  
+  // Crear un objeto Blob con el JSON
+  const blob = new Blob([JSON.stringify(rutinaParaDescargar, null, 2)], { type: 'application/json' });
+  
+  // Crear un enlace temporal para la descarga
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nombreArchivo;
+  
+  // Simular clic en el enlace para iniciar la descarga
+  document.body.appendChild(a);
+  a.click();
+  
+  // Limpiar
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
   // Renderizar selector de rutinas
   const renderizarSelectorRutinas = () => {
     return (
@@ -373,23 +398,35 @@ const Rutina = ({ data = null }) => {
           <button onClick={()=>{setCrearRutina(true)}}>Crear nueva rutina</button>
         </div>
         <div className="rutinas-grid">
-          {rutinasDisponibles.map((rutinaItem, index) => (
-            <div 
-              key={index} 
-              className="rutina-item"
-              onClick={() => seleccionarRutina(index)}
-            >
-              <h3 className="rutina-item-titulo">{rutinaItem.nombre || `Rutina ${index + 1}`}</h3>
-              <p className="rutina-item-descripcion">{rutinaItem.descripcion || "Plan de entrenamiento personalizado"}</p>
-              <div className="rutina-item-info">
-                <span className="rutina-item-dias">{rutinaItem.rutina ? rutinaItem.rutina.length : 0} días</span>
-                <span className="rutina-item-nivel">
-                  {rutinaItem.nivel || (index === 0 ? "Principiante" : "Intermedio")}
-                </span>
-              </div>
-              <button className="btn btn-primary rutina-item-btn">Seleccionar</button>
-            </div>
-          ))}
+        {rutinasDisponibles.map((rutinaItem, index) => (
+  <div 
+    key={index} 
+    className="rutina-item"
+   
+  >
+    <h3 className="rutina-item-titulo">{rutinaItem.nombre || `Rutina ${index + 1}`}</h3>
+    <p className="rutina-item-descripcion">{rutinaItem.descripcion || "Plan de entrenamiento personalizado"}</p>
+    <div className="rutina-item-info">
+      <span className="rutina-item-dias">{rutinaItem.rutina ? rutinaItem.rutina.length : 0} días</span>
+      <span className="rutina-item-nivel">
+        {rutinaItem.nivel || (index === 0 ? "Principiante" : "Intermedio")}
+      </span>
+    </div>
+    <div className="rutina-item-buttons">
+      <button className="btn btn-primary rutina-item-btn"  onClick={() => seleccionarRutina(index)}>Seleccionar</button>
+      <button 
+        className="btn btn-secondary rutina-item-download-btn" 
+        onClick={(e) => descargarRutinaJSON(e, index)}
+        title="Descargar rutina en formato JSON"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+))}
         </div>
         {crearRutina && <CrearRutina setCrearRutina={setCrearRutina}></CrearRutina>}
       </div>

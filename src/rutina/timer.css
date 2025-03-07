@@ -36,7 +36,7 @@
   }
   
   .timer-text {
-    transform: translateY(150%);
+    
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -47,6 +47,7 @@
   }
   
   .timer-time {
+    
     font-size: 3rem;
     font-weight: bold;
   }

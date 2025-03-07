@@ -17,21 +17,15 @@
   
   /* Estilos generales */
   .menu-crear-rutinas {
-    
-    position: absolute;
-    top: 10px;
-    height: 100%;
+    padding: 15px 15px 15px 15px;
+    position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
    
-    
-    padding: 20px;
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-color);
+    background: white;
+    overflow-y: auto; /* Permite desplazamiento si el contenido es muy largo */
   }
   
   .menu-crear-rutinas h2 {
@@ -139,11 +133,6 @@
     height: 26px;
   }
   
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
   
   .slider {
     position: absolute;
@@ -432,8 +421,11 @@
 
 .ejercicio-config {
     padding: 15px;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
     gap: 10px;
     background-color: var(--background-color);
 }
@@ -478,6 +470,7 @@
   }
   
   .ejercicio-disponible {
+    height: 200px;
     padding: 10px;
     border-radius: 4px;
     background-color: var(--primary-light);
@@ -598,9 +591,7 @@
   background-color: white;
   border-radius: 8px;
   width: 80%;
-  max-width: 800px;
-  max-height: 80vh;
-  padding: 24px;
+  height: 100%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
   animation: modalFadeIn 0.3s ease-in-out;
@@ -758,8 +749,7 @@
 /* Override for mobile responsiveness */
 @media (max-width: 768px) {
   .agregar-ejercicio-content {
-    width: 95%;
-    padding: 16px;
+    
   }
   
   .lista-ejercicios-disponibles {
@@ -789,10 +779,10 @@
   background-color: white;
   border-radius: 8px;
   width: 90%;
-  max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
+  
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -843,6 +833,7 @@
   border: 1px solid #eee;
   border-radius: 4px;
   overflow: hidden;
+  
 }
 
 .categoria-header {
@@ -877,8 +868,9 @@
 .lista-ejercicios-disponibles {
   padding: 10px;
   background-color: #fcfcfc;
-  max-height: 200px;
+  max-height: 400px;
   overflow-y: auto;
+
 }
 
 .ejercicio-disponible {
@@ -1042,7 +1034,7 @@
   
 }
 .seleccionar-ejercicio-container p{
-  width: auto;
+  width: 100px;
   font-weight: 600;
 }
 
@@ -1078,4 +1070,58 @@ width: auto;
   margin-right: 0;
   margin-left: 60%;
   
+}
+
+.header-ejercicio-container{
+  padding: 0;
+  padding-top: 20px;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  background: white;
+  
+}
+
+.input-con-unidad {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-unidad-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 130px;
+}
+
+.input-unidad-container input {
+ 
+  margin-right: 5px;
+  width: 80px;
+}
+
+.input-unidad-container select {
+  width: 60px;
+  padding: 5px;
+}
+
+.descripcion-dia {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.descripcion-dia textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.dia-descripcion {
+  margin-top: 8px;
+  font-size: 14px;
 }

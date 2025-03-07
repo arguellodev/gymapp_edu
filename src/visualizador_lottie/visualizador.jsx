@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 
 const LottieAnimation = ({ jsonPath }) => {
-  const [animationData, setAnimationData] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [animationData, setAnimationData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
 
-  React.useEffect(() => {
+  // Configurar Intersection Observer para detectar cuando el componente es visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 } // Detecta cuando al menos el 10% del elemento es visible
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
+
+  // Cargar la animación solo cuando el componente sea visible
+  useEffect(() => {
     const fetchAnimation = async () => {
+      if (!isVisible || animationData) return;
+      
       try {
         setLoading(true);
         
@@ -28,31 +54,32 @@ const LottieAnimation = ({ jsonPath }) => {
       }
     };
 
-    if (jsonPath) {
+    if (jsonPath && isVisible) {
       fetchAnimation();
     }
-  }, [jsonPath]);
-
-  if (loading) {
-    return <div className="lottie-loading">Cargando animación...</div>;
-  }
-
-  if (error) {
-    return <div className="lottie-error">Error: {error}</div>;
-  }
+  }, [jsonPath, isVisible, animationData]);
 
   return (
-    <div className="lottie-container-creadorRutina">
-      <Lottie 
-    
-        animationData={animationData} 
-        loop={true} 
-        autoPlay={true}
-        style={{
-          width: "100%",
-          height: "auto",
-        }}
-      />
+    <div ref={containerRef} className="lottie-container-creadorRutina">
+      {isVisible && (
+        <>
+          {loading && <div className="lottie-loading">Cargando animación...</div>}
+          
+          {error && <div className="lottie-error">Error: {error}</div>}
+          
+          {animationData && (
+            <Lottie 
+              animationData={animationData} 
+              loop={true} 
+              autoPlay={true}
+              style={{
+                width: "100%",
+                height: "auto",
+              }}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };

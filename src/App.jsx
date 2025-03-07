@@ -83,7 +83,7 @@ const App = () => {
     } else {
       return (
         <>
-          <div className="main" style={{ width: "100%", height: "calc(100% - 55px)", marginBottom: "100px", marginTop: "20px" }}>
+          <div className="main" style={{ width: "100%", height: "100vh" }}>
             {activeIndex === 0 && <Inicio setActiveIndex={setActiveIndex} userData={userData} />}
             {activeIndex === 1 && <Rutina activeIndex={activeIndex} />}
             {activeIndex === 2 && <Perfil userData={userData}/> }

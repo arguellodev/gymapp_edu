@@ -17,9 +17,12 @@
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .rutina-container {
   max-width:100%;
-  margin: 0 auto;
+  margin: 0 0;
   padding: 15px;
   height: auto;
+  overflow-y: hidden;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
 }
 
 .rutina-titulo {
@@ -949,3 +952,22 @@ height: 100px;
   to { opacity: 1; transform: scale(1); }
 }
 
+.rutina-item-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.rutina-item-download-btn {
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rutina-item-download-btn:hover {
+  background-color: #f0f0f0;
+}

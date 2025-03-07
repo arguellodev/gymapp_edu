@@ -4,15 +4,57 @@ import "./libreria.css";
 // Importa directamente el JSON
 import libreriaDatos from '../data/libreria.json';
 
+const LottieAnimation = ({ jsonPath }) => {
+  const [animationData, setAnimationData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadAnimation = async () => {
+      try {
+        const response = await fetch(jsonPath);
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+        const data = await response.json();
+        setAnimationData(data);
+      } catch (err) {
+        console.error(`Error al cargar animación desde ${jsonPath}:`, err);
+        setError(err.message);
+      }
+    };
+
+    loadAnimation();
+  }, [jsonPath]);
+
+  if (error) {
+    return <div className="error-container">Error al cargar</div>;
+  }
+
+  if (!animationData) {
+    return <div className="cargando-lottie">Cargando...</div>;
+  }
+
+  return (
+    <Lottie
+      animationData={animationData}
+      loop={true}
+      autoPlay={true}
+      style={{
+        width: "50%",
+        height: "auto"
+      }}
+    />
+  );
+};
+
 const Libreria = () => {
   const [categorias, setCategorias] = useState({});
-  const [animaciones, setAnimaciones] = useState({});
   const [categoriasExpandidas, setCategoriasExpandidas] = useState({});
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Ya no necesitamos fetch, usamos los datos importados
+    // Usamos los datos importados directamente
     try {
       setCategorias(libreriaDatos);
       
@@ -31,67 +73,12 @@ const Libreria = () => {
     }
   }, []);
 
-  // Función para cargar las animaciones de una categoría específica
-  const cargarAnimacionesCategoria = async (categoria) => {
-    if (animaciones[categoria]) return; // Si ya están cargadas, no hacer nada
-    
-    const ejerciciosCategoria = categorias[categoria] || [];
-    
-    try {
-      const nuevasAnimaciones = await Promise.all(
-        ejerciciosCategoria.map(async (nombreEjercicio) => {
-          try {
-            // Ajusta la ruta según la estructura real de tu proyecto
-            const ruta = `/Ejercicios/${categoria}/${nombreEjercicio}.json`;
-            console.log(`Cargando: ${ruta}`);
-            
-            const response = await fetch(ruta);
-            if (!response.ok) {
-              throw new Error(`Error HTTP: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            return { 
-              nombre: nombreEjercicio, 
-              data 
-            };
-          } catch (error) {
-            console.error(`Error al cargar ${nombreEjercicio}:`, error);
-            return { 
-              nombre: nombreEjercicio, 
-              error: error.message, 
-              data: null 
-            };
-          }
-        })
-      );
-      
-      setAnimaciones(prev => ({
-        ...prev,
-        [categoria]: nuevasAnimaciones
-      }));
-    } catch (error) {
-      console.error(`Error al cargar animaciones de ${categoria}:`, error);
-    }
-  };
-
-  // El resto del componente permanece igual...
-
   // Manejar la expansión/colapso de una categoría
   const toggleCategoria = (categoria) => {
-    setCategoriasExpandidas(prev => {
-      const nuevoEstado = !prev[categoria];
-      
-      // Si estamos expandiendo, cargar las animaciones
-      if (nuevoEstado) {
-        cargarAnimacionesCategoria(categoria);
-      }
-      
-      return {
-        ...prev,
-        [categoria]: nuevoEstado
-      };
-    });
+    setCategoriasExpandidas(prev => ({
+      ...prev,
+      [categoria]: !prev[categoria]
+    }));
   };
 
   if (cargando) {
@@ -118,32 +105,14 @@ const Libreria = () => {
           
           {categoriasExpandidas[categoria] && (
             <div className="ejercicios-grid">
-              {animaciones[categoria] ? 
-                animaciones[categoria].map((anim, index) => (
-                  <div key={index} className="ejercicio-card">
-                    <h3 className="ejercicio-titulo">{anim.nombre}</h3>
-                    {anim.data ? (
-                      <div className="lottie-container">
-                        <Lottie 
-                          animationData={anim.data} 
-                          loop={true} 
-                          autoPlay={true}
-                          style={{
-                            width: "150px",
-                            height: "auto"
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="error-container">
-                        <p>Error al cargar</p>
-                      </div>
-                    )}
+              {categorias[categoria].map((ejercicio, index) => (
+                <div key={index} className="ejercicio-card">
+                  <h3 className="ejercicio-titulo">{ejercicio}</h3>
+                  <div className="lottie-container">
+                    <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`} />
                   </div>
-                )) : (
-                  <div className="cargando">Cargando ejercicios...</div>
-                )
-              }
+                </div>
+              ))}
             </div>
           )}
         </div>
