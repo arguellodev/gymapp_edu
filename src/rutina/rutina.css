@@ -966,6 +966,7 @@ height: 100px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: black;
 }
 
 .rutina-item-download-btn:hover {
