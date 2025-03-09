@@ -2,7 +2,8 @@ import { useState } from "react";
 import './crossfit.css';
 import WorkoutTimer from "./cronometro";
 import Amrap from "./amrap";
-
+import Tabata from "./tabata";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 const Crossfit = () => {
     // Estado para controlar qué componente mostrar
     const [activeComponent, setActiveComponent] = useState(null);
@@ -56,14 +57,14 @@ const Crossfit = () => {
                         className="back-button"
                         onClick={handleGoBack}
                     >
-                        Volver atrás
+                        <MdOutlineKeyboardBackspace />
                     </button>
                     
                     {/* Renderizar el componente seleccionado */}
                     {activeComponent === 'amrap' && <Amrap />}
                     {activeComponent === 'fortime' && <p>Componente For Time (pendiente de implementar)</p>}
                     {activeComponent === 'emom' && <p>Componente EMOM (pendiente de implementar)</p>}
-                    {activeComponent === 'tabata' && <p>Componente Tabata (pendiente de implementar)</p>}
+                    {activeComponent === 'tabata' && <Tabata />}
                 </>
             )}
         </>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './cronometro.css';
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
 const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) => {
   // Estado para manejar el entrenamiento actual
@@ -119,7 +120,9 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
 
   return (
     <div className="workout-timer">
-      <button className='back-button-timer' onClick={()=> setComenzar(false)}>X</button>
+      <button className='back-button-timer' onClick={()=> setComenzar(false)}>
+        <MdOutlineKeyboardBackspace />
+        </button>
       <div className="timer-container">
         <h2>{type}</h2>
         <div className="progress-ring-container">

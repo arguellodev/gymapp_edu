@@ -235,8 +235,13 @@
 }
 
 .back-button-timer{
+  
+  all: unset;
+  display: inline-block; /* Para asegurarse de que sigue comportándose como un botón */
+  cursor: pointer; /* Mantener el cursor de botón */
   position: absolute;
   top: 20px;
   left: 20px;
   font-weight: 600;
+  font-size: 1.5rem;
 }

@@ -1,0 +1,262 @@
+:root {
+    /* Color Palette */
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #f4f7f6;
+    --card-background: #ffffff;
+    --text-color: #2c3e50;
+    --border-radius: 12px;
+    --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.12);
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-color);
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+  
+  .tabata-container {
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 20px; /* Espacio para evitar que el contenido quede cortado */
+    transition: max-height 0.3s ease-in-out;
+  }
+  
+  .tabata-container:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+  }
+  
+  .tabata-container h1 {
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .tabata-card {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid transparent;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tabata-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition-smooth);
+  }
+  
+  .tabata-card:hover::before {
+    transform: scaleX(1);
+  }
+  
+  .tabata-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .tabata-header h3 {
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .tabata-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .input-group {
+    margin-bottom: 0.5rem;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-weight: 500;
+    opacity: 0.7;
+  }
+  
+  .input-with-buttons {
+    display: flex;
+    align-items: center;
+    border-radius: calc(var(--border-radius) / 2);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 150px;
+  }
+  
+  .adjust-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+  }
+  
+  .adjust-btn:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+  }
+  
+  .intervals-input,
+  .work-input,
+  .rest-input,
+  .recovery-input {
+    padding: 0.75rem;
+    border: none;
+    text-align: center;
+    width: 70px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: transparent;
+    color: var(--text-color);
+  }
+  
+  .remove-tabata-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .remove-tabata-btn:hover {
+    background-color: #ff5252;
+    transform: scale(1.05);
+  }
+  
+  .add-tabata-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  .add-tabata-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: var(--transition-smooth);
+  }
+  
+  .add-tabata-btn:hover::before {
+    left: 0;
+  }
+  
+  .add-tabata-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  .boton-comenzar-tabata {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, black, var(--primary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 100px;
+  }
+  
+  .boton-comenzar-tabata:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  .tabata-summary {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: right;
+    font-weight: 500;
+  }
+  
+  .tabata-summary p {
+    color: var(--primary-color);
+  }
+  
+  /* Mejoras para pantallas más pequeñas */
+  @media (min-width: 768px) {
+    .tabata-inputs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .input-group {
+      margin-bottom: 1rem;
+    }
+    
+    .tabata-container {
+      padding: 1.5rem;
+    }
+  }

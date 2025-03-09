@@ -24,6 +24,7 @@
 }
 
 .back-button{
+    font-size: 1.5rem;
     position: absolute;
     top: 25px;
     left: 25px;
