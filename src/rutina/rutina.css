@@ -20,8 +20,8 @@
   margin: 0 0;
   padding: 15px;
   height: auto;
-  overflow-y: hidden;
-  overflow: hidden;
+  
+ 
   transition: max-height 0.3s ease-in-out;
 }
 
@@ -661,8 +661,37 @@ height: 100px;
 /* ===== SELECTOR DE RUTINAS ===== */
 /* Cards y contenedores */
 .selector-rutinas {
-  max-width: 900px;
+  
   margin: 2rem auto;
+}
+.selector-rutinas-header{
+  z-index: 2;
+  position: sticky;
+  top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  background: #5757cf;
+  padding: 15px;
+  border-radius: 12px;
+ 
+
+  
+}
+.selector-titulo{
+  color: white;
+  font-weight: 600;
+}
+
+.selector-rutinas-header button{
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background: rgb(196, 23, 211);
+  font-weight: 600;
+  
 }
 
 .rutinas-grid {
@@ -971,4 +1000,34 @@ height: 100px;
 
 .rutina-item-download-btn:hover {
   background-color: #f0f0f0;
+}
+
+.progreso-acciones{
+ display: flex;
+ flex-direction: row;
+ gap: 20px;
+ justify-content: center;
+ align-items: center;
+ margin-top: 15px;
+}
+
+.progreso-acciones .boton-reiniciar-progreso{
+  
+  background-color: #ff3b30;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.progreso-acciones .boton-cambiar-rutina{
+  background-color: #302f2f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+
 }

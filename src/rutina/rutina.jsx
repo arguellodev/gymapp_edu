@@ -393,10 +393,13 @@ const descargarRutinaJSON = (e, index) => {
   const renderizarSelectorRutinas = () => {
     return (
       <div className="selector-rutinas">
+        <div className='selector-rutinas-header'>
         <h2 className="selector-titulo">Selecciona tu rutina</h2>
         <div className='creador de rutina'>
-          <button onClick={()=>{setCrearRutina(true)}}>Crear nueva rutina</button>
+          <button onClick={()=>{setCrearRutina(true)}}>Crear nueva rutina +</button>
         </div>
+        </div>
+       
         <div className="rutinas-grid">
         {rutinasDisponibles.map((rutinaItem, index) => (
   <div 
@@ -469,10 +472,10 @@ const descargarRutinaJSON = (e, index) => {
               <div className="progreso-detalles">
                 <p>Has completado {progreso.completados} de {progreso.total} bloques</p>
                 <div className="progreso-acciones">
-                  <button className="btn btn-outline btn-sm" onClick={reiniciarProgreso}>
+                  <button className="boton-reiniciar-progreso" onClick={reiniciarProgreso}>
                     Reiniciar progreso
                   </button>
-                  <button className="btn btn-outline btn-sm" onClick={() => setMostrarCambioRutina(true)}>
+                  <button className="boton-cambiar-rutina" onClick={() => setMostrarCambioRutina(true)}>
                     Cambiar rutina
                   </button>
                 </div>

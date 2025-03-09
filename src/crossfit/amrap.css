@@ -25,13 +25,17 @@
   }
   
   .amrap-container {
-    max-width: 680px;
-    margin: 2rem auto;
+   
     padding: 2rem;
     background-color: var(--card-background);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
     transition: var(--transition-smooth);
+    max-height: 100%;
+  overflow-y: auto;
+  position: relative;
+  padding-bottom: 20px; /* Espacio para evitar que el contenido quede cortado */
+    transition: max-height 0.3s ease-in-out;
   }
   
   .amrap-container:hover {
@@ -209,3 +213,19 @@
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   }
   
+.boton-comenzar-amrap{
+  margin-top: 20px;
+  display: block;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, black, var(--primary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 100px;
+}

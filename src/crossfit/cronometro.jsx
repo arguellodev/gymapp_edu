@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './cronometro.css';
 
-const WorkoutTimer = ({ workouts, type, contador, setContador }) => {
+const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) => {
   // Estado para manejar el entrenamiento actual
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [time, setTime] = useState(0);
@@ -119,7 +119,9 @@ const WorkoutTimer = ({ workouts, type, contador, setContador }) => {
 
   return (
     <div className="workout-timer">
+      <button className='back-button-timer' onClick={()=> setComenzar(false)}>X</button>
       <div className="timer-container">
+        <h2>{type}</h2>
         <div className="progress-ring-container">
           <svg className="progress-ring" width="260" height="260">
             <circle
