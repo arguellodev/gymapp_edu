@@ -1,0 +1,271 @@
+:root {
+    /* Color Palette */
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #f4f7f6;
+    --card-background: #ffffff;
+    --text-color: #2c3e50;
+    --border-radius: 12px;
+    --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.12);
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.fortime-container {
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 20px; /* Espacio para evitar que el contenido quede cortado */
+    transition: max-height 0.3s ease-in-out;
+}
+
+.fortime-container:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+}
+
+.fortime-container h1 {
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.time-limit-card {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid transparent;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.time-limit-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition-smooth);
+}
+
+.time-limit-card:hover::before {
+    transform: scaleX(1);
+}
+
+.time-limit-card h3 {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.ejercicios-header {
+    text-align: center;
+    color: var(--primary-color);
+    margin: 2rem 0 1rem;
+    font-weight: 600;
+}
+
+.round-card {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid transparent;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.round-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition-smooth);
+}
+
+.round-card:hover::before {
+    transform: scaleX(1);
+}
+
+.round-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.ejercicio-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: calc(var(--border-radius) / 2);
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition-smooth);
+}
+
+.ejercicio-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.round-inputs {
+    justify-content: center;
+    align-items: end;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.input-group {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+.input-with-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100px;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: calc(var(--border-radius) / 2);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.adjust-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.adjust-btn:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.time-input,
+.rest-input {
+    padding: 0.75rem;
+    border: none;
+    text-align: center;
+    width: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.remove-round-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: calc(var(--border-radius) / 2);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remove-round-btn:hover {
+    background-color: #ff5252;
+    transform: scale(1.05);
+}
+
+.add-round-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.add-round-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: var(--transition-smooth);
+}
+
+.add-round-btn:hover::before {
+    left: 0;
+}
+
+.add-round-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.boton-comenzar-fortime {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, black, var(--primary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 100px;
+}

@@ -3,6 +3,7 @@ import './crossfit.css';
 import WorkoutTimer from "./cronometro";
 import Amrap from "./amrap";
 import Tabata from "./tabata";
+import ForTime from "./fortime";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 const Crossfit = () => {
     // Estado para controlar qué componente mostrar
@@ -62,7 +63,7 @@ const Crossfit = () => {
                     
                     {/* Renderizar el componente seleccionado */}
                     {activeComponent === 'amrap' && <Amrap />}
-                    {activeComponent === 'fortime' && <p>Componente For Time (pendiente de implementar)</p>}
+                    {activeComponent === 'fortime' && <ForTime />}
                     {activeComponent === 'emom' && <p>Componente EMOM (pendiente de implementar)</p>}
                     {activeComponent === 'tabata' && <Tabata />}
                 </>

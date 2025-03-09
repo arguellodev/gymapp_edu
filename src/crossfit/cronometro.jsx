@@ -8,7 +8,9 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
   const [time, setTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [isRestPhase, setIsRestPhase] = useState(true); // Comenzar en descanso
+  const [isRestPhase, setIsRestPhase] = useState(type !== 'tabata'); // Comenzar con trabajo si es tabata
+  const [countUp, setCountUp] = useState(false); // Estado para determinar si contamos hacia arriba
+  const [maxTime, setMaxTime] = useState(0); // Tiempo máximo para el modo fortime
   const intervalRef = useRef(null);
 
   // Convertir minutos a segundos
@@ -17,17 +19,30 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
   // Efecto para cargar el primer entrenamiento cuando se monta el componente
   useEffect(() => {
     if (workouts && workouts.length > 0) {
-      // Comenzar con descanso si existe
-      if (workouts[0].restTime > 0) {
-        setTime(minutesToSeconds(workouts[0].restTime));
-        setIsRestPhase(true);
-      } else {
-        // Si no hay descanso, comenzar directamente con el trabajo
+      if (type === 'tabata') {
+        // Para tabata, comenzar directamente con tiempo de trabajo
         setTime(minutesToSeconds(workouts[0].time));
         setIsRestPhase(false);
+        setCountUp(false);
+      } else if (type === 'fortime') {
+        // Para fortime, comenzar en cero y contar hacia arriba
+        setTime(0);
+        setIsRestPhase(false);
+        setCountUp(true);
+        setMaxTime(minutesToSeconds(workouts[0].time));
+      } else {
+        // Para otros tipos, seguir la lógica original
+        if (workouts[0].restTime > 0) {
+          setTime(minutesToSeconds(workouts[0].restTime));
+          setIsRestPhase(true);
+        } else {
+          setTime(minutesToSeconds(workouts[0].time));
+          setIsRestPhase(false);
+        }
+        setCountUp(false);
       }
     }
-  }, [workouts]);
+  }, [workouts, type]);
 
   // Calcular minutos y segundos
   const minutes = Math.floor(time / 60);
@@ -35,52 +50,77 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   
   // Calcular el porcentaje para el progreso circular
-  const initialTime = isRestPhase 
-    ? minutesToSeconds(workouts[currentWorkoutIndex].restTime)
-    : minutesToSeconds(workouts[currentWorkoutIndex].time);
-  const percentage = ((initialTime - time) / initialTime) * 100;
+  const calculatePercentage = () => {
+    if (countUp) {
+      // Para fortime, el porcentaje se basa en cuánto hemos avanzado hacia el máximo
+      return (time / maxTime) * 100;
+    } else {
+      // Para otros modos, seguir la lógica original
+      const initialTime = isRestPhase 
+        ? minutesToSeconds(workouts[currentWorkoutIndex].restTime)
+        : minutesToSeconds(workouts[currentWorkoutIndex].time);
+      return ((initialTime - time) / initialTime) * 100;
+    }
+  };
+  
+  const percentage = calculatePercentage();
 
   useEffect(() => {
     if (isActive && !isPaused) {
       intervalRef.current = setInterval(() => {
-        setTime((prevTime) => {
-          if (prevTime <= 1) {
-            if (isRestPhase) {
-              // El descanso terminó, comenzar la fase de trabajo
-              setIsRestPhase(false);
-              setTime(minutesToSeconds(workouts[currentWorkoutIndex].time));
-            } else {
-              // El trabajo terminó, pasar al siguiente ejercicio
-              const nextIndex = currentWorkoutIndex + 1;
-              if (nextIndex < workouts.length) {
-                setCurrentWorkoutIndex(nextIndex);
-                // Ver si hay tiempo de descanso para el siguiente ejercicio
-                if (workouts[nextIndex].restTime > 0) {
-                  setIsRestPhase(true);
-                  setTime(minutesToSeconds(workouts[nextIndex].restTime));
-                } else {
-                  // No hay descanso, ir directamente al tiempo de trabajo
-                  setIsRestPhase(false);
-                  setTime(minutesToSeconds(workouts[nextIndex].time));
-                }
-              } else {
-                // Todos los entrenamientos completados
-                setIsActive(false);
-                setIsPaused(false);
-                return 0;
-              }
+        if (countUp) {
+          // Lógica para contar hacia arriba (fortime)
+          setTime((prevTime) => {
+            // Si alcanzamos el tiempo máximo, detener el temporizador
+            if (prevTime >= maxTime) {
+              clearInterval(intervalRef.current);
+              setIsActive(false);
+              setIsPaused(false);
+              return maxTime;
             }
-            return 0;
-          }
-          return prevTime - 1;
-        });
+            return prevTime + 1;
+          });
+        } else {
+          // Lógica original para contar hacia abajo
+          setTime((prevTime) => {
+            if (prevTime <= 1) {
+              if (isRestPhase) {
+                // El descanso terminó, comenzar la fase de trabajo
+                setIsRestPhase(false);
+                setTime(minutesToSeconds(workouts[currentWorkoutIndex].time));
+              } else {
+                // El trabajo terminó
+                const nextIndex = currentWorkoutIndex + 1;
+                if (nextIndex < workouts.length) {
+                  setCurrentWorkoutIndex(nextIndex);
+                  // Ver si hay tiempo de descanso para el siguiente ejercicio
+                  if (workouts[nextIndex].restTime > 0) {
+                    setIsRestPhase(true);
+                    setTime(minutesToSeconds(workouts[nextIndex].restTime));
+                  } else {
+                    // No hay descanso, ir directamente al tiempo de trabajo
+                    setIsRestPhase(false);
+                    setTime(minutesToSeconds(workouts[nextIndex].time));
+                  }
+                } else {
+                  // Todos los entrenamientos completados
+                  setIsActive(false);
+                  setIsPaused(false);
+                  return 0;
+                }
+              }
+              return 0;
+            }
+            return prevTime - 1;
+          });
+        }
       }, 1000);
     } else {
       clearInterval(intervalRef.current);
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [isActive, isPaused, isRestPhase, currentWorkoutIndex, workouts]);
+  }, [isActive, isPaused, isRestPhase, currentWorkoutIndex, workouts, countUp, maxTime]);
 
   const startTimer = () => {
     setIsActive(true);
@@ -97,17 +137,32 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
 
   const resetTimer = () => {
     if (workouts && workouts.length > 0) {
-        setContador(0);
+      setContador(0);
       setCurrentWorkoutIndex(0);
-      // Comenzar con descanso si existe
-      if (workouts[0].restTime > 0) {
-        setTime(minutesToSeconds(workouts[0].restTime));
-        setIsRestPhase(true);
-      } else {
-        // Si no hay descanso, comenzar directamente con el trabajo
+      
+      if (type === 'tabata') {
+        // Para tabata, resetear directamente con tiempo de trabajo
         setTime(minutesToSeconds(workouts[0].time));
         setIsRestPhase(false);
+        setCountUp(false);
+      } else if (type === 'fortime') {
+        // Para fortime, resetear a cero para contar hacia arriba
+        setTime(0);
+        setIsRestPhase(false);
+        setCountUp(true);
+        setMaxTime(minutesToSeconds(workouts[0].time));
+      } else {
+        // Para otros tipos, seguir la lógica original
+        if (workouts[0].restTime > 0) {
+          setTime(minutesToSeconds(workouts[0].restTime));
+          setIsRestPhase(true);
+        } else {
+          setTime(minutesToSeconds(workouts[0].time));
+          setIsRestPhase(false);
+        }
+        setCountUp(false);
       }
+      
       setIsActive(false);
       setIsPaused(false);
     }
@@ -118,11 +173,28 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
     return null;
   }
 
+  // Determinar el texto a mostrar en la etiqueta del temporizador
+  const getTimerLabel = () => {
+    if (type === 'fortime') {
+      return `Tiempo restante: ${formatRemainingTime()}`;
+    } else {
+      return isRestPhase ? 'Descanso' : `Ronda ${currentWorkoutIndex + 1}`;
+    }
+  };
+
+  // Formatear el tiempo restante para el modo fortime
+  const formatRemainingTime = () => {
+    const remaining = maxTime - time;
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
   return (
     <div className="workout-timer">
       <button className='back-button-timer' onClick={()=> setComenzar(false)}>
         <MdOutlineKeyboardBackspace />
-        </button>
+      </button>
       <div className="timer-container">
         <h2>{type}</h2>
         <div className="progress-ring-container">
@@ -151,9 +223,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
           <div className="timer-display">
             <div className="time">{formattedTime}</div>
             <div className="timer-label">
-              {isRestPhase 
-                ? 'Descanso' 
-                : `Ronda ${currentWorkoutIndex + 1}`}
+              {getTimerLabel()}
             </div>
           </div>
         </div>
@@ -181,8 +251,8 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
           <span className="button-text">Resetear</span>
         </button>
       </div>
-      {type === "AMRAP" && !isRestPhase && isActive && !isPaused?
-      <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>Contador de rondas: {contador}</button>
+      {type === "AMRAP" && !isRestPhase && isActive && !isPaused ?
+        <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>Contador de rondas: {contador}</button>
         :
         <p className='texto-contador-rondas'> Llevas {contador} rondas</p>
       }

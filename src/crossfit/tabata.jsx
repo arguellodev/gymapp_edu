@@ -274,7 +274,7 @@ const Tabata = ({ setIndiceAtras }) => {
             {comenzar &&
              <WorkoutTimer 
                 workouts={prepareWorkoutsForTimer()} 
-                type={'TABATA'} 
+                type={'tabata'} 
                 contador={contador} 
                 setContador={setContador} 
                 setComenzar={setComenzar}

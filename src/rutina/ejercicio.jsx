@@ -102,7 +102,11 @@ const Ejercicio = ({ ejercicio, esUltimoEjercicio, esUltimaSerie, onSiguiente, o
 
       <div className="ejercicio-animacion-container">
         <div className="ejercicio-animacion">
-          <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio.nombre}.json`}></LottieAnimation>
+        <LottieAnimation 
+  key={ejercicio.nombre} // Agregar key para forzar el re-render
+  jsonPath={`./Ejerciciosall/${ejercicio.nombre}.json`} 
+/>
+
           {console.log(ejercicio.nombre)}
         </div>
       </div>
