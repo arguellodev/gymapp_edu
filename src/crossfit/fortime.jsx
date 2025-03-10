@@ -4,7 +4,9 @@ import WorkoutTimer from './cronometro';
 
 const ForTime = ({setIndiceAtras}) => {
     const [comenzar, setComenzar] = useState(false);
+    const [contador, setContador] = useState(0);
     const [totalTime, setTotalTime] = useState(10); // Tiempo objetivo total en minutos
+    const [tiempoIlimitado, setTiempoIlimitado] = useState(false); // Estado para el switch de tiempo ilimitado
     const [ejercicios, setEjercicios] = useState([
         { id: 1, name: "Ejercicio 1", reps: 10 }
     ]);
@@ -64,6 +66,11 @@ const ForTime = ({setIndiceAtras}) => {
         
         setEjercicios(updatedEjercicios);
     };
+    
+    // Función para manejar el cambio del switch
+    const handleSwitchChange = () => {
+        setTiempoIlimitado(!tiempoIlimitado);
+    };
 
     return (
         <>
@@ -72,82 +79,49 @@ const ForTime = ({setIndiceAtras}) => {
                 
                 <div className="time-limit-card">
                     <h3>Tiempo Objetivo</h3>
-                    <div className="input-group">
-                        <label>Completar en menos de (Minutos):</label>
-                        <div className="input-with-buttons">
-                            <button 
-                                className="adjust-btn" 
-                                onClick={() => updateTotalTime('decrease')}
-                            >
-                                -
-                            </button>
-                            <input
-                                type="number"
-                                min="1"
-                                value={totalTime}
-                                readOnly
-                                className="time-input"
+                    
+                    {/* Switch para tiempo ilimitado */}
+                    <div className="switch-container">
+                        <label className="switch-label">
+                            <input 
+                                type="checkbox" 
+                                checked={tiempoIlimitado}
+                                onChange={handleSwitchChange}
+                                className="switch-input"
                             />
-                            <button 
-                                className="adjust-btn" 
-                                onClick={() => updateTotalTime('increase')}
-                            >
-                                +
-                            </button>
-                        </div>
+                            <span className="switch-slider"></span>
+                            Tiempo Ilimitado
+                        </label>
                     </div>
-                </div>
-                
-                <h2 className="ejercicios-header">Lista de Ejercicios</h2>
-                
-                {ejercicios.map((ejercicio) => (
-                    <div key={ejercicio.id} className="round-card">
-                        <div className="round-header">
-                            <input
-                                type="text"
-                                value={ejercicio.name}
-                                onChange={(e) => updateEjercicioName(ejercicio.id, e.target.value)}
-                                className="ejercicio-input"
-                                placeholder="Nombre del ejercicio"
-                            />
-                            {ejercicios.length > 1 && (
+                    
+                    {/* Control de tiempo (visible solo si no está en modo ilimitado) */}
+                    {!tiempoIlimitado && (
+                        <div className="input-group">
+                            <label>Completar en menos de (Minutos):</label>
+                            <div className="input-with-buttons">
                                 <button 
-                                    className="remove-round-btn" 
-                                    onClick={() => removeEjercicio(ejercicio.id)}
+                                    className="adjust-btn" 
+                                    onClick={() => updateTotalTime('decrease')}
                                 >
-                                    ✕
+                                    -
                                 </button>
-                            )}
-                        </div>
-                        <div className="round-inputs">
-                            <div className="input-group">
-                                <label htmlFor={`reps-${ejercicio.id}`}>Repeticiones:</label>
-                                <div className="input-with-buttons">
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateReps(ejercicio.id, 'decrease')}
-                                    >
-                                        -
-                                    </button>
-                                    <input
-                                        id={`reps-${ejercicio.id}`}
-                                        type="number"
-                                        min="1"
-                                        value={ejercicio.reps}
-                                        readOnly
-                                        className="time-input"
-                                    />
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateReps(ejercicio.id, 'increase')}
-                                    >
-                                        +
-                                    </button>
-                                </div>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    value={totalTime}
+                                    readOnly
+                                    className="time-input"
+                                />
+                                <button 
+                                    className="adjust-btn" 
+                                    onClick={() => updateTotalTime('increase')}
+                                >
+                                    +
+                                </button>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    )}
+                </div>
                 
                 <button 
                     className="add-round-btn" 
@@ -166,9 +140,11 @@ const ForTime = ({setIndiceAtras}) => {
             
             {comenzar &&
                 <WorkoutTimer 
+                    contador={contador}
+                    setContador={setContador}
                     workouts={ejercicios} 
                     type={'fortime'} 
-                    timeLimit={totalTime} 
+                    timeLimit={tiempoIlimitado ? 'ilimitado' : totalTime} 
                     setComenzar={setComenzar}
                 />
             }

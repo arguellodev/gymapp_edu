@@ -1,32 +1,124 @@
+/* crossfit.css */
 
-
-.crossfit-container{
+.crossfit-section {
     width: 100%;
-    height: 80vh;
-    background: lightcyan;
+    max-width: 100vh;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', Arial, sans-serif;
+  }
+  
+  .crossfit-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .crossfit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .workout-card {
+    height: 35vh;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
     display: flex;
-    flex-wrap: wrap;
-    padding: 15px;
-    gap: 15px;
-    justify-content: center;
     align-items: center;
-}
-
-.crossfit-container div{
-    border: 5px solid black;
-    height: 50%;
-    display: flex;
     justify-content: center;
-    align-items: center;
-    width: 45%;
-    flex-direction: column;
-
-}
-
-.back-button{
-    font-size: 1.5rem;
-    position: absolute;
-    top: 25px;
-    left: 25px;
+    text-align: center;
+  }
+  
+  .workout-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-content {
+    padding: 20px;
     z-index: 2;
-}
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .workout-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .workout-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 10px 0;
+    text-transform: uppercase;
+  }
+  
+  .workout-description {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  /* Estilos específicos para cada tipo de entrenamiento */
+  .amrap {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  }
+  
+  .fortime {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+  
+  .emom {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+  }
+  
+  .tabata {
+    background: linear-gradient(135deg, #a770ef, #cf8bf3, #fdb99b);
+  }
+  
+  /* Estilos para la vista detallada */
+  .workout-detail-container {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .back-button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background: #555;
+  }
+  
+  /* Diseño responsive */
+  @media (max-width: 768px) {
+    .crossfit-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  

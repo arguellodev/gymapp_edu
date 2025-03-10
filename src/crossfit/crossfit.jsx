@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { MdOutlineKeyboardBackspace, MdOutlineFitnessCenter, MdTimer, MdOutlineRepeat, MdOutlineHourglassEmpty } from "react-icons/md";
 import './crossfit.css';
 import WorkoutTimer from "./cronometro";
 import Amrap from "./amrap";
 import Tabata from "./tabata";
 import ForTime from "./fortime";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import Emom from "./emom";
+
 const Crossfit = () => {
     // Estado para controlar qué componente mostrar
     const [activeComponent, setActiveComponent] = useState(null);
@@ -19,41 +21,60 @@ const Crossfit = () => {
         setActiveComponent(component);
     };
 
-    return (
-        <>
+    // Datos de los entrenamientos
+    const workouts = [
+        {
+            id: 'amrap',
+            name: 'AMRAP',
+            description: 'As Many Rounds As Possible',
+            icon: <MdOutlineRepeat className="workout-icon" />,
+            className: "workout-card amrap"
+        },
+        {
+            id: 'fortime',
+            name: 'For Time',
+            description: 'Complete el WOD lo más rápido posible',
+            icon: <MdOutlineHourglassEmpty className="workout-icon" />,
+            className: "workout-card fortime"
+        },
+        {
+            id: 'emom',
+            name: 'EMOM',
+            description: 'Every Minute On the Minute',
+            icon: <MdTimer className="workout-icon" />,
+            className: "workout-card emom"
+        },
+        {
+            id: 'tabata',
+            name: 'Tabata',
+            description: '20 segundos de trabajo, 10 de descanso',
+            icon: <MdOutlineFitnessCenter className="workout-icon" />,
+            className: "workout-card tabata"
+        }
+    ];
 
+    return (
+        <div className="crossfit-section">
+            <h2 className="crossfit-title">Crossfit</h2>
             
-            {/* Mostrar la selección de tipos de entrenamiento solo si no hay un componente activo */}
             {!activeComponent ? (
-                <div className="crossfit-container">
-                    <div 
-                        className="amrap-link"
-                        onClick={() => handleSelectComponent('amrap')}
-                    >
-                        <p>AMRAP</p>
-                    </div>
-                    <div 
-                        className="fortime-link"
-                        onClick={() => handleSelectComponent('fortime')}
-                    >
-                        <p>For Time</p>
-                    </div>
-                    <div 
-                        className="emom-link"
-                        onClick={() => handleSelectComponent('emom')}
-                    >
-                        <p>EMOM</p>
-                    </div>
-                    <div 
-                        className="tabata-link"
-                        onClick={() => handleSelectComponent('tabata')}
-                    >
-                        <p>Tabata</p>
-                    </div>
+                <div className="crossfit-grid">
+                    {workouts.map((workout) => (
+                        <div 
+                            key={workout.id}
+                            className={workout.className}
+                            onClick={() => handleSelectComponent(workout.id)}
+                        >
+                            <div className="card-content">
+                                {workout.icon}
+                                <h3 className="workout-name">{workout.name}</h3>
+                                <p className="workout-description">{workout.description}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : (
-                <>
-                    {/* Botón para volver atrás */}
+                <div className="workout-detail-container">
                     <button 
                         className="back-button"
                         onClick={handleGoBack}
@@ -64,11 +85,11 @@ const Crossfit = () => {
                     {/* Renderizar el componente seleccionado */}
                     {activeComponent === 'amrap' && <Amrap />}
                     {activeComponent === 'fortime' && <ForTime />}
-                    {activeComponent === 'emom' && <p>Componente EMOM (pendiente de implementar)</p>}
+                    {activeComponent === 'emom' && <Emom />}
                     {activeComponent === 'tabata' && <Tabata />}
-                </>
+                </div>
             )}
-        </>
+        </div>
     );
 };
 

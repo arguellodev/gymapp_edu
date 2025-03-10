@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './cronometro.css';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
-const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) => {
+const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, timeLimit }) => {
   // Estado para manejar el entrenamiento actual
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [time, setTime] = useState(0);
@@ -30,6 +30,11 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
         setIsRestPhase(false);
         setCountUp(true);
         setMaxTime(minutesToSeconds(workouts[0].time));
+      } else if (type === 'EMOM') {
+        // Para EMOM, iniciar con 60 segundos (1 minuto)
+        setTime(60);
+        setIsRestPhase(false);
+        setCountUp(false);
       } else {
         // Para otros tipos, seguir la lógica original
         if (workouts[0].restTime > 0) {
@@ -53,7 +58,10 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
   const calculatePercentage = () => {
     if (countUp) {
       // Para fortime, el porcentaje se basa en cuánto hemos avanzado hacia el máximo
-      return (time / maxTime) * 100;
+      return (time*1.666);
+    } else if (type === 'EMOM') {
+      // Para EMOM, el porcentaje es inverso (comienza en 100% y va disminuyendo)
+      return ((60 - time) / 60) * 100;
     } else {
       // Para otros modos, seguir la lógica original
       const initialTime = isRestPhase 
@@ -79,6 +87,23 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
               return maxTime;
             }
             return prevTime + 1;
+          });
+        } else if (type === 'EMOM') {
+          // Lógica específica para EMOM
+          setTime((prevTime) => {
+            if (prevTime <= 1) {
+              // Cuando lleguemos a cero, reiniciar a 60 segundos y avanzar al siguiente ejercicio
+              const nextIndex = (currentWorkoutIndex + 1) % workouts.length;
+              setCurrentWorkoutIndex(nextIndex);
+              
+              // Si hemos completado una vuelta completa a todos los ejercicios, incrementar contador
+              if (nextIndex === 0) {
+                setContador(prev => prev + 1);
+              }
+              
+              return 60; // Reiniciar a 60 segundos (1 minuto)
+            }
+            return prevTime - 1;
           });
         } else {
           // Lógica original para contar hacia abajo
@@ -120,7 +145,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [isActive, isPaused, isRestPhase, currentWorkoutIndex, workouts, countUp, maxTime]);
+  }, [isActive, isPaused, isRestPhase, currentWorkoutIndex, workouts, countUp, maxTime, type]);
 
   const startTimer = () => {
     setIsActive(true);
@@ -151,6 +176,11 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
         setIsRestPhase(false);
         setCountUp(true);
         setMaxTime(minutesToSeconds(workouts[0].time));
+      } else if (type === 'EMOM') {
+        // Para EMOM, resetear a 60 segundos
+        setTime(60);
+        setIsRestPhase(false);
+        setCountUp(false);
       } else {
         // Para otros tipos, seguir la lógica original
         if (workouts[0].restTime > 0) {
@@ -175,8 +205,12 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
 
   // Determinar el texto a mostrar en la etiqueta del temporizador
   const getTimerLabel = () => {
-    if (type === 'fortime') {
+    if (type === 'fortime' && timeLimit !== 'ilimitado') {
       return `Tiempo restante: ${formatRemainingTime()}`;
+    } else if (type === 'EMOM') {
+      // Para EMOM, mostrar el ejercicio actual
+      const currentExercise = workouts[currentWorkoutIndex].exercise;
+      return `${currentExercise.name} - ${currentExercise.reps} reps`;
     } else {
       return isRestPhase ? 'Descanso' : `Ronda ${currentWorkoutIndex + 1}`;
     }
@@ -184,10 +218,15 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
 
   // Formatear el tiempo restante para el modo fortime
   const formatRemainingTime = () => {
-    const remaining = maxTime - time;
+    const remaining = timeLimit*60 - time;
     const mins = Math.floor(remaining / 60);
     const secs = remaining % 60;
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
+  // Función para manejar el contador manual de EMOM
+  const handleEmomCount = () => {
+    setContador(contador + 1);
   };
 
   return (
@@ -251,12 +290,21 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar }) =>
           <span className="button-text">Resetear</span>
         </button>
       </div>
-      {type === "AMRAP" && !isRestPhase && isActive && !isPaused ?
-        <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>Contador de rondas: {contador}</button>
-        :
-        <p className='texto-contador-rondas'> Llevas {contador} rondas</p>
-      }
       
+      {/* Corregir la condición para mostrar el botón contador o el texto */}
+      {((type === "AMRAP" || type === 'fortime') && !isRestPhase && isActive && !isPaused) ? (
+        <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>
+          Contador de rondas: {contador}
+        </button>
+      ) : type === "EMOM" ? (
+        <p className='texto-contador-rondas'>
+          Ronda {contador + 1}, Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
+        </p>
+      ) : (
+        <p className='texto-contador-rondas'>
+          Llevas {contador} rondas
+        </p>
+      )}
     </div>
   );
 };
