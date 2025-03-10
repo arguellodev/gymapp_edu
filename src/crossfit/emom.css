@@ -17,11 +17,17 @@
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
     transition: var(--transition-smooth);
-    max-height: 100%;
+  
     overflow-y: auto;
     position: relative;
     padding-bottom: 20px;
     transition: max-height 0.3s ease-in-out;
+    position: fixed;
+    top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+    
   }
   
   .emom-container:hover {

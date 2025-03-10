@@ -235,7 +235,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
         <MdOutlineKeyboardBackspace />
       </button>
       <div className="timer-container">
-        <h2>{type}</h2>
+        <h2 className='titulo-seleccion-crossfit'>{type}</h2>
         <div className="progress-ring-container">
           <svg className="progress-ring" width="260" height="260">
             <circle
@@ -281,7 +281,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
           </button>
         ) : (
           <button className="timer-button pause" onClick={pauseTimer}>
-            <span className="button-icon">⏸</span>
+            <span className="button-icon">II</span>
             <span className="button-text">Pausa</span>
           </button>
         )}

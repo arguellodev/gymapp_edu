@@ -9,8 +9,8 @@ const Tabata = ({ setIndiceAtras }) => {
         { 
             id: 1, 
             intervals: 8,
-            workTime: 20,
-            restTime: 10,
+            workTime: 40,
+            restTime: 20,
             recoveryTime: 60
         }
     ]);

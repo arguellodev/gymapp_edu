@@ -4,7 +4,7 @@
     width: 100%;
     max-width: 100vh;
     margin: 0 auto;
-    padding: 20px;
+    
     font-family: 'Roboto', Arial, sans-serif;
   }
   
@@ -19,6 +19,7 @@
   }
   
   .crossfit-grid {
+    padding: 15px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
@@ -26,6 +27,7 @@
   }
   
   .workout-card {
+
     height: 35vh;
     border-radius: 10px;
     overflow: hidden;
@@ -109,6 +111,10 @@
     cursor: pointer;
     margin-bottom: 20px;
     transition: background 0.3s ease;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
   }
   
   .back-button:hover {

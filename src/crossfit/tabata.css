@@ -35,6 +35,11 @@
     position: relative;
     padding-bottom: 20px; /* Espacio para evitar que el contenido quede cortado */
     transition: max-height 0.3s ease-in-out;
+    position: fixed;
+    top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   }
   
   .tabata-container:hover {

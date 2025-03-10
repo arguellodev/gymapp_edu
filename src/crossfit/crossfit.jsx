@@ -47,7 +47,7 @@ const Crossfit = () => {
         {
             id: 'tabata',
             name: 'Tabata',
-            description: '20 segundos de trabajo, 10 de descanso',
+            description: '40 segundos de trabajo, 20 de descanso',
             icon: <MdOutlineFitnessCenter className="workout-icon" />,
             className: "workout-card tabata"
         }
@@ -55,10 +55,12 @@ const Crossfit = () => {
 
     return (
         <div className="crossfit-section">
-            <h2 className="crossfit-title">Crossfit</h2>
+            
             
             {!activeComponent ? (
+                
                 <div className="crossfit-grid">
+                    
                     {workouts.map((workout) => (
                         <div 
                             key={workout.id}
