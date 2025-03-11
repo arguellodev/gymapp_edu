@@ -74,12 +74,13 @@ const Inicio = ({setActiveIndex, userData}) => {
       {/* Encabezado */}
       <header className="inicio-header">
         <div className="perfil-info">
-          <div className="avatar">
-            {userData.informacionPersonal.nombre.charAt(0)}
-          </div>
+          
           <div>
             <h1>Hola, {userData.informacionPersonal.nombre}</h1>
             <p>¡Hoy es un gran día para entrenar!</p>
+          </div>
+          <div className="avatar">
+            {userData.informacionPersonal.nombre.charAt(0)}
           </div>
         </div>
         {/*

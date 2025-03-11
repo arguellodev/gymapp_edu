@@ -47,7 +47,7 @@ const Crossfit = () => {
         {
             id: 'tabata',
             name: 'Tabata',
-            description: '40 segundos de trabajo, 20 de descanso',
+            description: '20 segundos de trabajo, 10 de descanso',
             icon: <MdOutlineFitnessCenter className="workout-icon" />,
             className: "workout-card tabata"
         }

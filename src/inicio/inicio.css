@@ -39,18 +39,22 @@
   /* Encabezado */
   .inicio-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    width: 100%;
+
+    justify-content: space-around;
+    align-items:center;
     margin-bottom: 24px;
     flex-wrap: wrap; /* Permitir wrap en pantallas muy pequeñas */
     gap: 12px;
   }
   
   .perfil-info {
+    
     display: flex;
     align-items: center;
+    justify-content: space-around;
     gap: 12px;
-    max-width: 100%; /* Asegurar que no se desborde */
+    width: 95%; /* Asegurar que no se desborde */
   }
   
   .avatar {

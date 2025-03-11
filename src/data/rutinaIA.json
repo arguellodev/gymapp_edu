@@ -1,0 +1,176 @@
+{
+    "nombre": "Rutina 5 Días",
+    "dias": {
+      "Lunes": [
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 90,
+          "descansoEntreEjercicios": 45,
+          "ejercicios": [
+            {
+              "nombre": "Barbell Bench Press (front)",
+              "repeticiones": 8,
+              "descanso": 90,
+              "peso": "60",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Incline Dumbbell Bench Press 2",
+              "repeticiones": 10,
+              "descanso": 90,
+              "peso": "22",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Tricep Pushdown",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "27",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 5,
+          "descansoEntreSeries": 30,
+          "ejercicios": [
+            {
+              "nombre": "Burpee with Push-Up",
+              "repeticiones": 15,
+              "tiempo": "30"
+            }
+          ]
+        }
+      ],
+      "Martes": [
+        {
+          "tipo": "Serie",
+          "series": 4,
+          "descansoEntreSeries": 90,
+          "descansoEntreEjercicios": 60,
+          "ejercicios": [
+            {
+              "nombre": "Barbell Bent-Over Row",
+              "repeticiones": 8,
+              "descanso": 90,
+              "peso": "50",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Seated Dumbbell Bicep Curl 2",
+              "repeticiones": 10,
+              "descanso": 60,
+              "peso": "14",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Barbell Behind Back Wrist Curl",
+              "repeticiones": 15,
+              "descanso": 45,
+              "peso": "20",
+              "unidadPeso": "Kg"
+            }
+          ]
+        }
+      ],
+      "Miércoles": [
+        {
+          "tipo": "Serie",
+          "series": 4,
+          "descansoEntreSeries": 120,
+          "descansoEntreEjercicios": 60,
+          "ejercicios": [
+            {
+              "nombre": "Barbell Back Squat",
+              "repeticiones": 6,
+              "descanso": 120,
+              "peso": "80",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Standing Dumbbell Shoulders Press 2",
+              "repeticiones": 10,
+              "descanso": 90,
+              "peso": "18",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Lateral Raise",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "9",
+              "unidadPeso": "Kg"
+            }
+          ]
+        }
+      ],
+      "Jueves": [
+        {
+          "tipo": "Serie",
+          "series": 4,
+          "descansoEntreSeries": 45,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Hanging Leg Raise",
+              "repeticiones": 12,
+              "descanso": 45
+            },
+            {
+              "nombre": "Cable Reverse Crunch",
+              "repeticiones": 15,
+              "descanso": 45
+            },
+            {
+              "nombre": "Russian Twist",
+              "repeticiones": 20,
+              "descanso": 45,
+              "peso": "8",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Rowing",
+              "tiempo": "600"
+            }
+          ]
+        }
+      ],
+      "Viernes": [
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 45,
+          "ejercicios": [
+            {
+              "nombre": "Barbell Hip Thrust",
+              "repeticiones": 10,
+              "descanso": 90,
+              "peso": "70",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Standing Donkey Kickback",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "14",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Supine Spinal Twist Stretch",
+              "tiempo": "45"
+            }
+          ]
+        }
+      ]
+    }
+  }
