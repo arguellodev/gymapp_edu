@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Lottie from "lottie-react";
 import "./libreria.css";
+import { IoMdArrowBack } from "react-icons/io";
 // Importa directamente el JSON
 import libreriaDatos from "../data/nueva_libreria.json";
 import LottieAnimation from "../visualizador_lottie/visualizador";
@@ -21,15 +22,17 @@ const Libreria = () => {
     <>
       {/* Iteramos sobre las categorías principales (Tren Superior, Tren inferior, Abdomen) */}
       <div className="libreria-categorias-container">
+        <h2 className="titulo-categorias-libreria">Categorias de ejercicios</h2>
         {Object.entries(libreriaDatos).map(([categoria]) => (
           <div
             key={categoria}
-            className="categoria"
+            className="categoria-item"
             onClick={() => {
               setCategoriaSeleccionada(categoria);
             }}
           >
             <h2>{categoria}</h2>
+            <LottieAnimation className='lottie-item' jsonPath={`./caratulas/${categoria}.json`}/>
           </div>
         ))}
       </div>
@@ -39,7 +42,7 @@ const Libreria = () => {
           {Array.isArray(libreriaDatos[categoriaSeleccionada]) ? (
             <div className="ejercicios-container-libreria">
               <div className="header-libreria">
-                <button className="back-button" onClick={handlebackbutton}>Atras</button>
+                <button className="boton-atras" onClick={handlebackbutton}><IoMdArrowBack /></button>
                 <p>{categoriaSeleccionada}</p>
               </div>
               <div className="ejercicios-lista-libreria">
@@ -60,22 +63,24 @@ const Libreria = () => {
 
             <div className="subcategorias-container-libreria">
               <div className="header-libreria">
-                <button className="back-button" onClick={handlebackbutton}>Atras</button>
-                <p>{categoriaSeleccionada} {subcategoriaSeleccionada}</p>
+                <button className="boton-atras" onClick={handlebackbutton}><IoMdArrowBack /></button>
+                <p>- {categoriaSeleccionada} - {subcategoriaSeleccionada}</p>
               </div>
+              <div className="subcategorias-lista-libreria">
               {Object.entries(libreriaDatos[categoriaSeleccionada]).map(
                 ([subcategoria, ejercicios]) => (
-                  <div key={subcategoria} className="subcategoria">
-                    <div
-                      onClick={() => {
-                        setSubCategoriaSeleccionada(subcategoria);
-                      }}
-                    >
-                      <p>{subcategoria}</p>
-                    </div>
+                  <div key={subcategoria} className="subcategoria-item" onClick={() => {
+                    setSubCategoriaSeleccionada(subcategoria);
+                  }}
+                >
+                    
+                      <h2>{subcategoria}</h2>
+                      <LottieAnimation jsonPath={`./caratulas/${subcategoria}.json`}/>
+                    
                   </div>
                 )
               )}
+              </div>
               {subcategoriaSeleccionada !== null && (
                 <div className="ejercicios-container-libreria">
                  

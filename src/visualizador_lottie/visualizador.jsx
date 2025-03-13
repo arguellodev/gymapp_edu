@@ -73,7 +73,7 @@ const LottieAnimation = ({ jsonPath }) => {
               loop={true} 
               autoPlay={true}
               style={{
-                width: "100%",
+                width: "auto",
     height: "100%",
     objectFit: "contain",
     overflow: "hidden"
