@@ -2,6 +2,7 @@
     "rutina_tabata": {
       "nombre": "Rutina Tabata Full Body",
       "descripcion": "Rutina de alta intensidad para trabajar todo el cuerpo en 4 minutos.",
+      "Tipo": "En casa",
       "intervalos": 8,
       "descanso": 10,
       "trabajo":20,
@@ -16,7 +17,5 @@
         "High Knee Taps",
         "TRX Suspension Mountain Climber"
       ]
-        
-      
-    }
+         }
   }

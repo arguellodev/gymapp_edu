@@ -82,8 +82,9 @@
  
   .tabata-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: last baseline;
     margin-bottom: 1rem;
   }
   
@@ -311,3 +312,168 @@
     0 2px 4px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
  }
+
+/* Estilos para el contenedor principal */
+.rutinas-tabata-container {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin: 20px 0;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  max-width: 600px;
+}
+
+/* Estilos para el encabezado */
+.tabata-header {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.tabata-header h2 {
+  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.tabata-description {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.tabata-badge {
+  background-color: #ff5722;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  text-transform: uppercase;
+}
+
+/* Estilos para la información de la rutina */
+.tabata-info {
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.tabata-info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.tabata-info-label {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.tabata-info-value {
+  color: #333;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Estilos para la sección desplegable de ejercicios */
+.tabata-exercises-container {
+  margin-top: 15px;
+}
+
+.tabata-exercises-toggle {
+  align-items: center;
+  background-color: #3498db;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: space-between;
+  padding: 12px 15px;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+
+
+.tabata-exercises-toggle.active {
+  border-radius: 8px 8px 0 0;
+}
+
+.arrow-icon {
+  fill: white;
+  height: 20px;
+  transition: transform 0.3s ease;
+  width: 20px;
+}
+
+.tabata-exercises-toggle.active .arrow-icon {
+  transform: rotate(180deg);
+}
+
+/* Contenedor de ejercicios */
+.tabata-exercises {
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.tabata-exercises.expanded {
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  height: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Lista de ejercicios */
+.tabata-exercise-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tabata-exercise-item {
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  padding: 12px 15px;
+}
+
+.tabata-exercise-item:last-child {
+  border-bottom: none;
+}
+
+.exercise-number {
+  align-items: center;
+  background-color: #3498db;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  margin-right: 15px;
+  min-width: 28px;
+}
+
+.exercise-name {
+  color: #333;
+  font-size: 16px;
+}

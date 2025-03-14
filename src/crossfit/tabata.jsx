@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './tabata.css';
 import WorkoutTimer from './cronometro';
-
+import rutina1 from '../data/rutinas_crossfit/tabata/tabata1';
+import LottieAnimation from '../visualizador_lottie/visualizador';
 const Tabata = ({ setIndiceAtras }) => {
     const [comenzar, setComenzar] = useState(false);
     const [contador, setContador] = useState(0);
@@ -284,7 +285,61 @@ const Tabata = ({ setIndiceAtras }) => {
                 </button>
                 </div>
                 :
+                <>
+                
                 <h1>Menu de rutinas de tabata:</h1>
+                <div className='rutinas-tabata-container'>
+  <div className="tabata-header">
+    <h2>{rutina1.rutina_tabata.nombre}</h2>
+    <p className="tabata-description">{rutina1.rutina_tabata.descripcion}</p>
+    <div className="tabata-badge">{rutina1.rutina_tabata.Tipo}</div>
+  </div>
+  
+  <div className="tabata-info">
+    <div className="tabata-info-item">
+      <span className="tabata-info-label">Intervalos:</span>
+      <span className="tabata-info-value">{rutina1.rutina_tabata.intervalos}</span>
+    </div>
+    <div className="tabata-info-item">
+      <span className="tabata-info-label">Trabajo:</span>
+      <span className="tabata-info-value">{rutina1.rutina_tabata.trabajo}s</span>
+    </div>
+    <div className="tabata-info-item">
+      <span className="tabata-info-label">Descanso:</span>
+      <span className="tabata-info-value">{rutina1.rutina_tabata.descanso}s</span>
+    </div>
+  </div>
+  
+  <div className="tabata-exercises-container">
+    <button 
+      className="tabata-exercises-toggle" 
+      onClick={(e) => {
+        const exercisesList = e.currentTarget.nextElementSibling;
+        exercisesList.classList.toggle('expanded');
+        e.currentTarget.classList.toggle('active');
+      }}
+    >
+      <span>Ver Ejercicios</span>
+      <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M7 10l5 5 5-5z" />
+      </svg>
+    </button>
+    
+    <div className="tabata-exercises">
+      <ul className="tabata-exercise-list">
+        {rutina1.rutina_tabata.ejercicios.map((ejercicio, index) => (
+          <li key={index} className="tabata-exercise-item">
+            <span className="exercise-number">{index + 1}</span>
+            <span className="exercise-name">{ejercicio}</span>
+            <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`}/>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>
+                </>
+                
                 }
             </div>
             {comenzar &&
