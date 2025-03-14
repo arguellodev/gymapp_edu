@@ -8,13 +8,15 @@ import rutinaData from '../data/rutina.json';
 import rutinaData2 from '../data/rutina2.json';
 import rutinaData3 from '../data/rutina3.json';
 import rutinaIA from '../data/rutinaIA.json';
-
+import rutinaIA1 from '../data/rutinaIA1.json';
+import LottieAnimationVentana from '../visualizador_lottie/visualizardor_ventana';
 
 
 const Rutina = ({ data = null }) => {
-  
+  const [lottieVentana, setLottieVentana] = useState(false);
+  const [ejercicioVentana,setEjercicioVentana] = useState(false);
   // Para recuperar
-  const rutinasDisponibles =  [rutinaData, rutinaData2, rutinaIA];
+  const rutinasDisponibles =  [rutinaData, rutinaData2, rutinaIA, rutinaIA1];
   // Estados
   const [rutina, setRutina] = useState(null);
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);
@@ -531,6 +533,9 @@ const descargarRutinaJSON = (e, index) => {
 
     return (
       <div className="bloques-container">
+       {lottieVentana &&
+       <LottieAnimationVentana jsonPath={`./Ejerciciosall/${ejercicioVentana}.json`} setLottieVentana={setLottieVentana}/>
+       }
         <div className="bloques-header">
           <button 
             onClick={() => {
@@ -552,10 +557,11 @@ const descargarRutinaJSON = (e, index) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h2 className="bloques-titulo">{diaSeleccionado.dia} - {diaSeleccionado.descripcion}</h2>
+          
+          <h2 className="bloques-titulo-rutinas">{diaSeleccionado.dia} - {diaSeleccionado.descripcion}</h2>
         </div>
 
-        <div className="bloques-lista">
+        <div className="bloques-lista-rutina">
           {diaSeleccionado.bloques.map((bloque, index) => {
             const completado = esBloqueCompletado(diaSeleccionado.dia, bloque);
             const enProgreso = bloqueSeleccionado?.nombre === bloque.nombre && ejercicioActual !== null;
@@ -563,7 +569,7 @@ const descargarRutinaJSON = (e, index) => {
             return (
               <div 
                 key={index}
-                className={`bloque-item ${completado ? 'completado' : ''} ${enProgreso ? 'en-progreso' : ''}`}
+                className={`bloque-item-rutina ${completado ? 'completado' : ''} ${enProgreso ? 'en-progreso' : ''}`}
               >
                 <div className="bloque-header">
                   <h3 className="bloque-titulo">
@@ -608,18 +614,18 @@ const descargarRutinaJSON = (e, index) => {
                       <span>{bloque.repeticionesSerie} {bloque.repeticionesSerie === 1 ? 'serie' : 'series'}</span>
                     </div>
                   )}
-                  {bloque.tipo === 'cardio' && (
+                  {/*bloque.tipo === 'cardio' && (
                     <div className="bloque-detalle">
                       <span className="bloque-icono">⏱️</span>
                       <span>{bloque.duracion} {bloque.unidadDuracion}</span>
                     </div>
-                  )}
+                  )*/}
                   
                   <div className="bloque-ejercicios">
                     <h4 className="ejercicios-titulo">Ejercicios:</h4>
                     <ul className="ejercicios-lista">
                       {bloque.ejercicios.map((ejercicio, idx) => (
-                        <li key={idx} className="ejercicio-item">
+                        <li key={idx} className="ejercicio-item" onClick={()=>{setLottieVentana(true); setEjercicioVentana(ejercicio.nombre)}}>
                           <span className="ejercicio-numero">{idx + 1}</span>
                           <span className="ejercicio-nombre">{ejercicio.nombre}</span>
                         </li>
@@ -755,6 +761,7 @@ const descargarRutinaJSON = (e, index) => {
 
   return (
     <div className="rutina-container">
+     
       {mostrarSelectorRutinas ? (
         renderizarSelectorRutinas()
       ) : ejercicioActual !== null ? (

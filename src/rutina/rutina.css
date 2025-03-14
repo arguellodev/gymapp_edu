@@ -264,18 +264,26 @@
   stroke: var(--dark);
 }
 
-.bloques-titulo {
+.bloques-titulo-rutinas {
+  text-align: right;
+  margin-left: 50px;
+  width: 80%;
   font-size: 1.4rem;
   font-weight: 700;
 }
 
-.bloques-lista {
+.bloques-lista-rutina{
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 50px;
 }
 
-.bloque-item {
+.bloque-item-rutina {
+ 
+  width: 100%;
   background-color: white;
   border-radius: var(--radius);
   padding: 20px;
@@ -284,7 +292,7 @@
   border-left: 4px solid var(--light-gray);
 }
 
-.bloque-item.completado {
+.bloque-item-rutina.completado {
   border-left-color: var(--secondary);
 }
 

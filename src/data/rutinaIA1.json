@@ -1,0 +1,516 @@
+{
+    "nombre": "Rutina 5 Días - Principiante",
+    "nivel": "Principiante",
+    "dias": {
+      "Lunes": [
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Walking On Treadmill",
+              "tiempo": "900"
+            }
+          ]
+        },
+        {
+          "tipo": "Estiramiento",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Dynamic Chest Stretch",
+              "tiempo": "60"
+            },
+            {
+              "nombre": "Cat Cow Stretching",
+              "tiempo": "60"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Bench Press 2",
+              "repeticiones": 10,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Seated Dumbbell Bicep Curl 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "8",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Tricep Pushdown",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "15",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Lateral Raise",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "5",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Bent-Over Row 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Seated Dumbbell Shoulders Press 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Bicep Curl",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "15",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Stationary Bike Run",
+              "tiempo": "1800"
+            }
+          ]
+        }
+      ],
+      "Martes": [
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Elliptical Machine",
+              "tiempo": "900"
+            }
+          ]
+        },
+        {
+          "tipo": "Estiramiento",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Hamstring Stretch",
+              "tiempo": "60"
+            },
+            {
+              "nombre": "Childs Pose Back Stretch",
+              "tiempo": "60"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Squat 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Dumbbell Romanian Deadlift 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Standing Calf Raise",
+              "repeticiones": 15,
+              "descanso": 60,
+              "peso": "20",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Hip Abduction Exercise Men",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Glute Bridge Exercise Men 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Standing Donkey Kickback",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Hip Adduction",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Rowing",
+              "tiempo": "1800"
+            }
+          ]
+        }
+      ],
+      "Miércoles": [
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Jump Rope",
+              "tiempo": "900"
+            }
+          ]
+        },
+        {
+          "tipo": "Estiramiento",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Supine Spinal Twist Stretch",
+              "tiempo": "60"
+            },
+            {
+              "nombre": "Cat Cow Stretching",
+              "tiempo": "60"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Weighted Crunch 2",
+              "repeticiones": 15,
+              "descanso": 60,
+              "peso": "5",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Flutter Kicks",
+              "repeticiones": 20,
+              "descanso": 60
+            },
+            {
+              "nombre": "Side Crunches",
+              "repeticiones": 15,
+              "descanso": 60
+            },
+            {
+              "nombre": "Russian Twist",
+              "repeticiones": 20,
+              "descanso": 60,
+              "peso": "5",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Hanging Knee Raise",
+              "repeticiones": 12,
+              "descanso": 60
+            },
+            {
+              "nombre": "Cable Reverse Crunch",
+              "repeticiones": 15,
+              "descanso": 60
+            },
+            {
+              "nombre": "Plank Jack",
+              "repeticiones": 20,
+              "descanso": 60
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Running On Treadmill",
+              "tiempo": "1800"
+            }
+          ]
+        }
+      ],
+      "Jueves": [
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Walking On Treadmill",
+              "tiempo": "900"
+            }
+          ]
+        },
+        {
+          "tipo": "Estiramiento",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Dynamic Chest Stretch",
+              "tiempo": "60"
+            },
+            {
+              "nombre": "Cat Cow Stretching",
+              "tiempo": "60"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Bench Press 2",
+              "repeticiones": 10,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Seated Dumbbell Bicep Curl 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "8",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Tricep Pushdown",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "15",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Lateral Raise",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "5",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Bent-Over Row 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Seated Dumbbell Shoulders Press 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Bicep Curl",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "15",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Stationary Bike Run",
+              "tiempo": "1800"
+            }
+          ]
+        }
+      ],
+      "Viernes": [
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Elliptical Machine",
+              "tiempo": "900"
+            }
+          ]
+        },
+        {
+          "tipo": "Estiramiento",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Hamstring Stretch",
+              "tiempo": "60"
+            },
+            {
+              "nombre": "Childs Pose Back Stretch",
+              "tiempo": "60"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Squat 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Dumbbell Romanian Deadlift 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Standing Calf Raise",
+              "repeticiones": 15,
+              "descanso": 60,
+              "peso": "20",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Hip Abduction Exercise Men",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Serie",
+          "series": 3,
+          "descansoEntreSeries": 60,
+          "descansoEntreEjercicios": 30,
+          "ejercicios": [
+            {
+              "nombre": "Dumbbell Glute Bridge Exercise Men 2",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "12",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Standing Donkey Kickback",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            },
+            {
+              "nombre": "Cable Hip Adduction",
+              "repeticiones": 12,
+              "descanso": 60,
+              "peso": "10",
+              "unidadPeso": "Kg"
+            }
+          ]
+        },
+        {
+          "tipo": "Cardio",
+          "series": 1,
+          "descansoEntreSeries": 0,
+          "ejercicios": [
+            {
+              "nombre": "Rowing",
+              "tiempo": "1800"
+            }
+          ]
+        }
+      ]
+    }
+  }

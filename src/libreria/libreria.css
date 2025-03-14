@@ -1,7 +1,6 @@
 .libreria-categorias-container{
   padding: 20px;
   width: 100%;
-
 display: flex;
 gap: 10px;
 flex-direction: row;
@@ -25,7 +24,7 @@ padding-bottom: 50px;
   text-align: center;
 }
 .header-libreria{
-  position: relative;
+  position: absolute;
   z-index: 3;
   width: 100%;
   background: rgb(158, 128, 240);
@@ -153,3 +152,15 @@ margin-bottom: 50px;
  top: 10px;
  font-size: 1.5rem;
 }
+
+.ejercicio-agregados{
+  border: 2px solid rgb(185, 185, 185);
+}
+
+.palomita-checked{
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+  font-size: 1.5rem;
+}
+

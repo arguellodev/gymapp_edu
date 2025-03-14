@@ -6,7 +6,6 @@ import { RiRunLine } from "react-icons/ri";
 import { IoFitness } from "react-icons/io5";
 import { GrYoga } from "react-icons/gr";
 import Libreria from "../libreria/libreria";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 const CrearRutina = ({setCrearRutina}) => {
   
@@ -149,42 +148,36 @@ const CrearRutina = ({setCrearRutina}) => {
   const agregarEjercicio = (ejercicio) => {
     const diaActual = dias[menuRutina - 1];
     const nuevoEjercicio = {
-      id: `ejercicio-${Date.now()}`, // ID único
-      nombre: ejercicio, // Nombre del ejercicio
-      repeticiones: "", // Repeticiones (opcional)
-      descanso: "", // Descanso (opcional)
-      peso: "", // Peso (opcional)
-      unidadPeso: "kg", // Unidad de peso (kg o lb)
-      tiempo: "", // Tiempo (opcional)
-      unidadTiempo: "seg", // Unidad de tiempo (seg o min)
+      id: `ejercicio-${Date.now()}`,
+      nombre: ejercicio,
+      repeticiones: "",
+      descanso: "",
+      peso: "", 
+      unidadPeso: "kg", // Agregar valor por defecto
+      tiempo: "",
+      unidadTiempo: "seg", // Agregar valor por defecto
     };
-  
-    // Verifica si el ejercicio ya está agregado
-    const ejercicioIndex = ejerciciosBloque.findIndex((e) => e.nombre === ejercicio);
-  
-    if (ejercicioIndex !== -1) {
-      // Si el ejercicio ya está agregado, lo eliminamos
-      eliminarEjercicio(ejerciciosBloque[ejercicioIndex].id);
-    } else {
-      // Si el ejercicio no está agregado, lo agregamos
-      const bloqueActualIndex = bloquesPorDia[diaActual].findIndex(
-        (bloque) => bloque.id === bloqueActual
-      );
-  
-      if (bloqueActualIndex !== -1) {
-        const bloquesCopia = [...bloquesPorDia[diaActual]];
-        bloquesCopia[bloqueActualIndex] = {
-          ...bloquesCopia[bloqueActualIndex],
-          ejercicios: [...bloquesCopia[bloqueActualIndex].ejercicios, nuevoEjercicio],
-        };
-  
-        setBloquesPorDia({
-          ...bloquesPorDia,
-          [diaActual]: bloquesCopia,
-        });
-  
-        setEjerciciosBloque([...ejerciciosBloque, nuevoEjercicio]);
-      }
+
+    const bloqueActualIndex = bloquesPorDia[diaActual].findIndex(
+      (bloque) => bloque.id === bloqueActual
+    );
+
+    if (bloqueActualIndex !== -1) {
+      const bloquesCopia = [...bloquesPorDia[diaActual]];
+      bloquesCopia[bloqueActualIndex] = {
+        ...bloquesCopia[bloqueActualIndex],
+        ejercicios: [
+          ...bloquesCopia[bloqueActualIndex].ejercicios,
+          nuevoEjercicio,
+        ],
+      };
+
+      setBloquesPorDia({
+        ...bloquesPorDia,
+        [diaActual]: bloquesCopia,
+      });
+
+      setEjerciciosBloque([...ejerciciosBloque, nuevoEjercicio]);
     }
   };
 
@@ -752,7 +745,6 @@ const CrearRutina = ({setCrearRutina}) => {
       {ejercicioAbierto && (
   <div className="agregar-ejercicio-overlay" onClick={handleOutsideClick}>
     <div className="agregar-ejercicio-content" onClick={handleContentClick}>
-      <p className="boton-cerrar-libreria" onClick={()=>{setEjercicioAbierto(false)}}><IoMdArrowRoundBack /></p>
       <Libreria
         type={'creador-rutina'}
         onEjercicioSeleccionado={agregarEjercicio} // Función para agregar ejercicios

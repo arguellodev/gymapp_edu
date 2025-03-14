@@ -1,0 +1,24 @@
+.lottie-container-ventana {
+    z-index: 4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(30px); /* Efecto de desenfoque */
+    -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: hidden;
+}
+
+.boton-cerrar-lottie{
+    
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    
+}
