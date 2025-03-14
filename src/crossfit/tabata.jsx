@@ -5,6 +5,7 @@ import WorkoutTimer from './cronometro';
 const Tabata = ({ setIndiceAtras }) => {
     const [comenzar, setComenzar] = useState(false);
     const [contador, setContador] = useState(0);
+    const [modo,setModo]= useState('Cronometro');
     const [tabatas, setTabatas] = useState([
         { 
             id: 1, 
@@ -132,7 +133,18 @@ const Tabata = ({ setIndiceAtras }) => {
         <>
             <div className="tabata-container">
                 <h1>Configuración Tabata</h1>
-                {tabatas.map((tabata) => (
+                <div className='selector-modo'>
+                    <button className={modo === 'Cronometro' ? 'boton-modo-activado': 'boton-modo'}
+                    onClick={()=>setModo('Cronometro')}
+                    >Cronometro </button>
+                    <button className={modo === 'Rutinas' ? 'boton-modo-activado': 'boton-modo'}
+                    onClick={()=>setModo('Rutinas')}
+                    >Rutinas </button>
+                </div>
+                {modo === 'Cronometro' 
+                ?
+                <div>
+                     {tabatas.map((tabata) => (
                     <div key={tabata.id} className="tabata-card">
                         <div className="tabata-header">
                             <h3>Tabata {tabata.id}</h3>
@@ -270,6 +282,10 @@ const Tabata = ({ setIndiceAtras }) => {
                 > 
                     Comenzar Tabata
                 </button>
+                </div>
+                :
+                <h1>Menu de rutinas de tabata:</h1>
+                }
             </div>
             {comenzar &&
              <WorkoutTimer 

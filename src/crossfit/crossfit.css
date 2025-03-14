@@ -1,11 +1,15 @@
 /* crossfit.css */
 
 .crossfit-section {
+  position: fixed;
+  top: 0;
+  left: 0;
     width: 100%;
-    max-width: 100vh;
-    margin: 0 auto;
+    height: 100vh;
+    margin: 0 0;
     
-    font-family: 'Roboto', Arial, sans-serif;
+    background: linear-gradient(90deg, #4b4b4b, #2e2e2e, #121212, #000000);
+
   }
   
   .crossfit-title {
@@ -14,8 +18,7 @@
     font-weight: 700;
     margin-bottom: 30px;
     color: #333;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 5px;
   }
   
   .crossfit-grid {

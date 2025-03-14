@@ -56,7 +56,7 @@ const Crossfit = () => {
     return (
         <div className="crossfit-section">
             
-            
+           
             {!activeComponent ? (
                 
                 <div className="crossfit-grid">

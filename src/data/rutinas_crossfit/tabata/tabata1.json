@@ -1,0 +1,22 @@
+{
+    "rutina_tabata": {
+      "nombre": "Rutina Tabata Full Body",
+      "descripcion": "Rutina de alta intensidad para trabajar todo el cuerpo en 4 minutos.",
+      "intervalos": 8,
+      "descanso": 10,
+      "trabajo":20,
+      "ejercicios": 
+      [
+        "Mountain Climber",
+        "Burpee",
+        "Jumping Jack",
+        "Push Up",
+        "Squat",
+        "Plank Jack",
+        "High Knee Taps",
+        "TRX Suspension Mountain Climber"
+      ]
+        
+      
+    }
+  }

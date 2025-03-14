@@ -4,6 +4,7 @@ import "./libreria.css";
 import { IoMdArrowBack } from "react-icons/io";
 import libreriaDatos from "../data/nueva_libreria.json";
 import LottieAnimation from "../visualizador_lottie/visualizador";
+import { FaCheckCircle } from "react-icons/fa";
 
 const Libreria = ({ type, onEjercicioSeleccionado, tipoBloque, ejerciciosAgregados }) => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
@@ -83,6 +84,7 @@ const Libreria = ({ type, onEjercicioSeleccionado, tipoBloque, ejerciciosAgregad
                   >
                     <p>{ejercicio}</p>
                     <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`} />
+                    {esEjercicioAgregado(ejercicio) && <p className="palomita-checked"><FaCheckCircle /></p>}
                   </div>
                 ))}
               </div>
@@ -121,6 +123,7 @@ const Libreria = ({ type, onEjercicioSeleccionado, tipoBloque, ejerciciosAgregad
                         >
                           <p>{ejercicio}</p>
                           <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`} />
+                          {esEjercicioAgregado(ejercicio) && <p className="palomita-checked"><FaCheckCircle /></p>}
                         </div>
                       )
                     )}

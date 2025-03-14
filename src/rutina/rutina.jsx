@@ -40,7 +40,7 @@ const Rutina = ({ data = null }) => {
         descripcion: `Entrenamiento de ${dia}`,
         bloques: bloques.map((bloque, index) => ({
           nombre: `Bloque ${index + 1}`,
-          tipo: bloque.tipo === 'Serie' ? 'fuerza' : 'cardio',
+          tipo: bloque.tipo,
           repeticionesSerie: bloque.series,
           ejercicios: bloque.ejercicios.map(ejercicio => ({
             nombre: ejercicio.nombre,
@@ -574,12 +574,10 @@ const descargarRutinaJSON = (e, index) => {
                 <div className="bloque-header">
                   <h3 className="bloque-titulo">
                     {bloque.nombre}
-                    {bloque.tipo === 'cardio' && (
-                      <span className="bloque-tipo-badge cardio">Cardio</span>
-                    )}
-                    {bloque.tipo === 'fuerza' && (
-                      <span className="bloque-tipo-badge fuerza">Fuerza</span>
-                    )}
+                    
+                      <span className={`bloque-tipo-badge ${bloque.tipo}`}>{bloque.tipo}</span>
+                   
+                   
                   </h3>
                   <div className="bloque-actions">
                     {completado ? (

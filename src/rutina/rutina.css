@@ -312,10 +312,13 @@
   font-weight: 700;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 
 .bloque-tipo-badge {
+  margin-right: 0;
+  margin-left: auto;
   font-size: 0.7rem;
   font-weight: 600;
   padding: 4px 8px;
@@ -323,13 +326,18 @@
   text-transform: uppercase;
 }
 
-.bloque-tipo-badge.cardio {
+.bloque-tipo-badge.Cardio {
   background-color: #ff7675;
   color: white;
 }
 
-.bloque-tipo-badge.fuerza {
+.bloque-tipo-badge.Serie {
   background-color: #74b9ff;
+  color: white;
+}
+
+.bloque-tipo-badge.Estiramiento {
+  background-color: #7482ff;
   color: white;
 }
 
