@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './cronometro.css';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import LottieAnimation from '../visualizador_lottie/visualizador';
 
-const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, timeLimit }) => {
+const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, timeLimit, exercisesList }) => {
   // Estado para manejar el entrenamiento actual
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [time, setTime] = useState(0);
@@ -236,6 +237,14 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
       </button>
       <div className="timer-container">
         <h2 className='titulo-seleccion-crossfit'>{type}</h2>
+       
+        {exercisesList !== null || exercisesList.length > 0 &&
+        <div className='tabata-lottie-container' key={currentWorkoutIndex}>
+          <p>{exercisesList[currentWorkoutIndex]}</p>
+          <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex]}.json`} />
+        </div>
+       
+        }
         <div className="progress-ring-container">
           <svg className="progress-ring" width="260" height="260">
             <circle
@@ -300,7 +309,10 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
         <p className='texto-contador-rondas'>
           Ronda {contador + 1}, Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
         </p>
-      ) : (
+      ) : 
+       type === "tabata" ? null
+       
+      :(
         <p className='texto-contador-rondas'>
           Llevas {contador} rondas
         </p>

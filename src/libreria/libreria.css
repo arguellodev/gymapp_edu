@@ -1,4 +1,15 @@
+.libreria-overlay{
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+}
+
 .libreria-categorias-container{
+
   padding: 20px;
   width: 100%;
 display: flex;
@@ -8,6 +19,7 @@ flex-wrap: wrap;
 justify-content: center;
 align-items: center;
 padding-bottom: 50px;
+
 }
 
 .titulo-categorias-libreria{
@@ -25,6 +37,7 @@ padding-bottom: 50px;
 }
 .header-libreria{
   position: absolute;
+
   z-index: 3;
   width: 100%;
   background: rgb(158, 128, 240);
@@ -38,6 +51,7 @@ padding-bottom: 50px;
   font-size: 1.2rem;
   border-radius: 1rem;
   font-weight: 800;
+  margin-bottom: 50px;
 }
 .libreria-categorias-container .categoria-item{
   width: 45%;
@@ -164,3 +178,71 @@ margin-bottom: 50px;
   font-size: 1.5rem;
 }
 
+/* Estilos para el indicador de ejercicios restantes */
+.indicador-ejercicios {
+  position: sticky;
+  top: 60px;
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+ 
+}
+
+.contador-ejercicios {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  gap: 5px;
+}
+
+.numero-restante {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #3498db;
+}
+
+.texto-restante {
+  font-size: 0.9rem;
+}
+
+.limite-alcanzado {
+  color: #e74c3c;
+}
+
+/* Estilos para el aviso de límite alcanzado */
+.aviso-limite {
+ 
+  background-color: #ffeaea;
+  border-left: 4px solid #e74c3c;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+}
+
+.icono-aviso {
+  color: #e74c3c;
+  font-size: 1.2rem;
+}
+
+/* Estilos para los ejercicios deshabilitados cuando se alcanza el límite */
+.ejercicio-deshabilitado {
+  opacity: 0.5;
+  cursor: not-allowed;
+  position: relative;
+}
+
+
+
+/* Envuelve todo el componente para el posicionamiento correcto */
+.libreria-container {
+  position: relative;
+  width: 100%;
+}

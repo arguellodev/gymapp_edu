@@ -1,21 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './tabata.css';
 import WorkoutTimer from './cronometro';
 import rutina1 from '../data/rutinas_crossfit/tabata/tabata1';
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import LottieAnimationPlaylist from '../visualizador_lottie/visualizador_playlist';
+// Importar otras rutinas si es necesario
+// import rutina2 from '../data/rutinas_crossfit/tabata/tabata2';
 import LottieAnimation from '../visualizador_lottie/visualizador';
+import Libreria from '../libreria/libreria';
+
 const Tabata = ({ setIndiceAtras }) => {
     const [comenzar, setComenzar] = useState(false);
     const [contador, setContador] = useState(0);
-    const [modo,setModo]= useState('Cronometro');
+    const [modo, setModo] = useState('Cronometro');
+    const [rutinaSeleccionada, setRutinaSeleccionada] = useState(null);
+    const [rutinasDisponibles, setRutinasDisponibles] = useState([rutina1]);
+    const [mostrarLibreria, setMostrarLibreria] = useState(false);
+    const [verEjercicios, setVerEjercicios] = useState(false);
+    const [tabataActual, setTabataActual] = useState(null);
+    
     const [tabatas, setTabatas] = useState([
         { 
             id: 1, 
             intervals: 8,
             workTime: 20,
             restTime: 10,
-            recoveryTime: 60
+            recoveryTime: 60,
+            playlistEjercicios: []
         }
     ]);
+
+    const agregarEjercicio = (ejercicio) => {
+        if (!tabataActual) return;
+        
+        setTabatas(prevTabatas => {
+            return prevTabatas.map(tabata => {
+                if (tabata.id === tabataActual) {
+                    // Comprobamos si el ejercicio ya está en la playlist
+                    const ejercicioIndex = tabata.playlistEjercicios.findIndex(e => e.nombre === ejercicio);
+                    
+                    let nuevaPlaylist;
+                    if (ejercicioIndex !== -1) {
+                        // Si el ejercicio ya está, lo eliminamos
+                        nuevaPlaylist = [...tabata.playlistEjercicios];
+                        nuevaPlaylist.splice(ejercicioIndex, 1);
+                    } else {
+                        // Si no está, lo agregamos
+                        const nuevoEjercicio = {
+                            id: `ejercicio-${Date.now()}`,
+                            nombre: ejercicio
+                        };
+                        nuevaPlaylist = [...tabata.playlistEjercicios, nuevoEjercicio];
+                    }
+                    return { ...tabata, playlistEjercicios: nuevaPlaylist };
+                }
+                return tabata;
+            });
+        });
+    };
+
+    // Resetear estados relevantes al cambiar de modo
+    useEffect(() => {
+        if (modo === 'Cronometro') {
+            setRutinaSeleccionada(null);
+        }
+    }, [modo]);
 
     const addTabata = () => {
         const newTabataId = tabatas.length + 1;
@@ -26,9 +75,31 @@ const Tabata = ({ setIndiceAtras }) => {
                 intervals: 8,
                 workTime: 20,
                 restTime: 10,
-                recoveryTime: 60
+                recoveryTime: 60,
+                playlistEjercicios: []
             }
         ]);
+    };
+
+    const abrirLibreria = (tabataId) => {
+        setTabataActual(tabataId);
+        setMostrarLibreria(true);
+    };
+
+    const eliminarPlaylist = (tabataId) => {
+        setTabatas(prevTabatas => {
+            return prevTabatas.map(tabata => {
+                if (tabata.id === tabataId) {
+                    return { ...tabata, playlistEjercicios: [] };
+                }
+                return tabata;
+            });
+        });
+    };
+
+    const abrirVisualizadorEjercicios = (tabataId) => {
+        setTabataActual(tabataId);
+        setVerEjercicios(true);
     };
 
     const updateIntervals = (id, changeType) => {
@@ -98,6 +169,20 @@ const Tabata = ({ setIndiceAtras }) => {
 
     // Convertir tabatas a formato de workouts para el temporizador
     const prepareWorkoutsForTimer = () => {
+        // Si hay una rutina seleccionada, usar su configuración
+        if (rutinaSeleccionada) {
+            const rutina = rutinaSeleccionada.rutina_tabata;
+            return Array(rutina.intervalos).fill().map((_, i) => ({
+                id: i + 1,
+                time: rutina.trabajo / 60, // Convertir segundos a minutos
+                restTime: rutina.descanso / 60, // Convertir segundos a minutos
+                isWork: true,
+                interval: i + 1,
+                tabataNumber: 1
+            }));
+        }
+        
+        // Si no hay rutina seleccionada, usar la configuración manual de tabatas
         let workouts = [];
         let currentId = 1;
 
@@ -126,8 +211,50 @@ const Tabata = ({ setIndiceAtras }) => {
                 });
             }
         });
-
+       
         return workouts;
+    };
+
+    // Preparar lista de ejercicios para pasar al temporizador
+    const prepareExercisesForTimer = () => {
+        if (rutinaSeleccionada) {
+            return rutinaSeleccionada.rutina_tabata.ejercicios || [];
+        }
+    
+        // Si no hay rutina seleccionada, devolver un array de arrays de nombres de ejercicios
+        const exercisesByTabata = Object.values(
+            tabatas.reduce((acc, tabata) => {
+                acc[tabata.id] = tabata.playlistEjercicios.map(e => e.nombre);
+                return acc;
+            }, {})
+        );
+    
+        console.log(exercisesByTabata);
+        return exercisesByTabata.flat(); // 🔹 Convertir a un solo array si se necesita
+    };
+    
+
+    const handleStartRutina = (rutina) => {
+        setRutinaSeleccionada(rutina);
+        setComenzar(true);
+    };
+
+    // Calcular la duración total de un tabata
+    const calcularDuracionTabata = (tabata) => {
+        return ((tabata.workTime + tabata.restTime) * tabata.intervals) / 60;
+    };
+
+    // Calcular la duración total de todos los tabatas
+    const calcularDuracionTotal = () => {
+        let duracionTotal = 0;
+        tabatas.forEach((tabata, index) => {
+            duracionTotal += calcularDuracionTabata(tabata);
+            // Añadir tiempo de recuperación si no es el último tabata
+            if (index < tabatas.length - 1) {
+                duracionTotal += tabata.recoveryTime / 60;
+            }
+        });
+        return duracionTotal.toFixed(2);
     };
 
     return (
@@ -135,222 +262,298 @@ const Tabata = ({ setIndiceAtras }) => {
             <div className="tabata-container">
                 <h1>Configuración Tabata</h1>
                 <div className='selector-modo'>
-                    <button className={modo === 'Cronometro' ? 'boton-modo-activado': 'boton-modo'}
-                    onClick={()=>setModo('Cronometro')}
-                    >Cronometro </button>
-                    <button className={modo === 'Rutinas' ? 'boton-modo-activado': 'boton-modo'}
-                    onClick={()=>setModo('Rutinas')}
-                    >Rutinas </button>
+                    <button 
+                        className={modo === 'Cronometro' ? 'boton-modo-activado': 'boton-modo'}
+                        onClick={() => setModo('Cronometro')}
+                    >
+                        Cronometro 
+                    </button>
+                    <button 
+                        className={modo === 'Rutinas' ? 'boton-modo-activado': 'boton-modo'}
+                        onClick={() => setModo('Rutinas')}
+                    >
+                        Rutinas 
+                    </button>
                 </div>
-                {modo === 'Cronometro' 
-                ?
-                <div>
-                     {tabatas.map((tabata) => (
-                    <div key={tabata.id} className="tabata-card">
-                        <div className="tabata-header">
-                            <h3>Tabata {tabata.id}</h3>
-                            {tabata.id > 1 && (
-                                <button 
-                                    className="remove-tabata-btn" 
-                                    onClick={() => removeTabata(tabata.id)}
-                                >
-                                    ✕
-                                </button>
-                            )}
-                        </div>
-                        <div className="tabata-inputs">
-                            <div className="input-group">
-                                <label htmlFor={`intervals-${tabata.id}`}>Intervalos:</label>
-                                <div className="input-with-buttons">
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateIntervals(tabata.id, 'decrease')}
-                                    >
-                                        -
-                                    </button>
-                                    <input
-                                        id={`intervals-${tabata.id}`}
-                                        type="number"
-                                        min="1"
-                                        value={tabata.intervals}
-                                        readOnly
-                                        className="intervals-input"
-                                    />
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateIntervals(tabata.id, 'increase')}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="input-group">
-                                <label htmlFor={`work-${tabata.id}`}>Tiempo de trabajo (segundos):</label>
-                                <div className="input-with-buttons">
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateWorkTime(tabata.id, 'decrease')}
-                                    >
-                                        -
-                                    </button>
-                                    <input
-                                        id={`work-${tabata.id}`}
-                                        type="number"
-                                        min="5"
-                                        step="5"
-                                        value={tabata.workTime}
-                                        readOnly
-                                        className="work-input"
-                                    />
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateWorkTime(tabata.id, 'increase')}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="input-group">
-                                <label htmlFor={`rest-${tabata.id}`}>Tiempo de descanso (segundos):</label>
-                                <div className="input-with-buttons">
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateRestTime(tabata.id, 'decrease')}
-                                    >
-                                        -
-                                    </button>
-                                    <input
-                                        id={`rest-${tabata.id}`}
-                                        type="number"
-                                        min="0"
-                                        step="5"
-                                        value={tabata.restTime}
-                                        readOnly
-                                        className="rest-input"
-                                    />
-                                    <button 
-                                        className="adjust-btn" 
-                                        onClick={() => updateRestTime(tabata.id, 'increase')}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-                            {tabata.id < tabatas.length && (
-                                <div className="input-group">
-                                    <label htmlFor={`recovery-${tabata.id}`}>Tiempo de recuperación (segundos):</label>
-                                    <div className="input-with-buttons">
+                
+                {modo === 'Cronometro' ? (
+                    <div>
+                        {tabatas.map((tabata) => (
+                            <div key={tabata.id} className="tabata-card">
+                                <div className="tabata-header">
+                                    <h3>Tabata {tabata.id}</h3>
+                                    {tabata.id > 1 && (
                                         <button 
-                                            className="adjust-btn" 
-                                            onClick={() => updateRecoveryTime(tabata.id, 'decrease')}
+                                            className="remove-tabata-btn" 
+                                            onClick={() => removeTabata(tabata.id)}
                                         >
-                                            -
+                                            ✕
                                         </button>
-                                        <input
-                                            id={`recovery-${tabata.id}`}
-                                            type="number"
-                                            min="0"
-                                            step="10"
-                                            value={tabata.recoveryTime}
-                                            readOnly
-                                            className="recovery-input"
-                                        />
+                                    )}
+                                </div>
+                                <div className="tabata-inputs">
+                                    <div className="input-group-tabata">
+                                        <label htmlFor={`intervals-${tabata.id}`}>Intervalos:</label>
+                                        <div className="input-with-buttons">
+                                            <button 
+                                                className="adjust-btn" 
+                                                onClick={() => updateIntervals(tabata.id, 'decrease')}
+                                            >
+                                                -
+                                            </button>
+                                            <input
+                                                id={`intervals-${tabata.id}`}
+                                                type="number"
+                                                min="1"
+                                                value={tabata.intervals}
+                                                readOnly
+                                                className="intervals-input"
+                                            />
+                                            <button 
+                                                className="adjust-btn" 
+                                                onClick={() => updateIntervals(tabata.id, 'increase')}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="input-group-tabata">
+                                        <label htmlFor={`work-${tabata.id}`}>Tiempo de trabajo:</label>
+                                        <div className="input-with-buttons">
+                                            <button 
+                                                className="adjust-btn" 
+                                                onClick={() => updateWorkTime(tabata.id, 'decrease')}
+                                            >
+                                                -
+                                            </button>
+                                            <input
+                                                id={`work-${tabata.id}`}
+                                                type="string"
+                                                min="5"
+                                                step="5"
+                                                value={`${tabata.workTime}s`}
+                                                readOnly
+                                                className="work-input"
+                                            />
+                                            <button 
+                                                className="adjust-btn"
+
+                                                onClick={() => updateWorkTime(tabata.id, 'increase')}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div className="input-group-tabata">
+                                        <label htmlFor={`rest-${tabata.id}`}>Tiempo de descanso:</label>
+                                        <div className="input-with-buttons">
+                                            <button 
+                                                className="adjust-btn" 
+                                                onClick={() => updateRestTime(tabata.id, 'decrease')}
+                                            >
+                                                -
+                                            </button>
+                                            <input
+                                                id={`rest-${tabata.id}`}
+                                                type="string"
+                                                min="0"
+                                                step="5"
+                                                value={`${tabata.restTime}s`}
+                                                readOnly
+                                                className="rest-input"
+                                            />
+                                            <button 
+                                                className="adjust-btn" 
+                                                onClick={() => updateRestTime(tabata.id, 'increase')}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {tabata.id < tabatas.length && (
+                                        <div className="input-group">
+                                            <label htmlFor={`recovery-${tabata.id}`}>Tiempo de recuperación (segundos):</label>
+                                            <div className="input-with-buttons">
+                                                <button 
+                                                    className="adjust-btn" 
+                                                    onClick={() => updateRecoveryTime(tabata.id, 'decrease')}
+                                                >
+                                                    -
+                                                </button>
+                                                <input
+                                                    id={`recovery-${tabata.id}`}
+                                                    type="number"
+                                                    min="0"
+                                                    step="10"
+                                                    value={tabata.recoveryTime}
+                                                    readOnly
+                                                    className="recovery-input"
+                                                />
+                                                <button 
+                                                    className="adjust-btn" 
+                                                    onClick={() => updateRecoveryTime(tabata.id, 'increase')}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="tabata-summary">
+                                    <p>Duración total: {calcularDuracionTabata(tabata)} minutos</p>
+                                </div>
+                                {tabata.playlistEjercicios.length > 0 ? (
+                                    <div className="playlist-controls">
                                         <button 
-                                            className="adjust-btn" 
-                                            onClick={() => updateRecoveryTime(tabata.id, 'increase')}
+                                            className="playlist-btn view-btn" 
+                                            onClick={() => abrirVisualizadorEjercicios(tabata.id)}
                                         >
-                                            +
+                                            Ver ejercicios
+                                        </button>
+                                        <button 
+                                            className="playlist-btn edit-btn" 
+                                            onClick={() => abrirLibreria(tabata.id)}
+                                        >
+                                            Editar lista de ejercicios
+                                        </button>
+                                        <button 
+                                            className="playlist-btn delete-btn" 
+                                            onClick={() => eliminarPlaylist(tabata.id)}
+                                        >
+                                            Eliminar playlist
                                         </button>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="tabata-summary">
-                            <p>Duración total: {((tabata.workTime + tabata.restTime) * tabata.intervals) / 60} minutos</p>
-                        </div>
+                                ) : (
+                                    <button 
+                                        className="add-playlist-btn" 
+                                        onClick={() => abrirLibreria(tabata.id)}
+                                    >
+                                        Agregar lista de ejercicios
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                        
+                        <button 
+                            className="add-tabata-btn" 
+                            onClick={addTabata}
+                        >
+                            + Agregar Tabata
+                        </button>
+                        
+                        <button 
+                            className='boton-comenzar-tabata' 
+                            onClick={() => {setComenzar(true)}}
+                        > 
+                            Comenzar Tabata
+                        </button>
                     </div>
-                ))}
-                <button 
-                    className="add-tabata-btn" 
-                    onClick={addTabata}
-                >
-                    + Agregar Tabata
-                </button>
-                
-                <button 
-                    className='boton-comenzar-tabata' 
-                    onClick={() => {setComenzar(true)}}
-                > 
-                    Comenzar Tabata
-                </button>
-                </div>
-                :
-                <>
-                
-                <h1>Menu de rutinas de tabata:</h1>
-                <div className='rutinas-tabata-container'>
-  <div className="tabata-header">
-    <h2>{rutina1.rutina_tabata.nombre}</h2>
-    <p className="tabata-description">{rutina1.rutina_tabata.descripcion}</p>
-    <div className="tabata-badge">{rutina1.rutina_tabata.Tipo}</div>
-  </div>
-  
-  <div className="tabata-info">
-    <div className="tabata-info-item">
-      <span className="tabata-info-label">Intervalos:</span>
-      <span className="tabata-info-value">{rutina1.rutina_tabata.intervalos}</span>
-    </div>
-    <div className="tabata-info-item">
-      <span className="tabata-info-label">Trabajo:</span>
-      <span className="tabata-info-value">{rutina1.rutina_tabata.trabajo}s</span>
-    </div>
-    <div className="tabata-info-item">
-      <span className="tabata-info-label">Descanso:</span>
-      <span className="tabata-info-value">{rutina1.rutina_tabata.descanso}s</span>
-    </div>
-  </div>
-  
-  <div className="tabata-exercises-container">
-    <button 
-      className="tabata-exercises-toggle" 
-      onClick={(e) => {
-        const exercisesList = e.currentTarget.nextElementSibling;
-        exercisesList.classList.toggle('expanded');
-        e.currentTarget.classList.toggle('active');
-      }}
-    >
-      <span>Ver Ejercicios</span>
-      <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M7 10l5 5 5-5z" />
-      </svg>
-    </button>
-    
-    <div className="tabata-exercises">
-      <ul className="tabata-exercise-list">
-        {rutina1.rutina_tabata.ejercicios.map((ejercicio, index) => (
-          <li key={index} className="tabata-exercise-item">
-            <span className="exercise-number">{index + 1}</span>
-            <span className="exercise-name">{ejercicio}</span>
-            <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`}/>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-</div>
-                </>
-                
-                }
+                ) : (
+                    <div className="rutinas-container">
+                        {rutinasDisponibles.map((rutina, index) => (
+                            <div key={index} className='rutinas-tabata-container'>
+                                <div className="tabata-header">
+                                    <h2>{rutina.rutina_tabata.nombre}</h2>
+                                    <p className="tabata-description">{rutina.rutina_tabata.descripcion}</p>
+                                    <div className="tabata-badge">{rutina.rutina_tabata.Tipo}</div>
+                                </div>
+                                
+                                <div className="tabata-info">
+                                    <div className="tabata-info-item">
+                                        <span className="tabata-info-label">Intervalos:</span>
+                                        <span className="tabata-info-value">{rutina.rutina_tabata.intervalos}</span>
+                                        
+                                    </div>
+                                    <div className="tabata-info-item">
+                                        <span className="tabata-info-label">Trabajo:</span>
+                                        <span className="tabata-info-value">{rutina.rutina_tabata.trabajo}s</span>
+                                    </div>
+                                    <div className="tabata-info-item">
+                                        <span className="tabata-info-label">Descanso:</span>
+                                        <span className="tabata-info-value">{rutina.rutina_tabata.descanso}s</span>
+                                    </div>
+                                    <div className="tabata-info-item">
+                                        <span className="tabata-info-label">Duración Total:</span>
+                                        <span className="tabata-info-value">
+                                            {((rutina.rutina_tabata.trabajo + rutina.rutina_tabata.descanso) * 
+                                              rutina.rutina_tabata.intervalos / 60).toFixed(2)} min
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div className="tabata-exercises-container">
+                                    <button 
+                                        className="tabata-exercises-toggle" 
+                                        onClick={(e) => {
+                                            const exercisesList = e.currentTarget.nextElementSibling;
+                                            exercisesList.classList.toggle('expanded');
+                                            e.currentTarget.classList.toggle('active');
+                                        }}
+                                    >
+                                        <span>Ver Ejercicios</span>
+                                        <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M7 10l5 5 5-5z" />
+                                        </svg>
+                                    </button>
+                                    <button 
+                                        className="boton-comenzar-rutina"
+                                        onClick={() => handleStartRutina(rutina)}
+                                    >
+                                        Iniciar Rutina
+                                    </button>
+                                    <div className="tabata-exercises">
+                                        <ul className="tabata-exercise-list">
+                                            {rutina.rutina_tabata.ejercicios.map((ejercicio, idx) => (
+                                                <li key={idx} className="tabata-exercise-item">
+                                                    <span className="exercise-number">{idx + 1}</span>
+                                                    <span className="exercise-name">{ejercicio}</span>
+                                                    <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`}/>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-            {comenzar &&
-             <WorkoutTimer 
-                workouts={prepareWorkoutsForTimer()} 
-                type={'tabata'} 
-                contador={contador} 
-                setContador={setContador} 
-                setComenzar={setComenzar}
-             />
+            
+            {comenzar && (
+                <WorkoutTimer 
+                    workouts={prepareWorkoutsForTimer()} 
+                    type={'tabata'} 
+                    contador={contador} 
+                    setContador={setContador} 
+                    setComenzar={setComenzar}
+                    exercisesList={prepareExercisesForTimer()}
+                />
+                
+            )
             }
+            
+            {mostrarLibreria && (
+                <div className='libreria-overlay'>
+                    <button className='cerrar-libreria' onClick={() => setMostrarLibreria(false)}>
+                        <MdOutlineKeyboardBackspace />
+                    </button>
+                    <Libreria
+                        maxEjercicios={tabataActual ? tabatas.find(t => t.id === tabataActual).intervals : 8}
+                        type={'creador-rutina'}
+                        onEjercicioSeleccionado={agregarEjercicio}
+                        ejerciciosAgregados={tabataActual ? 
+                            tabatas.find(t => t.id === tabataActual).playlistEjercicios : []}
+                    />
+                </div>
+            )}
+            
+            {verEjercicios && tabataActual && (
+                <LottieAnimationPlaylist 
+                    jsonPaths={tabatas.find(t => t.id === tabataActual).playlistEjercicios} 
+                    setLottieVentana={setVerEjercicios}
+                />
+            )}
         </>
     );
 };

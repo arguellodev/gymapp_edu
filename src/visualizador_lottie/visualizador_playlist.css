@@ -1,0 +1,52 @@
+.lottie-gallery-container{
+    z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3); /* Gris claro semitransparente */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    gap: 20px;
+}
+.lottie-gallery-header{
+    background: #333;
+    color: white;
+    font-size: larger;
+    font-weight: 600;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    gap: 20px;
+}
+.lottie-animations-grid{
+    
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+    
+}
+
+.lottie-card{
+    border-radius: 15px;
+    display: flex;
+    padding: 15px;
+    color: white;
+    width: 45%;
+    background: rgba(0, 0, 0, 0.3); /* Gris claro semitransparente */
+}
+
+.lottie-animation-container{
+   
+}

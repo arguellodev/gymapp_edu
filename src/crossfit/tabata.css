@@ -25,7 +25,7 @@
   }
   
   .tabata-container {
-    padding: 2rem;
+    padding: 20px;
     background-color: var(--card-background);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
@@ -82,10 +82,11 @@
  
   .tabata-header {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: last baseline;
+    flex-direction: row;
+    justify-content: right;
+    align-items: flex-end;
     margin-bottom: 1rem;
+    gap: 20px;
   }
   
   .tabata-header h3 {
@@ -96,19 +97,26 @@
   .tabata-inputs {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 10px;
   }
   
-  .input-group {
+  .input-group-tabata {
     margin-bottom: 0.5rem;
+    display: flex;
+    
+    align-items: center;
+    justify-content:space-between;
+  
+    
   }
   
-  .input-group label {
+  .input-group-tabata label {
     display: block;
     margin-bottom: 0.75rem;
     color: var(--text-color);
     font-weight: 500;
     opacity: 0.7;
+    width: 50%
   }
   
   .input-with-buttons {
@@ -117,7 +125,9 @@
     border-radius: calc(var(--border-radius) / 2);
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    width: 150px;
+    
+    max-width: 120px;
+    
   }
   
   .adjust-btn {
@@ -135,9 +145,7 @@
     transition: var(--transition-smooth);
   }
   
-  .adjust-btn:hover {
-    background-color: rgba(52, 152, 219, 0.1);
-  }
+ 
   
   .intervals-input,
   .work-input,
@@ -247,15 +255,6 @@
     }
   }
   
-  @media (max-width: 767px) {
-    .input-group {
-      margin-bottom: 1rem;
-    }
-    
-    .tabata-container {
-      padding: 1.5rem;
-    }
-  }
 
 
   /* CSS PARA BOTONS DE MODO DE CRONOMETRO/ RUTINAS*/
@@ -320,7 +319,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   margin: 20px 0;
-  padding: 20px;
+  padding: 10px;
   font-family: 'Roboto', sans-serif;
   max-width: 600px;
 }
@@ -446,6 +445,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+
 }
 
 .tabata-exercise-item {
@@ -453,6 +453,7 @@
   border-bottom: 1px solid #eee;
   display: flex;
   padding: 12px 15px;
+  height: 220px;
 }
 
 .tabata-exercise-item:last-child {
@@ -477,3 +478,91 @@
   color: #333;
   font-size: 16px;
 }
+
+.cerrar-libreria{
+  
+  all: unset;
+  display: inline-block; /* Para asegurarse de que sigue comportándose como un botón */
+  cursor: pointer; /* Mantener el cursor de botón */
+  margin-top: 10px;
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 1.5rem;
+  z-index: 1;
+
+}
+
+/* Estilos para la sección de playlist de ejercicios */
+.playlist-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.playlist-btn {
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #357abd;
+}
+
+.edit-btn {
+  background-color: #50c878;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #3ca25f;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.add-playlist-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #006eff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.add-playlist-btn:hover {
+  background-color: #f57c00;
+}
+
+/* Asegurarse de que el contenedor de la librería tenga un buen z-index */

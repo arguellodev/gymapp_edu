@@ -7,7 +7,6 @@
     width: 100%;
     height: 100vh;
     margin: 0 0;
-    
     background: linear-gradient(90deg, #4b4b4b, #2e2e2e, #121212, #000000);
 
   }
@@ -102,27 +101,18 @@
   }
   
   .back-button {
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background 0.3s ease;
-    position: fixed;
+    all: unset;
+    display: inline-block; /* Para asegurarse de que sigue comportándose como un botón */
+    cursor: pointer; /* Mantener el cursor de botón */
+    position: absolute;
     top: 20px;
     left: 20px;
-    z-index: 2;
+    font-weight: 600;
+    font-size: 1.5rem;
+    z-index: 1;
   }
   
-  .back-button:hover {
-    background: #555;
-  }
+  
   
   /* Diseño responsive */
   @media (max-width: 768px) {
