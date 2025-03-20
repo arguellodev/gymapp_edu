@@ -7,6 +7,7 @@ const LottieAnimationPlaylist = ({ jsonPaths, setLottieVentana }) => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
+    console.log(jsonPaths);
   // Configurar Intersection Observer para detectar cuando el componente es visible
   useEffect(() => {
     const observer = new IntersectionObserver(

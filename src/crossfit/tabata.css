@@ -64,6 +64,8 @@
     transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    
   }
   
   .tabata-card::before {
@@ -226,7 +228,7 @@
     transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
-    margin-bottom: 100px;
+    
   }
   
   .boton-comenzar-tabata:hover {
@@ -240,6 +242,7 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     text-align: right;
     font-weight: 500;
+    
   }
   
   .tabata-summary p {
@@ -313,6 +316,9 @@
  }
 
 /* Estilos para el contenedor principal */
+.rutinas-tabata-section{
+  margin-bottom: 50px;
+}
 .rutinas-tabata-container {
   background-color: #f9f9f9;
   border-radius: 12px;
@@ -322,6 +328,7 @@
   padding: 10px;
   font-family: 'Roboto', sans-serif;
   max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 /* Estilos para el encabezado */

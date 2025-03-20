@@ -1,21 +1,362 @@
-{
-    "rutina_tabata": {
-      "nombre": "Rutina Tabata Full Body",
-      "descripcion": "Rutina de alta intensidad para trabajar todo el cuerpo en 4 minutos.",
-      "Tipo": "En casa",
-      "intervalos": 8,
-      "descanso": 10,
-      "trabajo":20,
-      "ejercicios": 
-      [
-        "Mountain Climber",
-        "Burpee",
-        "Jumping Jack",
-        "Push Up",
-        "Squat",
-        "Plank Jack",
-        "High Knee Taps",
-        "TRX Suspension Mountain Climber"
-      ]
-         }
+[
+  {
+    "nombre": "Rutina Tabata Full Body",
+    "descripcion": "Rutina de alta intensidad para trabajar todo el cuerpo en 4 minutos.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Mountain Climber",
+      "Burpee",
+      "Jumping Jack",
+      "Push Up",
+      "Squat",
+      "Plank Jack",
+      "High Knee Taps",
+      "TRX Suspension Mountain Climber"
+    ]
+  },
+  {
+    "nombre": "Tabata Cardio Explosivo",
+    "descripcion": "Rutina enfocada en ejercicios cardiovasculares de alto impacto.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Jumping Jack",
+      "Burpee",
+      "High Knee Taps",
+      "Jumping Lunges",
+      "Mountain Climber",
+      "Burpee with Push-Up",
+      "Squat Jump",
+      "Plank Jack"
+    ]
+  },
+  {
+    "nombre": "Tabata Tren Inferior",
+    "descripcion": "Rutina centrada en piernas y glúteos con ejercicios de alta intensidad.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Squat",
+      "Jumping Lunges",
+      "Squat Jump",
+      "Forward Lunges Alternating",
+      "Sumo Squat",
+      "Reverse Lunges Alternating",
+      "Calf Raise",
+      "Bulgarian Split Squat"
+    ]
+  },
+  {
+    "nombre": "Tabata Tren Superior",
+    "descripcion": "Rutina para trabajar brazos, pecho y espalda en intervalos cortos.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Push Up",
+      "TRX Suspension Row",
+      "Close Push Up",
+      "TRX Suspension Bicep Curl",
+      "TRX Suspension Tricep Extension",
+      "Regular Push Up",
+      "TRX Suspension Chest Press",
+      "Bodyweight Tricep Extension"
+    ]
+  },
+  {
+    "nombre": "Tabata Core Express",
+    "descripcion": "Rutina de alta intensidad enfocada en el trabajo de abdomen y core.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Plank",
+      "Mountain Climber",
+      "Bicycle Crunch",
+      "V Up",
+      "Plank Jack",
+      "Reverse Crunch",
+      "Dead Bug",
+      "Cocoons"
+    ]
+  },
+  {
+    "nombre": "Tabata Sin Impacto",
+    "descripcion": "Rutina de alta intensidad con ejercicios de bajo impacto en articulaciones.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Plank",
+      "Squat",
+      "Dead Bug",
+      "Push Up",
+      "TRX Suspension Row",
+      "Bird Dog",
+      "TRX Suspension Bicep Curl",
+      "Superman"
+    ]
+  },
+  {
+    "nombre": "Tabata Funcional",
+    "descripcion": "Rutina de movimientos funcionales para mejorar el rendimiento cotidiano.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Squat",
+      "Push Up",
+      "TRX Suspension Row",
+      "Mountain Climber",
+      "Burpee",
+      "TRX Suspension Lunge",
+      "TRX Suspension Mountain Climber",
+      "Jumping Jack"
+    ]
+  },
+  {
+    "nombre": "Tabata TRX",
+    "descripcion": "Rutina completa utilizando exclusivamente ejercicios con TRX.",
+    "Tipo": "Gimnasio",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "TRX Suspension Mountain Climber",
+      "TRX Suspension Row",
+      "TRX Suspension Squat",
+      "TRX Suspension Chest Press",
+      "TRX Suspension Lunge",
+      "TRX Suspension Bicep Curl",
+      "TRX Suspension Tricep Extension",
+      "TRX Suspension Push Up"
+    ]
+  },
+  {
+    "nombre": "Tabata Quemagrasas",
+    "descripcion": "Rutina diseñada para maximizar el consumo calórico y la quema de grasa.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Burpee",
+      "Mountain Climber",
+      "Jumping Jack",
+      "Squat Jump",
+      "Jumping Lunges",
+      "Burpee with Push-Up",
+      "High Knee Taps",
+      "Plank Jack"
+    ]
+  },
+  {
+    "nombre": "Tabata Push-Pull",
+    "descripcion": "Rutina alternando ejercicios de empuje y tracción para el tren superior.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Push Up",
+      "TRX Suspension Row",
+      "TRX Suspension Chest Press",
+      "TRX Suspension Bicep Curl",
+      "TRX Suspension Tricep Extension",
+      "Close Push Up",
+      "TRX Suspension Face Pull",
+      "Pike Push Up"
+    ]
+  },
+  {
+    "nombre": "Tabata Principiantes",
+    "descripcion": "Rutina con ejercicios básicos ideal para personas que comienzan con el entrenamiento HIIT.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Squat",
+      "Jumping Jack",
+      "Push Up",
+      "Mountain Climber",
+      "Air Squat",
+      "Simplified Jumping Jack",
+      "Knee Push Up",
+      "Dead Bug"
+    ]
+  },
+  {
+    "nombre": "Tabata Avanzado",
+    "descripcion": "Rutina con ejercicios complejos para personas con buena condición física.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Burpee with Push-Up",
+      "Jumping Lunges",
+      "TRX Suspension Push Up",
+      "Deficit Push Up",
+      "Pistol Squat",
+      "TRX Suspension Mountain Climber",
+      "Plyo Push Up",
+      "Bulgarian Split Jump"
+    ]
+  },
+  {
+    "nombre": "Tabata Push-Up Challenge",
+    "descripcion": "Rutina desafiante con diferentes variaciones de flexiones.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Push Up",
+      "Close Push Up",
+      "Wide Push Up",
+      "Decline Push Up",
+      "Incline Push Up",
+      "Diamond Push Up",
+      "Pike Push Up",
+      "TRX Suspension Push Up"
+    ]
+  },
+  {
+    "nombre": "Tabata Squat Challenge",
+    "descripcion": "Rutina desafiante con diferentes variaciones de sentadillas.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Squat",
+      "Sumo Squat",
+      "Squat Jump",
+      "Bulgarian Split Squat",
+      "TRX Suspension Squat",
+      "Split Squat",
+      "Overhead Squat",
+      "Squat to Calf Raise"
+    ]
+  },
+  {
+    "nombre": "Tabata Cardio-Core",
+    "descripcion": "Combinación de ejercicios cardiovasculares y de core para un entrenamiento completo.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Mountain Climber",
+      "Plank Jack",
+      "Bicycle Crunch",
+      "Jumping Jack",
+      "V Up",
+      "Burpee",
+      "Dead Bug",
+      "High Knee Taps"
+    ]
+  },
+  {
+    "nombre": "Tabata Piernas y Glúteos",
+    "descripcion": "Enfocado específicamente en tonificar y fortalecer piernas y glúteos.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Squat",
+      "Glute Bridge",
+      "Donkey Kick",
+      "Single Leg Glute Bridge",
+      "Split Squat",
+      "Squat Jump",
+      "Forward Lunges Alternating",
+      "Hip Thrust"
+    ]
+  },
+  {
+    "nombre": "Tabata Pliométrico",
+    "descripcion": "Rutina de alta intensidad con ejercicios explosivos para mejorar potencia.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Squat Jump",
+      "Burpee",
+      "Plyo Push Up",
+      "Jumping Lunges",
+      "Bulgarian Split Jump",
+      "Plyo Clap Push Up",
+      "Reverse Lunge Jump Knee Drive",
+      "Sumo Squat Jump"
+    ]
+  },
+  {
+    "nombre": "Tabata Core Avanzado",
+    "descripcion": "Rutina de alta intensidad con ejercicios de core de nivel avanzado.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "V Up",
+      "TRX Suspension AB Rollout",
+      "TRX Suspension Body Saw",
+      "AB Rollout",
+      "TRX Suspension Tuck Knee",
+      "Mountain Climber",
+      "Hanging Leg Raise",
+      "Cocoons"
+    ]
+  },
+  {
+    "nombre": "Tabata Combat",
+    "descripcion": "Rutina inspirada en movimientos de artes marciales y boxeo.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Punches",
+      "Squat",
+      "Running in Place and Punches",
+      "Mountain Climber",
+      "High Knee Taps",
+      "Push Up",
+      "Jumping Jack",
+      "Burpee"
+    ]
+  },
+  {
+    "nombre": "Tabata Metabólico",
+    "descripcion": "Rutina diseñada para maximizar el efecto post-quema y aceleración metabólica.",
+    "Tipo": "En casa",
+    "intervalos": 8,
+    "descanso": 10,
+    "trabajo": 20,
+    "ejercicios": [
+      "Burpee with Push-Up",
+      "Jumping Lunges",
+      "Mountain Climber",
+      "Squat Jump",
+      "TRX Suspension Push Up",
+      "High Knee Taps",
+      "TRX Suspension Mountain Climber",
+      "Bulgarian Split Jump"
+    ]
   }
+]

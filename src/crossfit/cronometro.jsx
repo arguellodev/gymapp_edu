@@ -13,6 +13,11 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
   const [countUp, setCountUp] = useState(false); // Estado para determinar si contamos hacia arriba
   const [maxTime, setMaxTime] = useState(0); // Tiempo máximo para el modo fortime
   const intervalRef = useRef(null);
+  
+  // Nuevos estados para la cuenta regresiva inicial
+  const [showCountdown, setShowCountdown] = useState(false);
+  const [countdownValue, setCountdownValue] = useState(3);
+  const countdownRef = useRef(null);
 
   // Convertir minutos a segundos
   const minutesToSeconds = (minutes) => Math.floor(minutes * 60);
@@ -148,9 +153,35 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
     return () => clearInterval(intervalRef.current);
   }, [isActive, isPaused, isRestPhase, currentWorkoutIndex, workouts, countUp, maxTime, type]);
 
+  // Efecto para la cuenta regresiva inicial
+  useEffect(() => {
+    if (showCountdown) {
+      countdownRef.current = setInterval(() => {
+        setCountdownValue((prev) => {
+          if (prev <= 1) {
+            // Cuando la cuenta regresiva llega a 0, limpiar intervalo y comenzar el temporizador real
+            clearInterval(countdownRef.current);
+            setShowCountdown(false);
+            setIsActive(true);
+            setIsPaused(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+      }
+    };
+  }, [showCountdown]);
+
   const startTimer = () => {
-    setIsActive(true);
-    setIsPaused(false);
+    // En lugar de iniciar el temporizador, ahora iniciamos la cuenta regresiva
+    setShowCountdown(true);
+    setCountdownValue(3);
   };
 
   const pauseTimer = () => {
@@ -196,6 +227,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
       
       setIsActive(false);
       setIsPaused(false);
+      setShowCountdown(false);
     }
   };
 
@@ -238,7 +270,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
       <div className="timer-container">
         <h2 className='titulo-seleccion-crossfit'>{type}</h2>
        
-        {exercisesList !== null && exercisesList.length > 0 &&
+        {exercisesList && exercisesList.length > 0 &&
         <div className='tabata-lottie-container' key={currentWorkoutIndex}>
           <p>{exercisesList[currentWorkoutIndex]}</p>
           <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex]}.json`} />
@@ -258,7 +290,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
             />
             <circle
               className="progress-ring-circle"
-              stroke={isRestPhase ? "#4CAF50" : "#ff5e3a"}
+              stroke={isRestPhase ? "#4CAF50" : "#0b7dda"}
               strokeWidth="12"
               strokeDasharray={`${2 * Math.PI * 120}`}
               strokeDashoffset={`${2 * Math.PI * 120 * (1 - percentage / 100)}`}
@@ -269,16 +301,26 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
             />
           </svg>
           <div className="timer-display">
-            <div className="time">{formattedTime}</div>
-            <div className="timer-label">
-              {getTimerLabel()}
-            </div>
+            {showCountdown ? (
+              <div className="countdown-display">
+                <div className="countdown-number" key={countdownValue}>
+                  {countdownValue}
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="time">{formattedTime}</div>
+                <div className="timer-label">
+                  {getTimerLabel()}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       <div className="timer-controls">
-        {!isActive && !isPaused ? (
+        {!isActive && !isPaused && !showCountdown ? (
           <button className="timer-button start" onClick={startTimer}>
             <span className="button-icon">▶</span>
             <span className="button-text">Iniciar</span>
@@ -288,24 +330,28 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
             <span className="button-icon">▶</span>
             <span className="button-text">Reanudar</span>
           </button>
-        ) : (
+        ) : !showCountdown ? (
           <button className="timer-button pause" onClick={pauseTimer}>
             <span className="button-icon">II</span>
             <span className="button-text">Pausa</span>
           </button>
+        ) : (
+          <button className="timer-button" disabled>
+            <span className="button-text">Preparando...</span>
+          </button>
         )}
-        <button className="timer-button reset" onClick={resetTimer}>
+        <button className="timer-button reset" onClick={resetTimer} disabled={showCountdown}>
           <span className="button-icon">↺</span>
           <span className="button-text">Resetear</span>
         </button>
       </div>
       
       {/* Corregir la condición para mostrar el botón contador o el texto */}
-      {((type === "AMRAP" || type === 'fortime') && !isRestPhase && isActive && !isPaused) ? (
+      {((type === "AMRAP" || type === 'fortime') && !isRestPhase && isActive && !isPaused && !showCountdown) ? (
         <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>
           Contador de rondas: {contador}
         </button>
-      ) : type === "EMOM" ? (
+      ) : type === "EMOM" && !showCountdown ? (
         <p className='texto-contador-rondas'>
           Ronda {contador + 1}, Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
         </p>

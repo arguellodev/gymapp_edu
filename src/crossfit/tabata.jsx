@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import './tabata.css';
 import WorkoutTimer from './cronometro';
-import rutina1 from '../data/rutinas_crossfit/tabata/tabata1';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import LottieAnimationPlaylist from '../visualizador_lottie/visualizador_playlist';
 import LottieAnimation from '../visualizador_lottie/visualizador';
 import Libreria from '../libreria/libreria';
+
+// Import tabata data - this will be updated to handle an array of tabatas
+import rutinasTabataData from '../data/rutinas_crossfit/tabata/tabata1';
 
 const Tabata = ({ setIndiceAtras }) => {
     const [comenzar, setComenzar] = useState(false);
     const [contador, setContador] = useState(0);
     const [modo, setModo] = useState('Cronometro');
     const [rutinaSeleccionada, setRutinaSeleccionada] = useState(null);
-    const [rutinasDisponibles, setRutinasDisponibles] = useState([rutina1]);
+    const [rutinasDisponibles, setRutinasDisponibles] = useState([]);
     const [mostrarLibreria, setMostrarLibreria] = useState(false);
     const [verEjercicios, setVerEjercicios] = useState(false);
     const [tabataActual, setTabataActual] = useState(null);
     const [error, setError] = useState(null);
+    const [ejerciciosSetlist, setEjerciciosSetlist] = useState(null);
     
     const [tabatas, setTabatas] = useState([
         { 
@@ -29,22 +32,50 @@ const Tabata = ({ setIndiceAtras }) => {
         }
     ]);
 
-    const agregarEjercicio = (ejercicio) => {
+    // Load tabata routines from JSON
+    useEffect(() => {
+        try {
+            // Transform the imported data to match the expected structure
+            const formattedRutinas = Array.isArray(rutinasTabataData) 
+                ? rutinasTabataData.map(rutina => ({
+                    rutina_tabata: {
+                        nombre: rutina.nombre,
+                        descripcion: rutina.descripcion,
+                        Tipo: rutina.Tipo,
+                        intervalos: rutina.intervalos,
+                        descanso: rutina.descanso,
+                        trabajo: rutina.trabajo,
+                        ejercicios: rutina.ejercicios
+                    }
+                }))
+                : [{ rutina_tabata: rutinasTabataData }];
+
+            setRutinasDisponibles(formattedRutinas);
+        } catch (error) {
+            console.error("Error loading tabata routines:", error);
+            setError("Error al cargar las rutinas de tabata.");
+        }
+    }, []);
+
+    // Memoize calculations to improve performance
+    const duracionTotal = useMemo(() => calcularDuracionTotal(tabatas), [tabatas]);
+    
+    const agregarEjercicio = useCallback((ejercicio) => {
         if (!tabataActual) return;
         
         setTabatas(prevTabatas => {
             return prevTabatas.map(tabata => {
                 if (tabata.id === tabataActual) {
-                    // Comprobamos si el ejercicio ya está en la playlist
+                    // Check if exercise already exists in playlist
                     const ejercicioIndex = tabata.playlistEjercicios.findIndex(e => e.nombre === ejercicio);
                     
                     let nuevaPlaylist;
                     if (ejercicioIndex !== -1) {
-                        // Si el ejercicio ya está, lo eliminamos
+                        // If exercise exists, remove it
                         nuevaPlaylist = [...tabata.playlistEjercicios];
                         nuevaPlaylist.splice(ejercicioIndex, 1);
                     } else {
-                        // Si no está, lo agregamos
+                        // If not, add it
                         const nuevoEjercicio = {
                             id: `ejercicio-${Date.now()}`,
                             nombre: ejercicio
@@ -56,9 +87,9 @@ const Tabata = ({ setIndiceAtras }) => {
                 return tabata;
             });
         });
-    };
+    }, [tabataActual]);
 
-    // Resetear estados relevantes al cambiar de modo
+    // Reset relevant states when changing mode
     useEffect(() => {
         if (modo === 'Cronometro') {
             setRutinaSeleccionada(null);
@@ -66,7 +97,7 @@ const Tabata = ({ setIndiceAtras }) => {
         setError(null);
     }, [modo]);
 
-    // Limpiar mensaje de error después de 5 segundos
+    // Clear error message after 5 seconds
     useEffect(() => {
         if (error) {
             const timer = setTimeout(() => {
@@ -76,10 +107,10 @@ const Tabata = ({ setIndiceAtras }) => {
         }
     }, [error]);
 
-    const addTabata = () => {
+    const addTabata = useCallback(() => {
         const newTabataId = tabatas.length + 1;
-        setTabatas([
-            ...tabatas,
+        setTabatas(prevTabatas => [
+            ...prevTabatas,
             {
                 id: newTabataId,
                 intervals: 8,
@@ -89,102 +120,74 @@ const Tabata = ({ setIndiceAtras }) => {
                 playlistEjercicios: []
             }
         ]);
-    };
+    }, [tabatas.length]);
 
-    const abrirLibreria = (tabataId) => {
+    const abrirLibreria = useCallback((tabataId) => {
         setTabataActual(tabataId);
         setMostrarLibreria(true);
-    };
+    }, []);
 
-    const eliminarPlaylist = (tabataId) => {
-        setTabatas(prevTabatas => {
-            return prevTabatas.map(tabata => {
-                if (tabata.id === tabataId) {
-                    return { ...tabata, playlistEjercicios: [] };
-                }
-                return tabata;
-            });
-        });
-    };
+    const eliminarPlaylist = useCallback((tabataId) => {
+        setTabatas(prevTabatas => 
+            prevTabatas.map(tabata => 
+                tabata.id === tabataId 
+                    ? { ...tabata, playlistEjercicios: [] } 
+                    : tabata
+            )
+        );
+    }, []);
 
-    const abrirVisualizadorEjercicios = (tabataId) => {
+    const abrirVisualizadorEjercicios = useCallback((tabataId) => {
         setTabataActual(tabataId);
         setVerEjercicios(true);
-    };
+    }, []);
 
-    const updateIntervals = (id, changeType) => {
-        const updatedTabatas = tabatas.map(tabata => {
-            if (tabata.id === id) {
-                const newIntervals = changeType === 'increase' 
-                    ? tabata.intervals + 1 
-                    : Math.max(1, tabata.intervals - 1);
-                return { ...tabata, intervals: newIntervals };
-            }
-            return tabata;
+    const updateTabataParam = useCallback((id, paramType, changeType) => {
+        const paramConfig = {
+            intervals: { step: 1, min: 1 },
+            workTime: { step: 5, min: 5 },
+            restTime: { step: 5, min: 0 },
+            recoveryTime: { step: 10, min: 0 }
+        };
+
+        const config = paramConfig[paramType];
+        if (!config) return;
+
+        setTabatas(prevTabatas => 
+            prevTabatas.map(tabata => {
+                if (tabata.id === id) {
+                    const currentValue = tabata[paramType];
+                    const newValue = changeType === 'increase' 
+                        ? currentValue + config.step 
+                        : Math.max(config.min, currentValue - config.step);
+                    return { ...tabata, [paramType]: newValue };
+                }
+                return tabata;
+            })
+        );
+    }, []);
+
+    const removeTabata = useCallback((id) => {
+        setTabatas(prevTabatas => {
+            // First filter out the tabata to be removed
+            const filteredTabatas = prevTabatas.filter(tabata => tabata.id !== id);
+            
+            // Then update IDs to be consecutive
+            return filteredTabatas.map((tabata, index) => ({
+                ...tabata,
+                id: index + 1
+            }));
         });
-        setTabatas(updatedTabatas);
-    };
+    }, []);
 
-    const updateWorkTime = (id, changeType) => {
-        const updatedTabatas = tabatas.map(tabata => {
-            if (tabata.id === id) {
-                const newWorkTime = changeType === 'increase' 
-                    ? tabata.workTime + 5 
-                    : Math.max(5, tabata.workTime - 5);
-                return { ...tabata, workTime: newWorkTime };
-            }
-            return tabata;
-        });
-        setTabatas(updatedTabatas);
-    };
-
-    const updateRestTime = (id, changeType) => {
-        const updatedTabatas = tabatas.map(tabata => {
-            if (tabata.id === id) {
-                const newRestTime = changeType === 'increase' 
-                    ? tabata.restTime + 5 
-                    : Math.max(0, tabata.restTime - 5);
-                return { ...tabata, restTime: newRestTime };
-            }
-            return tabata;
-        });
-        setTabatas(updatedTabatas);
-    };
-
-    const updateRecoveryTime = (id, changeType) => {
-        const updatedTabatas = tabatas.map(tabata => {
-            if (tabata.id === id) {
-                const newRecoveryTime = changeType === 'increase' 
-                    ? tabata.recoveryTime + 10 
-                    : Math.max(0, tabata.recoveryTime - 10);
-                return { ...tabata, recoveryTime: newRecoveryTime };
-            }
-            return tabata;
-        });
-        setTabatas(updatedTabatas);
-    };
-
-    const removeTabata = (id) => {
-        // Primero filtrar el tabata que se va a eliminar
-        const filteredTabatas = tabatas.filter(tabata => tabata.id !== id);
-        
-        // Luego actualizar los IDs para que sean consecutivos
-        const updatedTabatas = filteredTabatas.map((tabata, index) => ({
-            ...tabata,
-            id: index + 1
-        }));
-        
-        setTabatas(updatedTabatas);
-    };
-
-    // Validar que todos los tabatas tienen el número correcto de ejercicios
-    const validarEjercicios = () => {
-        // En modo Rutinas, no necesitamos validar
+    // Validate that all tabatas have the correct number of exercises
+    const validarEjercicios = useCallback(() => {
+        // In Rutinas mode, we don't need to validate
         if (modo === 'Rutinas' && rutinaSeleccionada) {
             return true;
         }
         
-        // Verificar cada tabata
+        // Check each tabata
         for (const tabata of tabatas) {
             if (tabata.playlistEjercicios.length > 0 && tabata.playlistEjercicios.length !== tabata.intervals) {
                 setError(`Tabata ${tabata.id}: Necesitas ${tabata.intervals} ejercicios, tienes ${tabata.playlistEjercicios.length}`);
@@ -192,54 +195,54 @@ const Tabata = ({ setIndiceAtras }) => {
             }
         }
         return true;
-    };
+    }, [modo, rutinaSeleccionada, tabatas]);
 
-    // Manejar el inicio del tabata con validación
-    const handleStartTabata = () => {
+    // Handle starting tabata with validation
+    const handleStartTabata = useCallback(() => {
         if (validarEjercicios()) {
             setError(null);
             setComenzar(true);
         }
-    };
+    }, [validarEjercicios]);
 
-    // Convertir tabatas a formato de workouts para el temporizador
-    const prepareWorkoutsForTimer = () => {
-        // Si hay una rutina seleccionada, usar su configuración
+    // Convert tabatas to workout format for timer
+    const prepareWorkoutsForTimer = useCallback(() => {
+        // If a routine is selected, use its configuration
         if (rutinaSeleccionada) {
             const rutina = rutinaSeleccionada.rutina_tabata;
             return Array(rutina.intervalos).fill().map((_, i) => ({
                 id: i + 1,
-                time: rutina.trabajo / 60, // Convertir segundos a minutos
-                restTime: rutina.descanso / 60, // Convertir segundos a minutos
+                time: rutina.trabajo / 60, // Convert seconds to minutes
+                restTime: rutina.descanso / 60, // Convert seconds to minutes
                 isWork: true,
                 interval: i + 1,
                 tabataNumber: 1
             }));
         }
         
-        // Si no hay rutina seleccionada, usar la configuración manual de tabatas
+        // If no routine is selected, use manual tabata configuration
         let workouts = [];
         let currentId = 1;
 
         tabatas.forEach((tabata, tabataIndex) => {
-            // Agregar intervalos de trabajo y descanso
+            // Add work and rest intervals
             for (let i = 0; i < tabata.intervals; i++) {
-                // Agregar intervalo de trabajo
+                // Add work interval
                 workouts.push({
                     id: currentId++,
-                    time: tabata.workTime / 60, // Convertir segundos a minutos
-                    restTime: tabata.restTime / 60, // Convertir segundos a minutos
+                    time: tabata.workTime / 60, // Convert seconds to minutes
+                    restTime: tabata.restTime / 60, // Convert seconds to minutes
                     isWork: true,
                     interval: i + 1,
                     tabataNumber: tabata.id
                 });
             }
 
-            // Agregar tiempo de recuperación si no es el último tabata
+            // Add recovery time if not the last tabata
             if (tabataIndex < tabatas.length - 1 && tabata.recoveryTime > 0) {
                 workouts.push({
                     id: currentId++,
-                    time: tabata.recoveryTime / 60, // Convertir segundos a minutos
+                    time: tabata.recoveryTime / 60, // Convert seconds to minutes
                     restTime: 0,
                     isRecovery: true,
                     tabataNumber: tabata.id
@@ -248,47 +251,49 @@ const Tabata = ({ setIndiceAtras }) => {
         });
        
         return workouts;
-    };
+    }, [rutinaSeleccionada, tabatas]);
 
-    // Preparar lista de ejercicios para pasar al temporizador
-    const prepareExercisesForTimer = () => {
+    // Prepare exercise list for timer
+    const prepareExercisesForTimer = useCallback(() => {
         if (rutinaSeleccionada) {
             return rutinaSeleccionada.rutina_tabata.ejercicios || [];
         }
     
-        // Si no hay rutina seleccionada, devolver un array de arrays de nombres de ejercicios
-        const exercisesByTabata = Object.values(
-            tabatas.reduce((acc, tabata) => {
-                acc[tabata.id] = tabata.playlistEjercicios.map(e => e.nombre);
-                return acc;
-            }, {})
-        );
+        // If no routine is selected, return an array of exercise name arrays
+        return tabatas.reduce((acc, tabata) => {
+            const exercises = tabata.playlistEjercicios.map(e => e.nombre);
+            return [...acc, ...exercises];
+        }, []);
+    }, [rutinaSeleccionada, tabatas]);
     
-        return exercisesByTabata.flat();
-    };
-    
-    const handleStartRutina = (rutina) => {
+    const handleStartRutina = useCallback((rutina) => {
         setRutinaSeleccionada(rutina);
         setComenzar(true);
-    };
+    }, []);
 
-    // Calcular la duración total de un tabata
-    const calcularDuracionTabata = (tabata) => {
+    // Calculate total duration of a tabata
+    function calcularDuracionTabata(tabata) {
         return ((tabata.workTime + tabata.restTime) * tabata.intervals) / 60;
-    };
+    }
 
-    // Calcular la duración total de todos los tabatas
-    const calcularDuracionTotal = () => {
+    // Calculate total duration of all tabatas
+    function calcularDuracionTotal(tabatasArray) {
         let duracionTotal = 0;
-        tabatas.forEach((tabata, index) => {
+        tabatasArray.forEach((tabata, index) => {
             duracionTotal += calcularDuracionTabata(tabata);
-            // Añadir tiempo de recuperación si no es el último tabata
-            if (index < tabatas.length - 1) {
+            // Add recovery time if not the last tabata
+            if (index < tabatasArray.length - 1) {
                 duracionTotal += tabata.recoveryTime / 60;
             }
         });
         return duracionTotal.toFixed(2);
-    };
+    }
+
+    // Handler for showing exercise setlist
+    const handleShowExercises = useCallback((exercisesList) => {
+        setEjerciciosSetlist(exercisesList);
+        setVerEjercicios(true);
+    }, []);
 
     return (
         <>
@@ -303,13 +308,13 @@ const Tabata = ({ setIndiceAtras }) => {
                     </button>
                     <button 
                         className={modo === 'Rutinas' ? 'boton-modo-activado': 'boton-modo'}
-                        onClick={() => setModo('Rutinas')}
+                        onClick={() => {setModo('Rutinas'); setTabataActual(null)}}
                     >
                         Rutinas 
                     </button>
                 </div>
                 
-                {/* Mostrar mensaje de error si existe */}
+                {/* Show error message if exists */}
                 {error && (
                     <div className="error-message">
                         ⚠️ {error}
@@ -337,7 +342,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                         <div className="input-with-buttons">
                                             <button 
                                                 className="adjust-btn" 
-                                                onClick={() => updateIntervals(tabata.id, 'decrease')}
+                                                onClick={() => updateTabataParam(tabata.id, 'intervals', 'decrease')}
                                             >
                                                 -
                                             </button>
@@ -351,7 +356,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                             />
                                             <button 
                                                 className="adjust-btn" 
-                                                onClick={() => updateIntervals(tabata.id, 'increase')}
+                                                onClick={() => updateTabataParam(tabata.id, 'intervals', 'increase')}
                                             >
                                                 +
                                             </button>
@@ -362,7 +367,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                         <div className="input-with-buttons">
                                             <button 
                                                 className="adjust-btn" 
-                                                onClick={() => updateWorkTime(tabata.id, 'decrease')}
+                                                onClick={() => updateTabataParam(tabata.id, 'workTime', 'decrease')}
                                             >
                                                 -
                                             </button>
@@ -377,7 +382,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                             />
                                             <button 
                                                 className="adjust-btn"
-                                                onClick={() => updateWorkTime(tabata.id, 'increase')}
+                                                onClick={() => updateTabataParam(tabata.id, 'workTime', 'increase')}
                                             >
                                                 +
                                             </button>
@@ -389,7 +394,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                         <div className="input-with-buttons">
                                             <button 
                                                 className="adjust-btn" 
-                                                onClick={() => updateRestTime(tabata.id, 'decrease')}
+                                                onClick={() => updateTabataParam(tabata.id, 'restTime', 'decrease')}
                                             >
                                                 -
                                             </button>
@@ -404,7 +409,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                             />
                                             <button 
                                                 className="adjust-btn" 
-                                                onClick={() => updateRestTime(tabata.id, 'increase')}
+                                                onClick={() => updateTabataParam(tabata.id, 'restTime', 'increase')}
                                             >
                                                 +
                                             </button>
@@ -416,7 +421,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                             <div className="input-with-buttons">
                                                 <button 
                                                     className="adjust-btn" 
-                                                    onClick={() => updateRecoveryTime(tabata.id, 'decrease')}
+                                                    onClick={() => updateTabataParam(tabata.id, 'recoveryTime', 'decrease')}
                                                 >
                                                     -
                                                 </button>
@@ -431,7 +436,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                                 />
                                                 <button 
                                                     className="adjust-btn" 
-                                                    onClick={() => updateRecoveryTime(tabata.id, 'increase')}
+                                                    onClick={() => updateTabataParam(tabata.id, 'recoveryTime', 'increase')}
                                                 >
                                                     +
                                                 </button>
@@ -442,11 +447,9 @@ const Tabata = ({ setIndiceAtras }) => {
                                 <div className="tabata-summary">
                                     <p>Duración total: {calcularDuracionTabata(tabata)} minutos</p>
                                     <p className={tabata.playlistEjercicios.length === tabata.intervals ? "status-ok" : "status-warning"}>
-                                    {tabata.playlistEjercicios.length > 0 && (
-  `Ejercicios: ${tabata.playlistEjercicios.length}/${tabata.intervals}`
-)}
-
-                                        
+                                        {tabata.playlistEjercicios.length > 0 && (
+                                            `Ejercicios: ${tabata.playlistEjercicios.length}/${tabata.intervals}`
+                                        )}
                                     </p>
                                 </div>
                                 {tabata.playlistEjercicios.length > 0 ? (
@@ -509,7 +512,6 @@ const Tabata = ({ setIndiceAtras }) => {
                                     <div className="tabata-info-item">
                                         <span className="tabata-info-label">Intervalos:</span>
                                         <span className="tabata-info-value">{rutina.rutina_tabata.intervalos}</span>
-                                        
                                     </div>
                                     <div className="tabata-info-item">
                                         <span className="tabata-info-label">Trabajo:</span>
@@ -520,7 +522,7 @@ const Tabata = ({ setIndiceAtras }) => {
                                         <span className="tabata-info-value">{rutina.rutina_tabata.descanso}s</span>
                                     </div>
                                     <div className="tabata-info-item">
-                                        <span className="tabata-info-label">Duración Total:</span>
+                                        <span className="tabata-info-label">Duración:</span>
                                         <span className="tabata-info-value">
                                             {((rutina.rutina_tabata.trabajo + rutina.rutina_tabata.descanso) * 
                                               rutina.rutina_tabata.intervalos / 60).toFixed(2)} min
@@ -530,35 +532,17 @@ const Tabata = ({ setIndiceAtras }) => {
                                 
                                 <div className="tabata-exercises-container">
                                     <button 
-                                        className="tabata-exercises-toggle" 
-                                        onClick={(e) => {
-                                            const exercisesList = e.currentTarget.nextElementSibling;
-                                            exercisesList.classList.toggle('expanded');
-                                            e.currentTarget.classList.toggle('active');
-                                        }}
+                                        className='playlist-btn view-btn'
+                                        onClick={() => handleShowExercises(rutina.rutina_tabata.ejercicios)}
                                     >
-                                        <span>Ver Ejercicios</span>
-                                        <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                            <path d="M7 10l5 5 5-5z" />
-                                        </svg>
+                                        Ver ejercicios
                                     </button>
                                     <button 
-                                        className="boton-comenzar-rutina"
+                                        className="boton-comenzar-tabata"
                                         onClick={() => handleStartRutina(rutina)}
                                     >
                                         Iniciar Rutina
                                     </button>
-                                    <div className="tabata-exercises">
-                                        <ul className="tabata-exercise-list">
-                                            {rutina.rutina_tabata.ejercicios.map((ejercicio, idx) => (
-                                                <li key={idx} className="tabata-exercise-item">
-                                                    <span className="exercise-number">{idx + 1}</span>
-                                                    <span className="exercise-name">{ejercicio}</span>
-                                                    <LottieAnimation jsonPath={`./Ejerciciosall/${ejercicio}.json`}/>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -592,9 +576,18 @@ const Tabata = ({ setIndiceAtras }) => {
                 </div>
             )}
             
-            {verEjercicios && tabataActual && (
+            {verEjercicios && (
+                tabataActual ?
                 <LottieAnimationPlaylist 
                     jsonPaths={tabatas.find(t => t.id === tabataActual).playlistEjercicios} 
+                    setLottieVentana={setVerEjercicios}
+                />
+                : ejerciciosSetlist !== null && 
+                <LottieAnimationPlaylist 
+                    jsonPaths={ejerciciosSetlist.map((nombre, index) => ({
+                        id: index + 1,
+                        nombre: nombre
+                    }))} 
                     setLottieVentana={setVerEjercicios}
                 />
             )}

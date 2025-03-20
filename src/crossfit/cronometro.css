@@ -267,3 +267,34 @@
   border-radius: 12px;
 
 }
+
+/* Estilos para la cuenta regresiva */
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.countdown-number {
+  font-size: 120px;
+  font-weight: bold;
+  color: #0b7dda;
+  animation: countdownZoom 1s ease-in-out;
+}
+
+@keyframes countdownZoom {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
