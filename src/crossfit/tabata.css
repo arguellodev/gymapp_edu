@@ -325,12 +325,12 @@
 }
 
 /* Estilos para el encabezado */
-.tabata-header {
+.rutinas-tabata-header {
   margin-bottom: 20px;
   position: relative;
 }
 
-.tabata-header h2 {
+.rutinas-tabata-header h2 {
   color: #333;
   font-size: 24px;
   font-weight: 700;
@@ -338,14 +338,14 @@
   margin-top: 0;
 }
 
-.tabata-description {
+.rutinas-tabata-description {
   color: #666;
   font-size: 16px;
   line-height: 1.4;
   margin-bottom: 12px;
 }
 
-.tabata-badge {
+.rutinas-tabata-badge {
   background-color: #ff5722;
   border-radius: 20px;
   color: white;
@@ -566,3 +566,31 @@
 }
 
 /* Asegurarse de que el contenedor de la librería tenga un buen z-index */
+
+/* Estilos para mensajes de error */
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border-left: 4px solid #f44336;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Estilos para indicadores de estado */
+.status-warning {
+  color: #ff6f00;
+  font-weight: 500;
+}
+
+.status-ok {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

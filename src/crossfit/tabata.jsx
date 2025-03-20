@@ -4,8 +4,6 @@ import WorkoutTimer from './cronometro';
 import rutina1 from '../data/rutinas_crossfit/tabata/tabata1';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import LottieAnimationPlaylist from '../visualizador_lottie/visualizador_playlist';
-// Importar otras rutinas si es necesario
-// import rutina2 from '../data/rutinas_crossfit/tabata/tabata2';
 import LottieAnimation from '../visualizador_lottie/visualizador';
 import Libreria from '../libreria/libreria';
 
@@ -18,6 +16,7 @@ const Tabata = ({ setIndiceAtras }) => {
     const [mostrarLibreria, setMostrarLibreria] = useState(false);
     const [verEjercicios, setVerEjercicios] = useState(false);
     const [tabataActual, setTabataActual] = useState(null);
+    const [error, setError] = useState(null);
     
     const [tabatas, setTabatas] = useState([
         { 
@@ -64,7 +63,18 @@ const Tabata = ({ setIndiceAtras }) => {
         if (modo === 'Cronometro') {
             setRutinaSeleccionada(null);
         }
+        setError(null);
     }, [modo]);
+
+    // Limpiar mensaje de error después de 5 segundos
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     const addTabata = () => {
         const newTabataId = tabatas.length + 1;
@@ -167,6 +177,31 @@ const Tabata = ({ setIndiceAtras }) => {
         setTabatas(updatedTabatas);
     };
 
+    // Validar que todos los tabatas tienen el número correcto de ejercicios
+    const validarEjercicios = () => {
+        // En modo Rutinas, no necesitamos validar
+        if (modo === 'Rutinas' && rutinaSeleccionada) {
+            return true;
+        }
+        
+        // Verificar cada tabata
+        for (const tabata of tabatas) {
+            if (tabata.playlistEjercicios.length > 0 && tabata.playlistEjercicios.length !== tabata.intervals) {
+                setError(`Tabata ${tabata.id}: Necesitas ${tabata.intervals} ejercicios, tienes ${tabata.playlistEjercicios.length}`);
+                return false;
+            }
+        }
+        return true;
+    };
+
+    // Manejar el inicio del tabata con validación
+    const handleStartTabata = () => {
+        if (validarEjercicios()) {
+            setError(null);
+            setComenzar(true);
+        }
+    };
+
     // Convertir tabatas a formato de workouts para el temporizador
     const prepareWorkoutsForTimer = () => {
         // Si hay una rutina seleccionada, usar su configuración
@@ -229,11 +264,9 @@ const Tabata = ({ setIndiceAtras }) => {
             }, {})
         );
     
-        console.log(exercisesByTabata);
-        return exercisesByTabata.flat(); // 🔹 Convertir a un solo array si se necesita
+        return exercisesByTabata.flat();
     };
     
-
     const handleStartRutina = (rutina) => {
         setRutinaSeleccionada(rutina);
         setComenzar(true);
@@ -275,6 +308,13 @@ const Tabata = ({ setIndiceAtras }) => {
                         Rutinas 
                     </button>
                 </div>
+                
+                {/* Mostrar mensaje de error si existe */}
+                {error && (
+                    <div className="error-message">
+                        ⚠️ {error}
+                    </div>
+                )}
                 
                 {modo === 'Cronometro' ? (
                     <div>
@@ -337,7 +377,6 @@ const Tabata = ({ setIndiceAtras }) => {
                                             />
                                             <button 
                                                 className="adjust-btn"
-
                                                 onClick={() => updateWorkTime(tabata.id, 'increase')}
                                             >
                                                 +
@@ -402,6 +441,13 @@ const Tabata = ({ setIndiceAtras }) => {
                                 </div>
                                 <div className="tabata-summary">
                                     <p>Duración total: {calcularDuracionTabata(tabata)} minutos</p>
+                                    <p className={tabata.playlistEjercicios.length === tabata.intervals ? "status-ok" : "status-warning"}>
+                                    {tabata.playlistEjercicios.length > 0 && (
+  `Ejercicios: ${tabata.playlistEjercicios.length}/${tabata.intervals}`
+)}
+
+                                        
+                                    </p>
                                 </div>
                                 {tabata.playlistEjercicios.length > 0 ? (
                                     <div className="playlist-controls">
@@ -444,19 +490,19 @@ const Tabata = ({ setIndiceAtras }) => {
                         
                         <button 
                             className='boton-comenzar-tabata' 
-                            onClick={() => {setComenzar(true)}}
+                            onClick={handleStartTabata}
                         > 
                             Comenzar Tabata
                         </button>
                     </div>
                 ) : (
-                    <div className="rutinas-container">
+                    <div className="rutinas-tabata-section">
                         {rutinasDisponibles.map((rutina, index) => (
                             <div key={index} className='rutinas-tabata-container'>
-                                <div className="tabata-header">
+                                <div className="rutinas-tabata-header">
                                     <h2>{rutina.rutina_tabata.nombre}</h2>
-                                    <p className="tabata-description">{rutina.rutina_tabata.descripcion}</p>
-                                    <div className="tabata-badge">{rutina.rutina_tabata.Tipo}</div>
+                                    <p className="rutinas-tabata-description">{rutina.rutina_tabata.descripcion}</p>
+                                    <div className="rutinas-tabata-badge">{rutina.rutina_tabata.Tipo}</div>
                                 </div>
                                 
                                 <div className="tabata-info">
@@ -529,9 +575,7 @@ const Tabata = ({ setIndiceAtras }) => {
                     setComenzar={setComenzar}
                     exercisesList={prepareExercisesForTimer()}
                 />
-                
-            )
-            }
+            )}
             
             {mostrarLibreria && (
                 <div className='libreria-overlay'>
