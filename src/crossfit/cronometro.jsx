@@ -238,7 +238,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
       <div className="timer-container">
         <h2 className='titulo-seleccion-crossfit'>{type}</h2>
        
-        {exercisesList !== null || exercisesList.length > 0 &&
+        {exercisesList !== null && exercisesList.length > 0 &&
         <div className='tabata-lottie-container' key={currentWorkoutIndex}>
           <p>{exercisesList[currentWorkoutIndex]}</p>
           <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex]}.json`} />
