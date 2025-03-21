@@ -26,7 +26,7 @@
   
   .amrap-container {
    
-    padding: 2rem;
+   padding: 1rem ;
     background-color: var(--card-background);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
@@ -59,10 +59,10 @@
     -webkit-text-fill-color: transparent;
   }
   
-  .round-card {
+  .round-card-amrap {
     background-color: var(--background-color);
     border-radius: var(--border-radius);
-    padding: 1.5rem;
+    padding: 0;
     margin-bottom: 1.5rem;
     border: 2px solid transparent;
     transition: var(--transition-smooth);

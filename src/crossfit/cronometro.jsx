@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './cronometro.css';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import LottieAnimation from '../visualizador_lottie/visualizador';
-
-const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, timeLimit, exercisesList }) => {
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList }) => {
   // Estado para manejar el entrenamiento actual
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [time, setTime] = useState(0);
@@ -13,11 +13,13 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
   const [countUp, setCountUp] = useState(false); // Estado para determinar si contamos hacia arriba
   const [maxTime, setMaxTime] = useState(0); // Tiempo máximo para el modo fortime
   const intervalRef = useRef(null);
+  const [indexAmrap, setIndexAmrap] = useState(0); 
   
   // Nuevos estados para la cuenta regresiva inicial
   const [showCountdown, setShowCountdown] = useState(false);
   const [countdownValue, setCountdownValue] = useState(3);
   const countdownRef = useRef(null);
+  const [contador,setContador] = useState(0);
 
   // Convertir minutos a segundos
   const minutesToSeconds = (minutes) => Math.floor(minutes * 60);
@@ -243,7 +245,7 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
     } else if (type === 'EMOM') {
       // Para EMOM, mostrar el ejercicio actual
       const currentExercise = workouts[currentWorkoutIndex].exercise;
-      return `${currentExercise.name} - ${currentExercise.reps} reps`;
+      return `${currentExercise.reps} reps`;
     } else {
       return isRestPhase ? 'Descanso' : `Ronda ${currentWorkoutIndex + 1}`;
     }
@@ -270,13 +272,38 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
       <div className="timer-container">
         <h2 className='titulo-seleccion-crossfit'>{type}</h2>
        
-        {exercisesList && exercisesList.length > 0 &&
+        {exercisesList && exercisesList.length > 0 && type !== 'AMRAP' &&
         <div className='tabata-lottie-container' key={currentWorkoutIndex}>
+          <div>
+          <p className='numero'>{currentWorkoutIndex+1}</p>
           <p>{exercisesList[currentWorkoutIndex]}</p>
+          </div>
+         
           <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex]}.json`} />
         </div>
        
         }
+        {exercisesList && exercisesList.length > 0 && type === 'AMRAP' &&
+        <div className='amrap-lottie-container'>
+          {indexAmrap > 0 &&
+          <p className='manejador izquierda' onClick={()=>setIndexAmrap(indexAmrap-1)}><MdArrowBackIos /></p>
+          }
+        
+         <div className='tabata-lottie-container' key={indexAmrap}>
+          <div>
+            <p className='numero'>{indexAmrap+1}</p>
+            <p>{exercisesList[0][indexAmrap]}</p>
+          </div>
+          
+          <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[0][indexAmrap]}.json`} />
+        </div>
+        {indexAmrap < exercisesList[0].length -1 && 
+        <p className='manejador derecha' onClick={()=>setIndexAmrap(indexAmrap+1)}><MdArrowForwardIos /></p>
+        }
+        
+        </div>
+       
+       }
         <div className="progress-ring-container">
           <svg className="progress-ring" width="260" height="260">
             <circle
@@ -348,12 +375,12 @@ const WorkoutTimer = ({ workouts, type, contador, setContador, setComenzar, time
       
       {/* Corregir la condición para mostrar el botón contador o el texto */}
       {((type === "AMRAP" || type === 'fortime') && !isRestPhase && isActive && !isPaused && !showCountdown) ? (
-        <button className='boton-contador' onClick={()=>{setContador(contador + 1)}}>
+        <button className='boton-contador' onClick={()=>{setContador(contador+1)}}>
           Contador de rondas: {contador}
         </button>
       ) : type === "EMOM" && !showCountdown ? (
         <p className='texto-contador-rondas'>
-          Ronda {contador + 1}, Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
+          Ronda {contador}, Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
         </p>
       ) : 
        type === "tabata" ? null

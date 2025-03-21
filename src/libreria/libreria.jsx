@@ -171,6 +171,7 @@ const Libreria = ({
                   <p>{categoriaSeleccionada}</p>
                  
                 </div>
+                {maxEjercicios !== null && renderIndicadorEjercicios()}
                
                 <div className="subcategorias-lista-libreria">
                   

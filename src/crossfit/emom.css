@@ -12,7 +12,7 @@
   }
   
   .emom-container {
-    padding: 2rem;
+    padding: 1rem;
     background-color: var(--card-background);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
@@ -296,4 +296,88 @@
   .boton-comenzar-emom:hover {
     transform: translateY(-3px);
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .container-lista-ejercicios{
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .lottie-emom-container{
+    width: 150px;
+   
+  }
+
+  .item-playlist-ejercicios{
+    display: flex;
+   width: 100%;
+   height: auto;
+   flex-direction: row;
+   padding: 10px;
+   justify-content: center;
+   align-items: center;
+   border-radius: 8px;
+   background-color: #f5f5f5; /* Color de fondo */
+   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+   border-left: 5px solid #3381ff; /* Línea de color a la izquierda */
+   gap: 10px;
+  }
+
+  .container-repeticiones{
+   
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+  }
+
+ 
+
+  .repeticiones-botones{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .repeticiones-input{
+    align-items: center;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    
+  }
+
+  .ejercicio-nombre-emom{
+    width: 60px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+
+  .container-repeticiones label{
+    color: white;
+    background: #3381ff;
+    padding: 5px 10px;
+    font-weight: 600;
+    border-radius: 8px;
   }
