@@ -242,7 +242,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
   const getTimerLabel = () => {
     if (type === 'fortime' && timeLimit !== 'ilimitado') {
       return `Tiempo restante: ${formatRemainingTime()}`;
-    } else if (type === 'EMOM' && exercisesList) {
+    } else if (type === 'EMOM'  && exercisesList) {
       // Para EMOM, mostrar el ejercicio actual
       const currentExercise = workouts[currentWorkoutIndex].exercise;
       return `${currentExercise.reps} reps`;
@@ -272,7 +272,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
       <div className="timer-container">
         <h2 className='titulo-seleccion-crossfit'>{type}</h2>
        
-        {exercisesList && exercisesList.length > 0 && type !== 'AMRAP' &&
+        {exercisesList && exercisesList.length > 0 && type !== 'AMRAP' && type !== 'fortime' &&
         <div className='tabata-lottie-container' key={currentWorkoutIndex}>
           <div>
           <p className='numero'>{currentWorkoutIndex+1}</p>
@@ -283,8 +283,35 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
         </div>
        
         }
-        {exercisesList && exercisesList.length > 0 && type === 'AMRAP' &&
+        {exercisesList && exercisesList.length > 0 && type === 'fortime' &&
         <div className='amrap-lottie-container'>
+        {indexAmrap > 0 &&
+        <p className='manejador izquierda' onClick={()=>setIndexAmrap(indexAmrap-1)}><MdArrowBackIos /></p>
+        }
+      
+       <div className='tabata-lottie-container' key={indexAmrap}>
+        <div>
+          <p className='numero'>{indexAmrap+1}</p>
+          <p>{exercisesList[indexAmrap]}</p>
+        </div>
+        <div>
+        <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[indexAmrap]}.json`} />
+        <p>{workouts[indexAmrap].reps} reps</p>
+        </div>
+        
+      </div>
+      {indexAmrap < exercisesList.length -1 && 
+      <p className='manejador derecha' onClick={()=>setIndexAmrap(indexAmrap+1)}><MdArrowForwardIos /></p>
+      
+      }
+      
+      </div>
+        
+        }
+        {exercisesList && exercisesList.length > 0 && type === 'AMRAP' &&
+        
+        <div className='amrap-lottie-container'>
+          
           {indexAmrap > 0 &&
           <p className='manejador izquierda' onClick={()=>setIndexAmrap(indexAmrap-1)}><MdArrowBackIos /></p>
           }
@@ -292,12 +319,16 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
          <div className='tabata-lottie-container' key={indexAmrap}>
           <div>
             <p className='numero'>{indexAmrap+1}</p>
-            <p>{exercisesList[0][indexAmrap]}</p>
+            <p>{exercisesList[currentWorkoutIndex][indexAmrap]}</p>
           </div>
-          
-          <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[0][indexAmrap]}.json`} />
+          <div>
+          <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex][indexAmrap]}.json`} />
+          <p>{workouts[currentWorkoutIndex].exercises[indexAmrap].reps} reps</p>
+           </div>
+
+         
         </div>
-        {indexAmrap < exercisesList[0].length -1 && 
+        {indexAmrap < exercisesList[currentWorkoutIndex].length -1 && 
         <p className='manejador derecha' onClick={()=>setIndexAmrap(indexAmrap+1)}><MdArrowForwardIos /></p>
         }
         
