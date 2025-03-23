@@ -52,7 +52,6 @@
     
     display: flex;
     align-items: center;
-    justify-content: space-around;
     gap: 12px;
     width: 95%; /* Asegurar que no se desborde */
   }
@@ -489,3 +488,54 @@
     max-width: 100%;
     height: auto;
   }
+
+  .navbar-lateral {
+    z-index: 2;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: -100%; /* La oculta fuera de la pantalla */
+    height: 100%;
+    width: 100%;
+    background: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    transition: left 0.3s ease; /* Transición suave */
+  }
+  
+  /* Clase para mostrar la navbar */
+  .navbar-lateral.active {
+    left: 0; /* Muestra la navbar deslizándose */
+  }
+  .settings-list{
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .settings-list li{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .settings-list span{
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .settings-list i{
+    font-size: 1.5rem;
+    color:#2f3542
+  }
+  .menor .settings-item span{
+    font-weight: 300;
+  }
+
+
+.cerrar-navbar{
+  font-size: 2rem;
+  margin-right: 0;
+  margin-left: auto;
+}

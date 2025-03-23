@@ -242,7 +242,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
   const getTimerLabel = () => {
     if (type === 'fortime' && timeLimit !== 'ilimitado') {
       return `Tiempo restante: ${formatRemainingTime()}`;
-    } else if (type === 'EMOM') {
+    } else if (type === 'EMOM' && exercisesList) {
       // Para EMOM, mostrar el ejercicio actual
       const currentExercise = workouts[currentWorkoutIndex].exercise;
       return `${currentExercise.reps} reps`;

@@ -4,7 +4,7 @@ import WorkoutTimer from './cronometro';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import Libreria from '../libreria/libreria';
 import LottieAnimation from '../visualizador_lottie/visualizador';
-
+import { IoMdClose } from "react-icons/io";
 const Amrap = ({setIndiceAtras}) => {
     
     
@@ -181,24 +181,19 @@ const Amrap = ({setIndiceAtras}) => {
 
     // Preparar los datos para el temporizador
     const prepareWorkoutData = () => {
-        // Verificar si todas las rondas tienen al menos un ejercicio
-        const rondasVacias = rounds.filter(round => round.exercises.length === 0);
-        if (rondasVacias.length > 0) {
-            setError(`La ronda ${rondasVacias[0].id} no tiene ejercicios. Agrega al menos un ejercicio a cada ronda.`);
-            return null;
-        }
-        
         // Preparamos los datos en formato adecuado para el temporizador
         const workoutData = rounds.map(round => {
             return {
                 id: round.id,
                 time: round.time,
                 restTime: round.restTime,
-                exercises: round.exercises.map(exercise => ({
-                    id: exercise.id,
-                    name: exercise.nombre,
-                    reps: exercise.repeticiones
-                }))
+                exercises: round.exercises.length > 0 ? 
+                    round.exercises.map(exercise => ({
+                        id: exercise.id,
+                        name: exercise.nombre,
+                        reps: exercise.repeticiones
+                    })) : 
+                    [{ id: "placeholder", name: "Sin ejercicios", reps: 0 }] // Placeholder para rondas sin ejercicios
             };
         });
         
@@ -208,24 +203,25 @@ const Amrap = ({setIndiceAtras}) => {
     // Preparar la lista de ejercicios para el temporizador (array de arrays)
     const prepareExercisesForTimer = () => {
         // Creamos un array donde cada elemento es una lista de nombres de ejercicios para cada ronda
-        return rounds.map(round => 
-            round.exercises.map(exercise => exercise.nombre)
-        );
+        return rounds.map(round => {
+            // Si la ronda no tiene ejercicios, devolvemos un placeholder en lugar de array vacío
+            if (round.exercises.length === 0) {
+                return ["Sin ejercicios"]; // Placeholder para rondas sin ejercicios
+            }
+            return round.exercises.map(exercise => exercise.nombre);
+        });
     };
-
     // Función para iniciar el AMRAP
     const iniciarAmrap = () => {
         console.log(prepareExercisesForTimer());
-        // Verificamos que todas las rondas tengan ejercicios
-        const rondasVacias = rounds.filter(round => round.exercises.length === 0);
-        if (rondasVacias.length > 0) {
-            setError(`La ronda ${rondasVacias[0].id} no tiene ejercicios. Agrega al menos un ejercicio a cada ronda.`);
-            return;
-        }
-        
         setError(null);
         setComenzar(true);
     };
+    const hasAnyExercises = () => {
+        return rounds.some(round => round.exercises.length > 0);
+    };
+    
+    
 
     return (
       <>
@@ -372,7 +368,7 @@ const Amrap = ({setIndiceAtras}) => {
                                         </button>
                                     </div>
                                 </div>
-                                <button 
+                                <button
                                     className="delete-exercise-btn"
                                     onClick={() => eliminarEjercicio(round.id, e.nombre)}
                                 >
@@ -393,7 +389,7 @@ const Amrap = ({setIndiceAtras}) => {
             <button 
                 className='boton-comenzar-amrap' 
                 onClick={iniciarAmrap}
-                disabled={rounds.some(round => round.exercises.length === 0)}
+               
             > 
                 Comenzar AMRAP
             </button>
@@ -404,7 +400,7 @@ const Amrap = ({setIndiceAtras}) => {
                 workouts={prepareWorkoutData()}
                 type={'AMRAP'} 
                 setComenzar={setComenzar}
-                exercisesList={prepareExercisesForTimer()} // Pasamos la lista de ejercicios por ronda
+                {... hasAnyExercises() ? { exercisesList: prepareExercisesForTimer() } : {}}
             />
         }
        

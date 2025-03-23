@@ -16,7 +16,6 @@ const Emom = ({setIndiceAtras}) => {
     
     // Nuevos estados para manejar la playlist de ejercicios
     const [mostrarLibreria, setMostrarLibreria] = useState(false);
-    const [verEjercicios, setVerEjercicios] = useState(false);
     const [playlistEjercicios, setPlaylistEjercicios] = useState([]);
     const [error, setError] = useState(null);
 
@@ -59,6 +58,7 @@ const Emom = ({setIndiceAtras}) => {
     // Función para eliminar la playlist completa
     const eliminarPlaylist = useCallback(() => {
         setPlaylistEjercicios([]);
+        setError(null); // Limpiar errores al eliminar la playlist
     }, []);
 
     // Función para ver los ejercicios seleccionados
@@ -130,20 +130,33 @@ const Emom = ({setIndiceAtras}) => {
 
     // Preparar los datos para el temporizador
     const prepareWorkoutData = () => {
-        // Para EMOM necesitamos crear un array donde cada elemento represente 1 minuto
-        // con el ejercicio correspondiente
-        let workoutData = [];
-        
-        // Verificar si tenemos ejercicios en la playlist
+        // Si no hay playlist de ejercicios, creamos un EMOM simple
         if (playlistEjercicios.length === 0) {
-            setError("Agrega al menos un ejercicio antes de comenzar");
-            return null;
+            let workoutData = [];
+            for (let i = 0; i < totalMinutes; i++) {
+                workoutData.push({
+                    id: i + 1,
+                    time: 1, // Cada ronda es de 1 minuto
+                    exercise: {
+                        id: `default-${i+1}`,
+                        name: `Minuto ${i+1}`,
+                        reps: 0
+                    },
+                    restTime: 0 // No hay descanso explícito en EMOM
+                });
+            }
+            return workoutData;
         }
         
+        // Para EMOM con playlist necesitamos verificar que los ejercicios coincidan con los minutos
+        if (playlistEjercicios.length !== totalMinutes) {
+            return null; // No deberíamos llegar aquí por la validación previa
+        }
+        
+        // Creamos el workoutData con los ejercicios de la playlist
+        let workoutData = [];
         for (let i = 0; i < totalMinutes; i++) {
-            const exerciseIndex = i % playlistEjercicios.length;
-            const currentExercise = playlistEjercicios[exerciseIndex];
-            
+            const currentExercise = playlistEjercicios[i];
             workoutData.push({
                 id: i + 1,
                 time: 1, // Cada ronda es de 1 minuto
@@ -159,23 +172,25 @@ const Emom = ({setIndiceAtras}) => {
         return workoutData;
     };
 
-    // Preparar los ejercicios para el temporizador si hay una playlist
+    // Preparar los ejercicios para el temporizador solo si hay una playlist
     const prepareExercisesForTimer = () => {
         if (playlistEjercicios.length > 0) {
             return playlistEjercicios.map(e => e.nombre);
         }
-        return null;
+        return null; // Devolver null cuando no hay playlist
     };
 
     // Función para iniciar el EMOM
     const iniciarEmom = () => {
-        // Verificamos que tengamos ejercicios
-        if (playlistEjercicios.length === 0) {
-            setError("Agrega al menos un ejercicio antes de comenzar");
+        setError(null);
+        
+        // Si hay playlist, verificamos que coincida con los minutos
+        if (playlistEjercicios.length > 0 && playlistEjercicios.length !== totalMinutes) {
+            setError("El número de minutos y de ejercicios deben coincidir");
             return;
         }
         
-        setError(null);
+        // Si todo está correcto, comenzamos el EMOM
         setComenzar(true);
     };
 
@@ -294,7 +309,6 @@ const Emom = ({setIndiceAtras}) => {
                 <button 
                     className='boton-comenzar-emom' 
                     onClick={iniciarEmom}
-                    disabled={playlistEjercicios.length === 0}
                 >
                     Comenzar EMOM
                 </button>
@@ -307,7 +321,7 @@ const Emom = ({setIndiceAtras}) => {
                     contador={contador}
                     setContador={setContador}
                     setComenzar={setComenzar}
-                    exercisesList={prepareExercisesForTimer()}
+                    exercisesList={prepareExercisesForTimer()} // Solo enviará la lista si hay playlist
                 />
             }
             

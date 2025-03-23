@@ -5,8 +5,15 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import rutinaData from '../data/rutina.json';
 import rutinaData2 from '../data/rutina2.json';
 import rutinaData3 from '../data/rutina3.json';
+import { MdEdit } from "react-icons/md";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { GiUpgrade } from "react-icons/gi";
+import {CgPerformance} from "react-icons/cg";
+import { IoMdClose } from "react-icons/io";
+
 const Inicio = ({setActiveIndex, userData}) => {
 
+    const [navbarLateral, setNavbarLateral] = useState(false);
   
   // Estado para datos de usuario y gimnasio (normalmente vendría de una API)
   /*
@@ -70,18 +77,20 @@ const Inicio = ({setActiveIndex, userData}) => {
   };
 
   return (
+    <>
     <div className="inicio-container">
       {/* Encabezado */}
       <header className="inicio-header">
         <div className="perfil-info">
           
+          <div className="avatar" onClick={()=>setNavbarLateral(true)}>
+            {userData.informacionPersonal.nombre.charAt(0)}
+          </div>
           <div>
             <h1>Hola, {userData.informacionPersonal.nombre}</h1>
             <p>¡Hoy es un gran día para entrenar!</p>
           </div>
-          <div className="avatar">
-            {userData.informacionPersonal.nombre.charAt(0)}
-          </div>
+          
         </div>
         {/*
         <div className="notificacion-badge">
@@ -215,6 +224,61 @@ const Inicio = ({setActiveIndex, userData}) => {
 
      
     </div>
+    {
+    <div className={`navbar-lateral ${navbarLateral ? "active":""}`}>
+       <div className="perfil-info">
+          
+          <div className="avatar">
+            {userData.informacionPersonal.nombre.charAt(0)}
+          </div>
+          <div>
+            <h1>{userData.informacionPersonal.nombre}</h1>
+            <p>Plan Pro</p>
+
+          </div>
+          <i className='cerrar-navbar' onClick={()=>setNavbarLateral(false)}><IoMdClose /></i>
+          
+        </div>
+      
+      
+      
+      <div className="divider"></div>
+      
+      <div className="card-settings">
+        
+        <ul className="settings-list">
+        <li className="settings-item pro-upgrade">
+            <i className="settings-icon upgrade-icon"><MdEdit /></i>
+            <span>Editar mi perfil</span>
+          </li>
+          <li className="settings-item pro-upgrade">
+            <i className="settings-icon upgrade-icon"><CgPerformance /></i>
+            <span>Mi progreso</span>
+          </li>
+          <li className="settings-item pro-upgrade">
+            <i className="settings-icon upgrade-icon"><FaChalkboardTeacher /></i>
+            <span>Conoce a tus coach</span>
+          </li>
+          <li className="settings-item pro-upgrade">
+            <i className="settings-icon upgrade-icon"><GiUpgrade /></i>
+            <span>Mejorar a Plan Pro</span>
+          </li>
+          
+         
+        </ul>
+        <ul className='settings-list menor'>
+        <li className="settings-item">
+            <i className="settings-icon help-icon"></i>
+            <span>Reportar problemas</span>
+          </li>
+          <li className="settings-item">
+            <i className="settings-icon logout-icon"></i>
+            <span>Cerrar sesión</span>
+          </li>
+        </ul>
+      </div>
+    </div>}
+    </>
   );
 };
 
