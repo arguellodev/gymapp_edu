@@ -41,10 +41,12 @@
 .lottie-card{
     border-radius: 15px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 15px;
-    color: white;
+    color: black;
     width: 45%;
-    background: rgba(0, 0, 0, 0.3); /* Gris claro semitransparente */
+    background: rgba(255, 255, 255, 0.8); /* Gris claro semitransparente */
 }
 
 .lottie-animation-container{

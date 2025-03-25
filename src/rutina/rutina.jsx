@@ -153,6 +153,12 @@ const Rutina = ({ data = null }) => {
     }
   }, [bloquesCompletados, rutinaSeleccionadaIndex]);
 
+  useEffect(() => {
+    if (Object.keys(bloquesCompletados).length > 0 && rutinaSeleccionadaIndex !== null) {
+      localStorage.setItem(`rutina-progreso-actual`, JSON.stringify(calcularProgreso().porcentaje));
+    }
+  }, [bloquesCompletados, rutinaSeleccionadaIndex]);
+
   // Seleccionar una rutina
   const seleccionarRutina = (index) => {
     setCargando(true);
@@ -356,7 +362,7 @@ const Rutina = ({ data = null }) => {
     if (window.confirm('¿Estás seguro de reiniciar todo tu progreso? Esta acción no se puede deshacer.')) {
       setBloquesCompletados({});
       localStorage.removeItem(`rutina-progreso-${rutinaSeleccionadaIndex}`);
-      
+      localStorage.removeItem('rutina-progreso-actual');
       // También limpiamos la navegación guardada
       localStorage.removeItem('rutina-navegacion');
       setDiaSeleccionado(null);

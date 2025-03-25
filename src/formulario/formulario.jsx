@@ -51,7 +51,32 @@ const Formulario = ({ onComplete }) => {
   };
 
   // Avanzar al siguiente paso
+  // Modifica tu función nextStep
   const nextStep = () => {
+    // Validar campos según el paso actual
+    if (currentStep === 1) {
+      // Validar campos del paso 1
+      const requiredFields = ['nombre', 'apellido', 'fechaNacimiento', 'correo'];
+      for (const field of requiredFields) {
+        const input = document.getElementById(field);
+        if (input && !input.validity.valid) {
+          input.reportValidity();
+          return; // No avanzar si hay un campo inválido
+        }
+      }
+    } else if (currentStep === 2) {
+      // Validar campos del paso 2
+      const requiredFields = ['peso', 'altura', 'porcentajeMusculatura'];
+      for (const field of requiredFields) {
+        const input = document.getElementById(field);
+        if (input && !input.validity.valid) {
+          input.reportValidity();
+          return; // No avanzar si hay un campo inválido
+        }
+      }
+    }
+    
+    // Si llegamos aquí, todos los campos son válidos
     setCurrentStep(currentStep + 1);
   };
 
@@ -241,7 +266,7 @@ const Formulario = ({ onComplete }) => {
                   value={userData.medidasCorporales.inicial.peso}
                   onChange={handleBodyMeasurementsChange}
                   placeholder="Ej: 70.5"
-                  step="0.1"
+                  step="0.01"
                   min="30"
                   max="300"
                   required
@@ -290,7 +315,6 @@ const Formulario = ({ onComplete }) => {
                   step="0.1"
                   min="20"
                   max="70"
-                  required
                 />
               </div>
               
@@ -323,8 +347,8 @@ const Formulario = ({ onComplete }) => {
                 <h3>Medidas Corporales</h3>
                 <p><strong>Peso:</strong> {userData.medidasCorporales.inicial.peso} kg</p>
                 <p><strong>Altura:</strong> {userData.medidasCorporales.inicial.altura} cm</p>
-                <p><strong>% Grasa corporal:</strong> {userData.medidasCorporales.inicial.porcentajeGrasaCorporal}%</p>
-                <p><strong>% Musculatura:</strong> {userData.medidasCorporales.inicial.porcentajeMusculatura}%</p>
+                <p><strong>% Grasa corporal:</strong> {userData.medidasCorporales.inicial.porcentajeGrasaCorporal || 'Sin introducir'}</p>
+                <p><strong>% Musculatura:</strong> {userData.medidasCorporales.inicial.porcentajeMusculatura || 'Sin introducir'}</p>
                 <p><strong>IMC calculado:</strong> {calcularIMC()}</p>
               </div>
               
