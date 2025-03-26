@@ -3,7 +3,8 @@ import './cronometro.css';
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import LottieAnimation from '../visualizador_lottie/visualizador';
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
-const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList }) => {
+import Finalizar from './finalizar';
+const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList, targetRounds }) => {
   // Estado para manejar el entrenamiento actual
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
   const [time, setTime] = useState(0);
@@ -14,6 +15,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
   const [maxTime, setMaxTime] = useState(0); // Tiempo máximo para el modo fortime
   const intervalRef = useRef(null);
   const [indexAmrap, setIndexAmrap] = useState(0); 
+  const [rutinaIncompleta, setRutinaIncompleta] = useState(false);
   
   // Nuevos estados para la cuenta regresiva inicial
   const [showCountdown, setShowCountdown] = useState(false);
@@ -24,6 +26,9 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
   // Convertir minutos a segundos
   const minutesToSeconds = (minutes) => Math.floor(minutes * 60);
 
+
+
+
   // Efecto para cargar el primer entrenamiento cuando se monta el componente
   useEffect(() => {
     if (workouts && workouts.length > 0) {
@@ -32,7 +37,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
         setTime(minutesToSeconds(workouts[0].time));
         setIsRestPhase(false);
         setCountUp(false);
-      } else if (type === 'fortime') {
+      } else if (type === 'fortime' || type === 'escalera') {
         // Para fortime, comenzar en cero y contar hacia arriba
         setTime(0);
         setIsRestPhase(false);
@@ -61,7 +66,31 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  
+  const initialTimeRef = useRef(null);
+
+useEffect(() => {
+  if (workouts && workouts.length > 0) {
+    let initialTime;
+    
+    if (type === 'tabata') {
+      initialTime = minutesToSeconds(workouts[0].time);
+    } else if (type === 'fortime' || type === 'escalera') {
+      initialTime = 0;
+    } else if (type === 'EMOM') {
+      initialTime = 60;
+    } else {
+      initialTime = workouts[0].restTime > 0 
+        ? minutesToSeconds(workouts[0].restTime)
+        : minutesToSeconds(workouts[0].time);
+    }
+    
+    // Guardar el tiempo inicial en la referencia
+    initialTimeRef.current = initialTime;
+    
+    // Seguir estableciendo el tiempo como antes
+    setTime(initialTime);
+  }
+}, [workouts, type]);
   // Calcular el porcentaje para el progreso circular
   const calculatePercentage = () => {
     if (countUp) {
@@ -204,7 +233,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
         setTime(minutesToSeconds(workouts[0].time));
         setIsRestPhase(false);
         setCountUp(false);
-      } else if (type === 'fortime') {
+      } else if (type === 'fortime' || type === 'escalera') {
         // Para fortime, resetear a cero para contar hacia arriba
         setTime(0);
         setIsRestPhase(false);
@@ -240,7 +269,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
 
   // Determinar el texto a mostrar en la etiqueta del temporizador
   const getTimerLabel = () => {
-    if (type === 'fortime' && timeLimit !== 'ilimitado') {
+    if ((type === 'fortime' || type === 'escalera') && timeLimit !== 'ilimitado') {
       return `Tiempo restante: ${formatRemainingTime()}`;
     } else if (type === 'EMOM'  && exercisesList) {
       // Para EMOM, mostrar el ejercicio actual
@@ -264,6 +293,24 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
     setContador(contador + 1);
   };
 
+    // Parar el reloj cuando se cumplan las condiciones de finalizacion: 
+
+    useEffect(() => {
+      if (type === 'fortime' && contador === targetRounds) {
+        setIsActive(false);
+        setIsPaused(true);
+      }
+    }, [type, contador, targetRounds])
+  
+    useEffect(() => {
+      
+      if (formatRemainingTime() === '00:00') {
+        setIsActive(false);
+        setIsPaused(true);
+      }
+    }, [formatRemainingTime()])
+  
+
   return (
     <div className="workout-timer">
       <button className='back-button-timer' onClick={()=> setComenzar(false)}>
@@ -272,7 +319,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
       <div className="timer-container">
         <h2 className='titulo-seleccion-crossfit'>{type}</h2>
        
-        {exercisesList && exercisesList.length > 0 && type !== 'AMRAP' && type !== 'fortime' &&
+        {exercisesList && exercisesList.length > 0 && type !== 'AMRAP' && type !== 'fortime' && type !== 'escalera' &&
         <div className='tabata-lottie-container' key={currentWorkoutIndex}>
           <div>
           <p className='numero'>{currentWorkoutIndex+1}</p>
@@ -283,7 +330,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
         </div>
        
         }
-        {exercisesList && exercisesList.length > 0 && type === 'fortime' &&
+        {exercisesList && exercisesList.length > 0 && (type === 'fortime' || type === 'escalera') &&
         <div className='amrap-lottie-container'>
         {indexAmrap > 0 &&
         <p className='manejador izquierda' onClick={()=>setIndexAmrap(indexAmrap-1)}><MdArrowBackIos /></p>
@@ -296,7 +343,12 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
         </div>
         <div>
         <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[indexAmrap]}.json`} />
+        {type === 'escalera' ? 
+         <p>{workouts[indexAmrap].reps + contador} reps</p>
+        :
         <p>{workouts[indexAmrap].reps} reps</p>
+        }
+        
         </div>
         
       </div>
@@ -405,7 +457,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
       </div>
       
       {/* Corregir la condición para mostrar el botón contador o el texto */}
-      {((type === "AMRAP" || type === 'fortime') && !isRestPhase && isActive && !isPaused && !showCountdown) ? (
+      {((type === "AMRAP" || type === 'fortime' || type === 'escalera') && !isRestPhase && isActive && !isPaused && !showCountdown) ? (
         <button className='boton-contador' onClick={()=>{setContador(contador+1)}}>
           Contador de rondas: {contador}
         </button>
@@ -421,6 +473,23 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList })
           Llevas {contador} rondas
         </p>
       )}
+
+      {console.log(getTimerLabel())}
+      {type === 'tabata' && formattedTime === '00:00' && currentWorkoutIndex===( workouts.length -1)
+      &&
+      <Finalizar setComenzar={setComenzar} type={type} time={formattedTime} intervalos={workouts.length} descanso={workouts[0].restTime*60} trabajo={workouts[0].time*60}/>
+      
+      }
+
+    {
+      type === 'fortime' && ((contador === targetRounds) || (formatRemainingTime() === '00:00')) &&
+      <>
+      <Finalizar time={time} setComenzar={setComenzar} type={type} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} incompleto={formatRemainingTime() === '00:00'} />
+      </>
+      
+    }
+
+
     </div>
   );
 };

@@ -8,7 +8,8 @@
     height: 100vh;
     margin: 0 0;
     background: linear-gradient(90deg, #4b4b4b, #2e2e2e, #121212, #000000);
-
+  overflow: auto;
+  padding-bottom: 50px;
   }
   
   .crossfit-title {
@@ -95,6 +96,11 @@
   
   .tabata {
     background: linear-gradient(135deg, #a770ef, #cf8bf3, #fdb99b);
+  }
+
+  .escalera{
+    background: linear-gradient(135deg, #152170, #08485d, #fdb99b); 
+    
   }
   
   /* Estilos para la vista detallada */

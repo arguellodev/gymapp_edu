@@ -6,6 +6,8 @@ import Amrap from "./amrap";
 import Tabata from "./tabata";
 import ForTime from "./fortime";
 import Emom from "./emom";
+import Escalera from "./escalera";
+import { Gi3dStairs } from "react-icons/gi";
 
 const Crossfit = () => {
     // Estado para controlar qué componente mostrar
@@ -50,6 +52,13 @@ const Crossfit = () => {
             description: '20 segundos de trabajo, 10 de descanso',
             icon: <MdOutlineFitnessCenter className="workout-icon" />,
             className: "workout-card tabata"
+        },
+        {
+            id: 'escalera',
+            name: 'Escalera infinita',
+            description: 'Por cada ronda, aumenta el número de repeticiones',
+            icon:<Gi3dStairs className="workout-icon"/>,
+            className: "workout-card escalera"
         }
     ];
 
@@ -89,6 +98,7 @@ const Crossfit = () => {
                     {activeComponent === 'fortime' && <ForTime />}
                     {activeComponent === 'emom' && <Emom />}
                     {activeComponent === 'tabata' && <Tabata />}
+                    {activeComponent === 'escalera' && <Escalera />}
                 </div>
             )}
         </div>

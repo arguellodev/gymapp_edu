@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./inicio.css";
+import EditorPerfil from "./editor";
 import {
   Calendar,
   Clock,
@@ -37,7 +38,7 @@ const Inicio = ({ setActiveIndex, userData }) => {
   const [fechaHoy, setFechaHoy] = useState(new Date().toISOString().split('T')[0]);
   const [medicionParametro, setMedicionParametro] = useState(null);
   const [valorMedicion, setValorMedicion] = useState('');
-
+  const [editorAbierto, setEditorAbierto] = useState(false);
   const progresoActual = localStorage?.getItem("rutina-progreso-actual") || 0;
 
 
@@ -544,6 +545,11 @@ const Inicio = ({ setActiveIndex, userData }) => {
           </div>
         </div>
       )}
+     {editorAbierto &&
+     <EditorPerfil setEditorAbierto={setEditorAbierto}/>
+     }
+     
+     
       {
         <div className={`navbar-lateral ${navbarLateral ? "active" : ""}`}>
           <div className="perfil-info">
@@ -570,7 +576,7 @@ const Inicio = ({ setActiveIndex, userData }) => {
                 <i className="settings-icon upgrade-icon">
                   <MdEdit />
                 </i>
-                <span>Editar mi perfil</span>
+                <span onClick={()=>setEditorAbierto(true)}>Editar mi perfil</span>
               </li>
               <li className="settings-item pro-upgrade">
                 <i className="settings-icon upgrade-icon">
@@ -578,12 +584,7 @@ const Inicio = ({ setActiveIndex, userData }) => {
                 </i>
                 <span>Mi progreso</span>
               </li>
-              <li className="settings-item pro-upgrade">
-                <i className="settings-icon upgrade-icon">
-                  <FaChalkboardTeacher />
-                </i>
-                <span>Conoce a tus coach</span>
-              </li>
+             
               <li className="settings-item pro-upgrade">
                 <i className="settings-icon upgrade-icon">
                   <GiUpgrade />
