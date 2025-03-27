@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './formulario.css';
 
 const Formulario = ({ onComplete }) => {
@@ -22,7 +22,16 @@ const Formulario = ({ onComplete }) => {
       }
     }
   });
+ 
+  // When first setting up the app
+  if (!localStorage.getItem('dias-completados-global')) {
+    localStorage.setItem('dias-completados-global', '0');
+  }
 
+  if (!localStorage.getItem('sesiones-crossfit')) {
+    localStorage.setItem('sesiones-crossfit', '0');
+  }
+  // El array vacío significa que se ejecuta solo una vez al montar el componente
   // Función para actualizar campos de información personal
   const handlePersonalInfoChange = (e) => {
     const { name, value, type, checked } = e.target;

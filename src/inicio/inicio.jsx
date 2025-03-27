@@ -582,7 +582,7 @@ const Inicio = ({ setActiveIndex, userData }) => {
                 <i className="settings-icon upgrade-icon">
                   <CgPerformance />
                 </i>
-                <span>Mi progreso</span>
+                <span onClick={()=>{setActiveIndex(2)}}>Mi progreso</span>
               </li>
              
               <li className="settings-item pro-upgrade">

@@ -6,53 +6,23 @@ import LottieAnimationPlaylist from '../visualizador_lottie/visualizador_playlis
 import Libreria from '../libreria/libreria';
 import LottieAnimation from '../visualizador_lottie/visualizador';
 
-const Emom = ({setIndiceAtras}) => {
+const Emom = () => {
     const [comenzar, setComenzar] = useState(false);
-    const [contador, setContador] = useState(0);
     const [totalMinutes, setTotalMinutes] = useState(10);
-    const [exercises, setExercises] = useState([
-        { id: 1, name: "Ejercicio 1", reps: 10 }
-    ]);
-    
-    // Nuevos estados para manejar la playlist de ejercicios
     const [mostrarLibreria, setMostrarLibreria] = useState(false);
     const [playlistEjercicios, setPlaylistEjercicios] = useState([]);
     const [error, setError] = useState(null);
 
-    // Función para ajustar el tiempo total del EMOM
+    // Función para ajustar el tiempo total
     const updateTotalTime = (changeType) => {
         setTotalMinutes(prev => 
             changeType === 'increase' ? prev + 1 : Math.max(1, prev - 1)
         );
     };
 
-    // Función para agregar un nuevo ejercicio
-    const addExercise = () => {
-        const newExerciseId = exercises.length + 1;
-        setExercises([
-            ...exercises,
-            {
-                id: newExerciseId,
-                name: `Ejercicio ${newExerciseId}`,
-                reps: 10
-            }
-        ]);
-    };
-
-    // Función para actualizar el nombre del ejercicio
-    const updateExerciseName = (id, newName) => {
-        const updatedExercises = exercises.map(exercise => {
-            if (exercise.id === id) {
-                return { ...exercise, name: newName };
-            }
-            return exercise;
-        });
-        setExercises(updatedExercises);
-    };
-
-    // Función para abrir la librería de ejercicios
-    const abrirLibreria = useCallback(() => {
-        setMostrarLibreria(true);
+    // Función para abrir/cerrar la librería
+    const toggleLibreria = useCallback(() => {
+        setMostrarLibreria(prev => !prev);
     }, []);
 
     // Función para eliminar la playlist completa
@@ -60,117 +30,102 @@ const Emom = ({setIndiceAtras}) => {
         setPlaylistEjercicios([]);
     }, []);
 
-    // Función para ver los ejercicios seleccionados
-    const abrirVisualizadorEjercicios = useCallback(() => {
-        setVerEjercicios(true);
+    // Función para agregar/remover ejercicio
+    const agregarEjercicio = useCallback((ejercicio) => {
+        setPlaylistEjercicios(prev => {
+            const ejercicioIndex = prev.findIndex(e => e.nombre === ejercicio);
+            
+            if (ejercicioIndex !== -1) {
+                // Si existe, lo eliminamos
+                return prev.filter((_, index) => index !== ejercicioIndex);
+            } else {
+                // Si no existe, lo agregamos con repeticiones iniciales
+                return [
+                    ...prev, 
+                    {
+                        id: `ejercicio-${Date.now()}`,
+                        nombre: ejercicio,
+                        repeticiones: 10
+                    }
+                ];
+            }
+        });
     }, []);
 
-    // FUNCIÓN MEJORADA: Agregar ejercicio a la playlist con inicialización de repeticiones
-    const agregarEjercicio = useCallback((ejercicio) => {
-        // Verificar si el ejercicio ya existe en la playlist
-        const ejercicioIndex = playlistEjercicios.findIndex(e => e.nombre === ejercicio);
-        
-        let nuevaPlaylist;
-        if (ejercicioIndex !== -1) {
-            // Si el ejercicio existe, lo eliminamos
-            nuevaPlaylist = [...playlistEjercicios];
-            nuevaPlaylist.splice(ejercicioIndex, 1);
-        } else {
-            // Si no existe, lo agregamos con repeticiones inicializadas en 10
-            const nuevoEjercicio = {
-                id: `ejercicio-${Date.now()}`,
-                nombre: ejercicio,
-                repeticiones: 10 // Inicializamos las repeticiones en 10
-            };
-            nuevaPlaylist = [...playlistEjercicios, nuevoEjercicio];
-        }
-        setPlaylistEjercicios(nuevaPlaylist);
-    }, [playlistEjercicios]);
-
-    // NUEVA FUNCIÓN: Actualizar las repeticiones de un ejercicio
+    // Actualizar repeticiones de un ejercicio
     const updateRepeticiones = (newValue, nombreEjercicio) => {
-        // Validamos que sea un número válido
         const repeticiones = parseInt(newValue);
         if (isNaN(repeticiones) || repeticiones < 1) return;
         
-        // Actualizamos el ejercicio en la playlist
-        const nuevaPlaylist = playlistEjercicios.map(ejercicio => {
-            if (ejercicio.nombre === nombreEjercicio) {
-                return { ...ejercicio, repeticiones: repeticiones };
-            }
-            return ejercicio;
-        });
-        
-        setPlaylistEjercicios(nuevaPlaylist);
-    };
-
-    // NUEVA FUNCIÓN: Incrementar o decrementar repeticiones
-    const adjustRepeticiones = (nombreEjercicio, changeType) => {
-        const nuevaPlaylist = playlistEjercicios.map(ejercicio => {
-            if (ejercicio.nombre === nombreEjercicio) {
-                const nuevasReps = changeType === 'increase' 
-                    ? ejercicio.repeticiones + 1 
-                    : Math.max(1, ejercicio.repeticiones - 1);
-                return { ...ejercicio, repeticiones: nuevasReps };
-            }
-            return ejercicio;
-        });
-        
-        setPlaylistEjercicios(nuevaPlaylist);
-    };
-
-    // NUEVA FUNCIÓN: Eliminar un ejercicio específico de la playlist
-    const eliminarEjercicio = (nombreEjercicio) => {
-        const nuevaPlaylist = playlistEjercicios.filter(
-            ejercicio => ejercicio.nombre !== nombreEjercicio
+        setPlaylistEjercicios(prev => 
+            prev.map(ejercicio => 
+                ejercicio.nombre === nombreEjercicio 
+                    ? { ...ejercicio, repeticiones } 
+                    : ejercicio
+            )
         );
-        setPlaylistEjercicios(nuevaPlaylist);
     };
 
-    // Preparar los datos para el temporizador
+    // Ajustar repeticiones (incrementar/decrementar)
+    const adjustRepeticiones = (nombreEjercicio, changeType) => {
+        setPlaylistEjercicios(prev => 
+            prev.map(ejercicio => {
+                if (ejercicio.nombre === nombreEjercicio) {
+                    return {
+                        ...ejercicio,
+                        repeticiones: changeType === 'increase' 
+                            ? ejercicio.repeticiones + 1 
+                            : Math.max(1, ejercicio.repeticiones - 1)
+                    };
+                }
+                return ejercicio;
+            })
+        );
+    };
+
+    // Eliminar un ejercicio específico
+    const eliminarEjercicio = (nombreEjercicio) => {
+        setPlaylistEjercicios(prev => 
+            prev.filter(ejercicio => ejercicio.nombre !== nombreEjercicio)
+        );
+    };
+
+    // Preparar datos para el temporizador
     const prepareWorkoutData = () => {
-        // Para EMOM necesitamos crear un array donde cada elemento represente 1 minuto
-        // con el ejercicio correspondiente
-        let workoutData = [];
-        
-        // Verificar si tenemos ejercicios en la playlist
-        if (playlistEjercicios.length !== totalMinutes) {
-            setError("El tiempo en minutos y el número de ejercicios deben coincidir");
-            return null;
-        }
-        
-        for (let i = 0; i < totalMinutes; i++) {
-            const exerciseIndex = i % playlistEjercicios.length;
-            const currentExercise = playlistEjercicios[exerciseIndex];
-            
-            workoutData.push({
+        // Si no hay playlist, creamos minutos vacíos
+        if (playlistEjercicios.length === 0) {
+            return Array(totalMinutes).fill().map((_, i) => ({
                 id: i + 1,
-                time: 1, // Cada ronda es de 1 minuto
-                exercise: {
-                    id: currentExercise.id,
-                    name: currentExercise.nombre,
-                    reps: currentExercise.repeticiones
-                },
-                restTime: 0 // No hay descanso explícito en EMOM
-            });
+                time: 1,
+                exercise: null,
+                restTime: 0
+            }));
         }
         
-        return workoutData;
-    };
-
-    // Preparar los ejercicios para el temporizador si hay una playlist
-    const prepareExercisesForTimer = () => {
-        if (playlistEjercicios.length > 0) {
-            return playlistEjercicios.map(e => e.nombre);
-        }
-        return null;
-    };
-
-    // Función para iniciar el EMOM
-    const iniciarEmom = () => {
-        // Verificamos que tengamos ejercicios
+        // Si hay playlist, verificamos que coincida con los minutos
         if (playlistEjercicios.length !== totalMinutes) {
-            setError("El número de minutos y de ejercicios deben coincidir");
+            return { error: "El número de ejercicios debe coincidir con los minutos" };
+        }
+        
+        // Creamos los datos del workout
+        return playlistEjercicios.map((ejercicio, index) => ({
+            id: index + 1,
+            time: 1,
+            exercise: {
+                id: ejercicio.id,
+                name: ejercicio.nombre,
+                reps: ejercicio.repeticiones
+            },
+            restTime: 0
+        }));
+    };
+
+    // Iniciar el EMOM
+    const iniciarEmom = () => {
+        const workoutData = prepareWorkoutData();
+        
+        if (workoutData.error) {
+            setError(workoutData.error);
             return;
         }
         
@@ -178,15 +133,21 @@ const Emom = ({setIndiceAtras}) => {
         setComenzar(true);
     };
 
+    // Verificar si se puede iniciar el EMOM
+    const canStartEmom = () => {
+        return playlistEjercicios.length === 0 || 
+               playlistEjercicios.length === totalMinutes;
+    };
+
     return (
         <>
             <div className="emom-container">
                 <h1>Configuración EMOM</h1>
                 
-                {/* Mensaje de error si existe */}
                 {error && (
                     <div className="error-message">
-                        ⚠️ {error}
+                        {error}
+                        <button onClick={() => setError(null)}>Cerrar</button>
                     </div>
                 )}
                 
@@ -214,24 +175,28 @@ const Emom = ({setIndiceAtras}) => {
                             +
                         </button>
                     </div>
-                </div> 
-                                      
+                </div>
                 
-                {/* Sección de Playlist de Ejercicios */}
+                {/* Sección de Playlist */}
                 <div className="playlist-section">
-                    
-                    
                     {playlistEjercicios.length > 0 ? (
                         <div className="playlist-controls">
                             <div className="playlist-info">
                                 <p>Ejercicios: {playlistEjercicios.length}</p>
+                                <p>Minutos: {totalMinutes}</p>
+                                {playlistEjercicios.length !== totalMinutes && (
+                                    <p className="warning-text">
+                                        {playlistEjercicios.length > totalMinutes 
+                                            ? `Elimina ${playlistEjercicios.length - totalMinutes} ejercicio(s) o añade ${totalMinutes - playlistEjercicios.length} minuto(s)`
+                                            : `Añade ${totalMinutes - playlistEjercicios.length} ejercicio(s) o reduce ${playlistEjercicios.length} minuto(s)`}
+                                    </p>
+                                )}
                             </div>
-                           
                             <button 
                                 className="playlist-btn edit-btn" 
-                                onClick={abrirLibreria}
+                                onClick={toggleLibreria}
                             >
-                                Editar lista de ejercicios
+                                Editar lista
                             </button>
                             <button 
                                 className="playlist-btn delete-btn" 
@@ -243,77 +208,83 @@ const Emom = ({setIndiceAtras}) => {
                     ) : (
                         <button 
                             className="add-playlist-btn" 
-                            onClick={abrirLibreria}
+                            onClick={toggleLibreria}
                         >
                             Agregar lista de ejercicios
                         </button>
                     )}
                 </div>
-                <div className='container-lista-ejercicios'>
-                    {playlistEjercicios.map(e => 
-                        <div key={e.id} className='item-playlist-ejercicios'>
-                            <p className='ejercicio-nombre-emom'>{e.nombre}</p>
-                            <div className='lottie-emom-container'>
-                                <LottieAnimation jsonPath={`./Ejerciciosall/${e.nombre}.json`} />
-                            </div>   
-                            
-                            <div className='container-repeticiones'>
-                                <label>Repeticiones</label>
-                                <div className='repeticiones-botones'>
-                                    <button
-                                        className='adjust-btn'
-                                        onClick={() => adjustRepeticiones(e.nombre, 'decrease')}
-                                    >
-                                        -
-                                    </button>
-                                    <input 
-                                        className='repeticiones-input'
-                                        min='1' 
-                                        value={e.repeticiones || 10} 
-                                        onChange={(event) => updateRepeticiones(event.target.value, e.nombre)} 
-                                    />
-                                    <button
-                                        className='adjust-btn'
-                                        onClick={() => adjustRepeticiones(e.nombre, 'increase')}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-                            <button 
-                                className="delete-exercise-btn"
-                                onClick={() => eliminarEjercicio(e.nombre)}
-                            >
-                                X
-                            </button>
-                        </div>
-                    )}
-                </div>
                 
+                {/* Lista de ejercicios */}
+                {playlistEjercicios.length > 0 && (
+                    <div className='container-lista-ejercicios'>
+                        {playlistEjercicios.map(e => (
+                            <div key={e.id} className='item-playlist-ejercicios'>
+                                <p className='ejercicio-nombre-emom'>{e.nombre}</p>
+                                <div className='lottie-emom-container'>
+                                    <LottieAnimation jsonPath={`./Ejerciciosall/${e.nombre}.json`} />
+                                </div>   
+                                
+                                <div className='container-repeticiones'>
+                                    <label>Repeticiones</label>
+                                    <div className='repeticiones-botones'>
+                                        <button
+                                            className='adjust-btn'
+                                            onClick={() => adjustRepeticiones(e.nombre, 'decrease')}
+                                        >
+                                            -
+                                        </button>
+                                        <input 
+                                            className='repeticiones-input'
+                                            min='1' 
+                                            value={e.repeticiones} 
+                                            onChange={(e) => updateRepeticiones(e.target.value, e.nombre)} 
+                                        />
+                                        <button
+                                            className='adjust-btn'
+                                            onClick={() => adjustRepeticiones(e.nombre, 'increase')}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <button 
+                                    className="delete-exercise-btn"
+                                    onClick={() => eliminarEjercicio(e.nombre)}
+                                >
+                                    X
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                
+                {/* Botón para iniciar */}
                 <button 
-                    className='boton-comenzar-emom' 
+                    className={`boton-comenzar-emom ${!canStartEmom() ? 'disabled' : ''}`}
                     onClick={iniciarEmom}
-                    disabled={playlistEjercicios.length === 0}
+                    disabled={!canStartEmom()}
                 >
                     Comenzar EMOM
                 </button>
             </div>
             
-            {comenzar &&
+            {/* Timer */}
+            {comenzar && (
                 <WorkoutTimer 
                     workouts={prepareWorkoutData()}
                     type={'EMOM'}
-                    contador={contador}
-                    setContador={setContador}
                     setComenzar={setComenzar}
-                    exercisesList={prepareExercisesForTimer()}
+                    exercisesList={playlistEjercicios.length > 0 
+                        ? playlistEjercicios.map(e => e.nombre) 
+                        : null}
                 />
-            }
+            )}
             
-            {/* Modal de Librería de Ejercicios */}
+            {/* Librería de ejercicios */}
             {mostrarLibreria && (
                 <div className='libreria-overlay'>
-                    <button className='cerrar-libreria' onClick={() => setMostrarLibreria(false)}>
+                    <button className='cerrar-libreria' onClick={toggleLibreria}>
                         <MdOutlineKeyboardBackspace />
                     </button>
                     <Libreria
@@ -324,8 +295,6 @@ const Emom = ({setIndiceAtras}) => {
                     />
                 </div>
             )}
-            
-           
         </>
     );
 };

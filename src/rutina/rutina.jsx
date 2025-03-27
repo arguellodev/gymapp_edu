@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Ejercicio from './ejercicio';
 import './rutina.css';
 import CrearRutina from '../crearRutina/crearRutina';
@@ -10,7 +10,7 @@ import rutinaData3 from '../data/rutina3.json';
 import rutinaIA from '../data/rutinaIA.json';
 import rutinaIA1 from '../data/rutinaIA1.json';
 import LottieAnimationVentana from '../visualizador_lottie/visualizardor_ventana';
-
+import { GiCheckMark } from "react-icons/gi";
 
 const Rutina = ({ data = null }) => {
   const [lottieVentana, setLottieVentana] = useState(false);
@@ -31,6 +31,8 @@ const Rutina = ({ data = null }) => {
   const [mostrarCambioRutina, setMostrarCambioRutina] = useState(false);
   const [crearRutina,setCrearRutina] = useState(false);
   
+  const diaCompletadoRef = useRef(false);
+
   const transformarRutina = (rutina) => {
     // Transform the new JSON structure to match the existing component's expectations
     const rutinaProcesada = {
@@ -247,21 +249,38 @@ const Rutina = ({ data = null }) => {
 
   // Finalizar un bloque
   const finalizarBloque = () => {
-    // Marcar bloque como completado
+    // 1. Primero verificamos si ya estaba completado para evitar duplicados
     const bloqueId = `${diaSeleccionado.dia}-${bloqueSeleccionado.nombre}`;
-    setBloquesCompletados({
+    const yaEstabaCompletado = bloquesCompletados[bloqueId];
+    
+    // 2. Actualizamos el estado de bloques completados
+    const nuevosBloquesCompletados = {
       ...bloquesCompletados,
       [bloqueId]: true
-    });
+    };
     
-    // Mostrar mensaje de felicitación
-    mostrarNotificacion('¡Bloque completado! 💪', 2000);
+    setBloquesCompletados(nuevosBloquesCompletados);
     
-    // Volver a la vista de bloques
+    // 3. Verificamos si todos los bloques están completados
+    const todosBloquesCompletados = diaSeleccionado.bloques.every(bloque => 
+      nuevosBloquesCompletados[`${diaSeleccionado.dia}-${bloque.nombre}`]
+    );
+    
+    // 4. Solo incrementar días completados si no estaba ya completado
+    if (todosBloquesCompletados && !diaCompletadoRef.current) {
+      diaCompletadoRef.current = true; // "Bloqueamos" para que no se repita
+      const diasCompletados = parseInt(localStorage.getItem('dias-completados') || 0);
+      localStorage.setItem('dias-completados', (diasCompletados + 1).toString());
+      mostrarNotificacion('¡Día completado! 🎉', 3000);
+    } else if (!todosBloquesCompletados) {
+      mostrarNotificacion('¡Bloque completado! 💪', 2000);
+    }
+    
+    // 5. Resetear estado de ejercicio
     setEjercicioActual(null);
     setSerieActual(0);
     
-    // Actualizar navegación guardada
+    // 6. Actualizar navegación guardada
     const estadoNavegacion = {
       rutinaIndex: rutinaSeleccionadaIndex,
       diaSeleccionadoId: diaSeleccionado?.dia,
@@ -271,7 +290,6 @@ const Rutina = ({ data = null }) => {
     };
     localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
   };
-
   // Salir del ejercicio actual
   const salirEjercicio = () => {
     if (ejercicioActual !== null) {
@@ -450,12 +468,13 @@ const descargarRutinaJSON = (e, index) => {
     if (!rutina || !rutina.rutina) return <div className="loading-container">Cargando rutina...</div>;
     
     const progreso = calcularProgreso();
-    
+    console.log(rutina);
     return (
       <div className="vista-principal">
         <div className="cabecera-rutina">
           <div className="progreso-container">
             <div className="progreso-info" onClick={() => setMostrarProgreso(!mostrarProgreso)}>
+              <h2 className='titulo-rutina-progreso'>{rutina.nombre}</h2>
               <div className="progreso-circulo">
                 <svg viewBox="0 0 36 36" className="progreso-svg">
                   <path
@@ -520,7 +539,10 @@ const descargarRutinaJSON = (e, index) => {
                 <p className="dia-descripcion">{dia.descripcion}</p>
                 <div className="dia-status">
                   {completadosDia === bloquesDia && bloquesDia > 0 ? (
-                    <span className="dia-completado">Completado</span>
+                    <div className="dia-completado">
+                      <p className='completado-texto'>Completado</p>
+                      <p className='completado-icon'><GiCheckMark /></p>
+                      </div>
                   ) : (
                     <span className="dia-pendiente">{completadosDia}/{bloquesDia} completados</span>
                   )}

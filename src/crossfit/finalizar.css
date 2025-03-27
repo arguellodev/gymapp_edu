@@ -30,8 +30,9 @@
     font-weight: 600;
 }
 
-.finalizar-container p .registros-texto{
-    text-align: center;
+.registros-texto{
+  
+    
 }
 
 @keyframes popIn {

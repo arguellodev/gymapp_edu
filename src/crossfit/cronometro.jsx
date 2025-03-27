@@ -15,6 +15,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList, t
   const [maxTime, setMaxTime] = useState(0); // Tiempo máximo para el modo fortime
   const intervalRef = useRef(null);
   const [indexAmrap, setIndexAmrap] = useState(0); 
+  const [emomCompleted,setEmomCompleted] = useState(false)
   const [rutinaIncompleta, setRutinaIncompleta] = useState(false);
   
   // Nuevos estados para la cuenta regresiva inicial
@@ -27,7 +28,20 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList, t
   const minutesToSeconds = (minutes) => Math.floor(minutes * 60);
 
 
-
+  const handleSessionComplete = () => {
+    // Lógica para incrementar sesiones SOLO cuando se completa realmente
+    if (
+        (type === 'tabata' && formattedTime === '00:00' && currentWorkoutIndex === (workouts.length - 1)) ||
+        (type === 'fortime' && (contador === targetRounds || formatRemainingTime() === '00:00')) ||
+        (type === 'AMRAP' && formattedTime === '00:00') ||
+        (type === 'escalera' && formattedTime === '00:00') ||
+        (type === 'EMOM' && emomCompleted)
+    ) {
+        const sesiones = localStorage.getItem('sesiones-crossfit');
+        const nuevasSesiones = sesiones ? parseInt(sesiones) + 1 : 1;
+        localStorage.setItem('sesiones-crossfit', nuevasSesiones);
+    }
+};
 
   // Efecto para cargar el primer entrenamiento cuando se monta el componente
   useEffect(() => {
@@ -37,17 +51,16 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList, t
         setTime(minutesToSeconds(workouts[0].time));
         setIsRestPhase(false);
         setCountUp(false);
-      } else if (type === 'fortime' || type === 'escalera') {
+      } else if (type === 'fortime' ) {
         // Para fortime, comenzar en cero y contar hacia arriba
         setTime(0);
         setIsRestPhase(false);
         setCountUp(true);
         setMaxTime(minutesToSeconds(workouts[0].time));
       } else if (type === 'EMOM') {
-        // Para EMOM, iniciar con 60 segundos (1 minuto)
         setTime(60);
-        setIsRestPhase(false);
-        setCountUp(false);
+      setIsRestPhase(false);  // EMOM nunca tiene fase de descanso
+      setCountUp(false);
       } else {
         // Para otros tipos, seguir la lógica original
         if (workouts[0].restTime > 0) {
@@ -74,7 +87,7 @@ useEffect(() => {
     
     if (type === 'tabata') {
       initialTime = minutesToSeconds(workouts[0].time);
-    } else if (type === 'fortime' || type === 'escalera') {
+    } else if (type === 'fortime' ) {
       initialTime = 0;
     } else if (type === 'EMOM') {
       initialTime = 60;
@@ -114,9 +127,8 @@ useEffect(() => {
     if (isActive && !isPaused) {
       intervalRef.current = setInterval(() => {
         if (countUp) {
-          // Lógica para contar hacia arriba (fortime)
+          // Lógica para contar hacia arriba (modo fortime/escalera)
           setTime((prevTime) => {
-            // Si alcanzamos el tiempo máximo, detener el temporizador
             if (prevTime >= maxTime) {
               clearInterval(intervalRef.current);
               setIsActive(false);
@@ -129,49 +141,63 @@ useEffect(() => {
           // Lógica específica para EMOM
           setTime((prevTime) => {
             if (prevTime <= 1) {
-              // Cuando lleguemos a cero, reiniciar a 60 segundos y avanzar al siguiente ejercicio
-              const nextIndex = (currentWorkoutIndex + 1) % workouts.length;
-              setCurrentWorkoutIndex(nextIndex);
+              const nextIndex = currentWorkoutIndex + 1;
               
-              // Si hemos completado una vuelta completa a todos los ejercicios, incrementar contador
-              if (nextIndex === 0) {
-                setContador(prev => prev + 1);
+              if (nextIndex >= workouts.length) {
+                clearInterval(intervalRef.current);
+                setIsActive(false);
+                setIsPaused(true);
+                setEmomCompleted(true);
+                return 0;
               }
               
-              return 60; // Reiniciar a 60 segundos (1 minuto)
+              // Usar una función de actualización para garantizar la última versión del estado
+              setCurrentWorkoutIndex(prevIndex => nextIndex);
+              return 60;
             }
             return prevTime - 1;
           });
-        } else {
-          // Lógica original para contar hacia abajo
+        } 
+       
+        
+        else {
+          // Lógica para otros tipos (AMRAP, etc.)
           setTime((prevTime) => {
             if (prevTime <= 1) {
               if (isRestPhase) {
-                // El descanso terminó, comenzar la fase de trabajo
-                setIsRestPhase(false);
-                setTime(minutesToSeconds(workouts[currentWorkoutIndex].time));
-              } else {
-                // El trabajo terminó
+                // Terminó el descanso, ir al siguiente ejercicio
                 const nextIndex = currentWorkoutIndex + 1;
                 if (nextIndex < workouts.length) {
                   setCurrentWorkoutIndex(nextIndex);
-                  // Ver si hay tiempo de descanso para el siguiente ejercicio
-                  if (workouts[nextIndex].restTime > 0) {
-                    setIsRestPhase(true);
-                    setTime(minutesToSeconds(workouts[nextIndex].restTime));
-                  } else {
-                    // No hay descanso, ir directamente al tiempo de trabajo
-                    setIsRestPhase(false);
-                    setTime(minutesToSeconds(workouts[nextIndex].time));
-                  }
+                  setIsRestPhase(false);
+                  return minutesToSeconds(workouts[nextIndex].time);
                 } else {
-                  // Todos los entrenamientos completados
+                  // Todos los ejercicios completados
+                  clearInterval(intervalRef.current);
                   setIsActive(false);
-                  setIsPaused(false);
+                  setIsPaused(true);
                   return 0;
                 }
+              } else {
+                // Terminó el trabajo, ir a descanso si existe
+                if (workouts[currentWorkoutIndex].restTime > 0) {
+                  setIsRestPhase(true);
+                  return minutesToSeconds(workouts[currentWorkoutIndex].restTime);
+                } else {
+                  // No hay descanso, ir al siguiente ejercicio
+                  const nextIndex = currentWorkoutIndex + 1;
+                  if (nextIndex < workouts.length) {
+                    setCurrentWorkoutIndex(nextIndex);
+                    return minutesToSeconds(workouts[nextIndex].time);
+                  } else {
+                    // Todos los ejercicios completados
+                    clearInterval(intervalRef.current);
+                    setIsActive(false);
+                    setIsPaused(true);
+                    return 0;
+                  }
+                }
               }
-              return 0;
             }
             return prevTime - 1;
           });
@@ -180,9 +206,18 @@ useEffect(() => {
     } else {
       clearInterval(intervalRef.current);
     }
-
+  
     return () => clearInterval(intervalRef.current);
-  }, [isActive, isPaused, isRestPhase, currentWorkoutIndex, workouts, countUp, maxTime, type]);
+  }, [
+    isActive, 
+    isPaused, 
+    isRestPhase, 
+    currentWorkoutIndex, 
+    workouts, 
+    countUp, 
+    maxTime, 
+    type
+  ]);
 
   // Efecto para la cuenta regresiva inicial
   useEffect(() => {
@@ -269,9 +304,9 @@ useEffect(() => {
 
   // Determinar el texto a mostrar en la etiqueta del temporizador
   const getTimerLabel = () => {
-    if ((type === 'fortime' || type === 'escalera') && timeLimit !== 'ilimitado') {
+    if ((type === 'fortime' ) && timeLimit !== 'ilimitado') {
       return `Tiempo restante: ${formatRemainingTime()}`;
-    } else if (type === 'EMOM'  && exercisesList) {
+    } else if (type === 'EMOM'  && exercisesList !== null) {
       // Para EMOM, mostrar el ejercicio actual
       const currentExercise = workouts[currentWorkoutIndex].exercise;
       return `${currentExercise.reps} reps`;
@@ -324,13 +359,13 @@ useEffect(() => {
           <div>
           <p className='numero'>{currentWorkoutIndex+1}</p>
           <p>{exercisesList[currentWorkoutIndex]}</p>
-          </div>
+        </div>
          
           <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex]}.json`} />
         </div>
        
         }
-        {exercisesList && exercisesList.length > 0 && (type === 'fortime' || type === 'escalera') &&
+        {exercisesList && exercisesList.length > 0 && (type === 'fortime') &&
         <div className='amrap-lottie-container'>
         {indexAmrap > 0 &&
         <p className='manejador izquierda' onClick={()=>setIndexAmrap(indexAmrap-1)}><MdArrowBackIos /></p>
@@ -360,7 +395,7 @@ useEffect(() => {
       </div>
         
         }
-        {exercisesList && exercisesList.length > 0 && type === 'AMRAP' &&
+        {exercisesList && exercisesList.length > 0 && (type === 'AMRAP' || type === 'escalera') &&
         
         <div className='amrap-lottie-container'>
           
@@ -375,7 +410,11 @@ useEffect(() => {
           </div>
           <div>
           <LottieAnimation jsonPath={`./Ejerciciosall/${exercisesList[currentWorkoutIndex][indexAmrap]}.json`} />
-          <p>{workouts[currentWorkoutIndex].exercises[indexAmrap].reps} reps</p>
+          {type === 'AMRAP'?
+          <p>{workouts[currentWorkoutIndex].exercises[indexAmrap].reps} reps</p>:
+          <p>{workouts[currentWorkoutIndex].exercises[indexAmrap].reps + contador} reps</p>
+          }
+          
            </div>
 
          
@@ -463,7 +502,7 @@ useEffect(() => {
         </button>
       ) : type === "EMOM" && !showCountdown ? (
         <p className='texto-contador-rondas'>
-          Ronda {contador}, Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
+           Ejercicio {currentWorkoutIndex + 1} de {workouts.length}
         </p>
       ) : 
        type === "tabata" ? null
@@ -474,17 +513,42 @@ useEffect(() => {
         </p>
       )}
 
-      {console.log(getTimerLabel())}
+      
       {type === 'tabata' && formattedTime === '00:00' && currentWorkoutIndex===( workouts.length -1)
       &&
-      <Finalizar setComenzar={setComenzar} type={type} time={formattedTime} intervalos={workouts.length} descanso={workouts[0].restTime*60} trabajo={workouts[0].time*60}/>
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={type} time={formattedTime} intervalos={workouts.length} descanso={workouts[0].restTime*60} trabajo={workouts[0].time*60}/>
       
       }
 
     {
       type === 'fortime' && ((contador === targetRounds) || (formatRemainingTime() === '00:00')) &&
       <>
-      <Finalizar time={time} setComenzar={setComenzar} type={type} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} incompleto={formatRemainingTime() === '00:00'} />
+      <Finalizar  onSessionComplete={handleSessionComplete} time={time} setComenzar={setComenzar} type={type} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} incompleto={formatRemainingTime() === '00:00'} />
+      </>
+      
+    }
+    {console.log(exercisesList)}
+    
+    {
+      type === 'AMRAP' && formattedTime === '00:00' &&
+      <>
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'AMRAP'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList[0].length : 0}  />
+      </>
+      
+    }
+
+{
+      type === 'escalera' && formattedTime === '00:00' &&
+      <>
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'escalera'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList[0].length : 0}  />
+      </>
+      
+    }
+
+{
+      type === 'EMOM' && emomCompleted &&
+      <>
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'EMOM'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} intervalos={workouts.length} />
       </>
       
     }

@@ -305,7 +305,7 @@ const Amrap = ({setIndiceAtras}) => {
 
                     {/* Sección de Playlist de Ejercicios para cada ronda */}
                     <div className="playlist-section">
-                        <h4>Ejercicios de la Ronda {round.id}</h4>
+                        
                         
                         {round.exercises.length > 0 ? (
                             <div className="playlist-controls">

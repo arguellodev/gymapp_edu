@@ -33,7 +33,8 @@ const Perfil = ({userData}) => {
     { fecha: "5/04/2025", peso: 81.3 },
     { fecha: "12/04/2025", peso: 80.6 }
   ]);
-
+  const diasCompletados = localStorage.getItem('dias-completados');
+  const sesionesCrossfit = localStorage.getItem('sesiones-crossfit');
   const [showInfoFreqCard, setShowInfoFreqCard] = useState(false);
 
   // Cálculo de la frecuencia cardíaca
@@ -99,23 +100,19 @@ const Perfil = ({userData}) => {
       <div className="perfil-estadisticas">
         <div className="estadistica-card">
           <Activity />
-          <h3>{estadisticas.entrenamientosCompletados}</h3>
-          <p>Entrenamientos</p>
+          <h3>{diasCompletados}</h3>
+          <p>Días Completados</p>
         </div>
         <div className="estadistica-card">
           <Calendar />
           <h3>{estadisticas.diasConsecutivos}</h3>
-          <p>Días consecutivos</p>
+          <p>Días consecutivos entrenando</p>
         </div>
-        <div className="estadistica-card">
-          <Heart />
-          <h3>{Math.round(estadisticas.caloríasQuemadas / 1000)}k</h3>
-          <p>Calorías quemadas</p>
-        </div>
+        
         <div className="estadistica-card">
           <Clock />
-          <h3>{estadisticas.horasEntrenadas}</h3>
-          <p>Horas entrenadas</p>
+          <h3>{sesionesCrossfit}</h3>
+          <p>Sesiones de Crossfit totales</p>
         </div>
       </div>
 

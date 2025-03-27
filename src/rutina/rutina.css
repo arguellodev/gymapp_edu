@@ -18,7 +18,7 @@
 .rutina-container {
   max-width:100%;
   margin: 0 0;
-  padding: 15px;
+  padding: 2rem;
   height: auto;
   
  
@@ -117,7 +117,7 @@
 }
 
 .dia-progreso-barra {
-  background: linear-gradient(to right, var(--secondary), #7bed9f);
+  background: linear-gradient(to right, rgb(19, 57, 208), #2e87e0);
   height: 100%;
   transition: width 0.5s ease;
 }
@@ -141,20 +141,25 @@
 }
 
 .dia-completado {
-  color: var(--secondary);
+  padding: 10px;
+  color: black;
   display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: right;
   align-items: center;
+  
 }
 
-.dia-completado::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background-color: var(--secondary);
-  border-radius: 50%;
-  margin-right: 6px;
+.completado-texto{
+  background: rgb(0, 119, 255);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 600;
 }
+
+
 
 .dia-pendiente {
   color: var(--gray);
@@ -197,7 +202,7 @@
 
 .progreso-circulo-valor {
   fill: none;
-  stroke: var(--primary);
+  stroke: rgb(39, 96, 220);
   stroke-width: 3;
   stroke-linecap: round;
   transition: stroke-dasharray 0.8s ease;
@@ -653,10 +658,7 @@ height: 100px;
   }
 }
 
-@media (max-width: 480px) {
-  .rutina-container {
-    padding: 20px;
-  }
+
   
   .dias-grid {
     grid-template-columns: 1fr;
@@ -670,7 +672,7 @@ height: 100px;
   .ejercicio-nombre-actual {
     font-size: 1.8rem;
   }
-}
+
 
 /* Estilos existentes... */
 
@@ -834,7 +836,7 @@ height: 100px;
 .dia-titulo {
   font-size: 1.15rem;
   margin-bottom: 0.5rem;
-  color: var(--secondary);
+  color: rgb(31, 79, 236);
 }
 
 .dia-descripcion {
@@ -848,18 +850,7 @@ height: 100px;
   font-weight: 500;
 }
 
-.dia-completado {
-  color: var(--success);
-  display: inline-flex;
-  align-items: center;
-}
 
-.dia-completado::before {
-  content: '✓';
-  display: inline-block;
-  margin-right: 0.35rem;
-  font-weight: bold;
-}
 
 .dia-pendiente {
   color: var(--gray);
@@ -1029,7 +1020,18 @@ height: 100px;
 
 .progreso-acciones .boton-reiniciar-progreso{
   
-  background-color: #ff3b30;
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.651);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.progreso-acciones .boton-cambiar-rutina{
+  background-color: #302f2f;
+  font-weight: 500;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -1037,13 +1039,9 @@ height: 100px;
   cursor: pointer;
 }
 
-.progreso-acciones .boton-cambiar-rutina{
-  background-color: #302f2f;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  
-
+.titulo-rutina-progreso{
+  font-family: inherit;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
