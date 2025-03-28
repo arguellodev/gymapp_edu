@@ -16,7 +16,7 @@ const Rutina = ({ data = null }) => {
   const [lottieVentana, setLottieVentana] = useState(false);
   const [ejercicioVentana,setEjercicioVentana] = useState(false);
   // Para recuperar
-  const rutinasDisponibles =  [rutinaData, rutinaData2, rutinaIA, rutinaIA1];
+  const rutinasDisponibles =  [rutinaIA1];
   // Estados
   const [rutina, setRutina] = useState(null);
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);

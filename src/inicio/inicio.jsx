@@ -56,6 +56,13 @@ const Inicio = ({ setActiveIndex, userData }) => {
     "Viernes",
     "Sábado",
   ];
+  function borrarLocalStorage() {
+    if (confirm("¿Estás seguro de que quieres borrar todos los datos? Esta acción no se puede deshacer.")) {
+        localStorage.clear();
+        location.reload(); // Recarga la página
+    }
+}
+
   const diaActual = diasSemana[fechaRutina.getDay()];
   const indiceDia = rutinaActual?.rutina.findIndex(
     (dia) => dia.dia === diaActual
@@ -772,7 +779,7 @@ const Inicio = ({ setActiveIndex, userData }) => {
               </li>
               <li className="settings-item">
                 <i className="settings-icon logout-icon"></i>
-                <span>Cerrar sesión</span>
+                <span onClick={()=> borrarLocalStorage()}>Borrar cuenta</span>
               </li>
             </ul>
             <h1>App desarrollada por Argánion</h1>
