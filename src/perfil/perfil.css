@@ -27,8 +27,37 @@
     background-color: var(--color-fondo);
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     color: var(--color-texto);
+    padding-bottom: 200px;
   }
-  
+  .crossfit-registro-item{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+  }
+
+  .registro-crossfit-header{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .registro-crossfit-fecha{
+    opacity: 0.6;
+  }
+
+  .registro-crossfit-tipo{
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  .registro-crossfit-informacion{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
   /* Header del perfil */
   .perfil-header {
     display: flex;
@@ -459,3 +488,5 @@
       gap: 10px;
     }
   }
+
+  

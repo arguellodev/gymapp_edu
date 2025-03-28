@@ -17,6 +17,7 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList, t
   const [indexAmrap, setIndexAmrap] = useState(0); 
   const [emomCompleted,setEmomCompleted] = useState(false)
   const [rutinaIncompleta, setRutinaIncompleta] = useState(false);
+  const [cronometroIniciado, setCronometroIniciado] =useState(false);
   
   // Nuevos estados para la cuenta regresiva inicial
   const [showCountdown, setShowCountdown] = useState(false);
@@ -81,29 +82,29 @@ const WorkoutTimer = ({ workouts, type, setComenzar, timeLimit, exercisesList, t
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   const initialTimeRef = useRef(null);
 
-useEffect(() => {
-  if (workouts && workouts.length > 0) {
-    let initialTime;
-    
-    if (type === 'tabata') {
-      initialTime = minutesToSeconds(workouts[0].time);
-    } else if (type === 'fortime' ) {
-      initialTime = 0;
-    } else if (type === 'EMOM') {
-      initialTime = 60;
-    } else {
-      initialTime = workouts[0].restTime > 0 
-        ? minutesToSeconds(workouts[0].restTime)
-        : minutesToSeconds(workouts[0].time);
+  useEffect(() => {
+    if (workouts && workouts.length > 0) {
+      let initialTime;
+      
+      if (type === 'tabata') {
+        initialTime = minutesToSeconds(workouts[0].time);
+      } else if (type === 'fortime' ) {
+        initialTime = 0;
+      } else if (type === 'EMOM') {
+        initialTime = 60;
+      } else {
+        initialTime = workouts[0].restTime > 0 
+          ? minutesToSeconds(workouts[0].restTime)
+          : minutesToSeconds(workouts[0].time);
+      }
+      
+      // Guardar el tiempo inicial en la referencia
+      initialTimeRef.current = initialTime;
+      
+      // Seguir estableciendo el tiempo como antes
+      setTime(initialTime);
     }
-    
-    // Guardar el tiempo inicial en la referencia
-    initialTimeRef.current = initialTime;
-    
-    // Seguir estableciendo el tiempo como antes
-    setTime(initialTime);
-  }
-}, [workouts, type]);
+  }, [workouts, type]);
   // Calcular el porcentaje para el progreso circular
   const calculatePercentage = () => {
     if (countUp) {
@@ -245,6 +246,7 @@ useEffect(() => {
   }, [showCountdown]);
 
   const startTimer = () => {
+    setCronometroIniciado(true);
     // En lugar de iniciar el temporizador, ahora iniciamos la cuenta regresiva
     setShowCountdown(true);
     setCountdownValue(3);
@@ -514,41 +516,41 @@ useEffect(() => {
       )}
 
       
-      {type === 'tabata' && formattedTime === '00:00' && currentWorkoutIndex===( workouts.length -1)
-      &&
-      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={type} time={formattedTime} intervalos={workouts.length} descanso={workouts[0].restTime*60} trabajo={workouts[0].time*60}/>
+      {type === 'tabata' && formattedTime === '00:00' && currentWorkoutIndex===( workouts.length -1) && cronometroIniciado &&
+      
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={type} time={formattedTime} intervalos={workouts.length} descanso={workouts[0].restTime*60} trabajo={workouts[0].time*60} exercisesList={exercisesList}/>
       
       }
 
     {
-      type === 'fortime' && ((contador === targetRounds) || (formatRemainingTime() === '00:00')) &&
+      type === 'fortime' && ((contador === targetRounds) || (formatRemainingTime() === '00:00')) && cronometroIniciado &&
       <>
-      <Finalizar  onSessionComplete={handleSessionComplete} time={time} setComenzar={setComenzar} type={type} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} incompleto={formatRemainingTime() === '00:00'} />
+      <Finalizar  onSessionComplete={handleSessionComplete} time={time} setComenzar={setComenzar} type={type} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} incompleto={formatRemainingTime() === '00:00'} exercisesList={exercisesList}/>
       </>
       
     }
-    {console.log(exercisesList)}
+    
     
     {
-      type === 'AMRAP' && formattedTime === '00:00' &&
+      type === 'AMRAP' && formattedTime === '00:00' && cronometroIniciado &&
       <>
-      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'AMRAP'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList[0].length : 0}  />
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'AMRAP'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList[0].length : 0} workouts={workouts}  exercisesList={exercisesList}/>
       </>
       
     }
 
 {
-      type === 'escalera' && formattedTime === '00:00' &&
+      type === 'escalera' && formattedTime === '00:00'&& cronometroIniciado &&
       <>
-      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'escalera'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList[0].length : 0}  />
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'escalera'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList[0].length : 0}  exercisesList={exercisesList}/>
       </>
       
     }
 
 {
-      type === 'EMOM' && emomCompleted &&
+      type === 'EMOM' && emomCompleted && cronometroIniciado &&
       <>
-      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'EMOM'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} intervalos={workouts.length} />
+      <Finalizar  onSessionComplete={handleSessionComplete} setComenzar={setComenzar} type={'EMOM'} contador={contador} ejerciciosNumero={exercisesList ? exercisesList.length : 0} intervalos={workouts.length} exercisesList={exercisesList} />
       </>
       
     }

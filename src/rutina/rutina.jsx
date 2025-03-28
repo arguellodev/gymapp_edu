@@ -164,12 +164,15 @@ const Rutina = ({ data = null }) => {
   // Seleccionar una rutina
   const seleccionarRutina = (index) => {
     setCargando(true);
-    
+   
+      localStorage.setItem('rutina-actual', 'rutina');
+      
     // Simular carga
     setTimeout(() => {
       // Transformar los datos de la rutina seleccionada
       const datosRutina = transformarRutina(rutinasDisponibles[index]);
-      
+      console.log(datosRutina);
+      localStorage.setItem('rutina-actual', JSON.stringify(datosRutina));
       setRutinaSeleccionadaIndex(index);
       setRutina(datosRutina);
       setMostrarSelectorRutinas(false);
@@ -249,6 +252,8 @@ const Rutina = ({ data = null }) => {
 
   // Finalizar un bloque
   const finalizarBloque = () => {
+    localStorage.setItem('ultimo-entrenamiento', `Rutina - ${diaSeleccionado.descripcion}`);
+    
     // 1. Primero verificamos si ya estaba completado para evitar duplicados
     const bloqueId = `${diaSeleccionado.dia}-${bloqueSeleccionado.nombre}`;
     const yaEstabaCompletado = bloquesCompletados[bloqueId];
@@ -288,6 +293,7 @@ const Rutina = ({ data = null }) => {
       ejercicioActualIndex: null,
       serieActualIndex: 0
     };
+    
     localStorage.setItem('rutina-navegacion', JSON.stringify(estadoNavegacion));
   };
   // Salir del ejercicio actual
@@ -540,8 +546,8 @@ const descargarRutinaJSON = (e, index) => {
                 <div className="dia-status">
                   {completadosDia === bloquesDia && bloquesDia > 0 ? (
                     <div className="dia-completado">
-                      <p className='completado-texto'>Completado</p>
-                      <p className='completado-icon'><GiCheckMark /></p>
+                      <p className='completado-texto'>Completado <GiCheckMark /></p>
+                      
                       </div>
                   ) : (
                     <span className="dia-pendiente">{completadosDia}/{bloquesDia} completados</span>

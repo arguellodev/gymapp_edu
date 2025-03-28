@@ -31,7 +31,33 @@ const Formulario = ({ onComplete }) => {
   if (!localStorage.getItem('sesiones-crossfit')) {
     localStorage.setItem('sesiones-crossfit', '0');
   }
-  // El array vacío significa que se ejecuta solo una vez al montar el componente
+
+  if (!localStorage.getItem('registros-crossfit')) {
+    localStorage.setItem('registros-crossfit', []);
+  }
+
+  // Initialize localStorage for weight tracking
+  useEffect(() => {
+    // Initialize weight tracking array if not exists
+    if (!localStorage.getItem('registros-peso')) {
+      localStorage.setItem('registros-peso', JSON.stringify([]));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Initialize weight tracking array if not exists
+    if (!localStorage.getItem('registros-grasa')) {
+      localStorage.setItem('registros-grasa', JSON.stringify([]));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Initialize weight tracking array if not exists
+    if (!localStorage.getItem('registros-musculatura')) {
+      localStorage.setItem('registros-musculatura', JSON.stringify([]));
+    }
+  }, []);
+
   // Función para actualizar campos de información personal
   const handlePersonalInfoChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -60,7 +86,6 @@ const Formulario = ({ onComplete }) => {
   };
 
   // Avanzar al siguiente paso
-  // Modifica tu función nextStep
   const nextStep = () => {
     // Validar campos según el paso actual
     if (currentStep === 1) {
@@ -127,23 +152,76 @@ const Formulario = ({ onComplete }) => {
           imc: calcularIMC()
         }
       },
-      seguimientoPeso: [
-        {
-          fecha: new Date().toISOString().split('T')[0],
-          peso: parseFloat(userData.medidasCorporales.inicial.peso)
-        }
-      ],
-      seguimientoMusculatura: [
-        {
-          fecha: new Date().toISOString().split('T')[0],
-          porcentaje: parseFloat(userData.medidasCorporales.inicial.porcentajeMusculatura)
-        }
-      ],
-      ultimoEntrenamiento: {
-        fecha: "",
-        duracion: 0
-      }
+      seguimientoPeso: [],
+      seguimientoGrasa: [],
+      seguimientoMusculatura: []
     };
+    
+    // Fecha actual para todos los registros
+    const fechaActual = new Date().toISOString().split('T')[0];
+    
+    // MANEJO DEL REGISTRO DE PESO
+    const pesoInicial = parseFloat(userData.medidasCorporales.inicial.peso);
+    // Obtener registros de peso existentes
+    let registrosPeso = JSON.parse(localStorage.getItem('registros-peso') || '[]');
+    
+    // Si se proporciona un peso válido, agregarlo al seguimiento
+    if (!isNaN(pesoInicial) && pesoInicial > 0) {
+      // Agregar peso inicial al seguimiento
+      registrosPeso.push({
+        semana: 1,
+        peso: pesoInicial,
+        fecha: fechaActual
+      });
+      
+      // Guardar registros de peso actualizados en localStorage
+      localStorage.setItem('registros-peso', JSON.stringify(registrosPeso));
+      
+      // Actualizar datos de usuario con seguimiento de peso
+      completeUserData.seguimientoPeso = registrosPeso;
+    }
+    
+    // MANEJO DEL REGISTRO DE GRASA CORPORAL
+    const grasaInicial = parseFloat(userData.medidasCorporales.inicial.porcentajeGrasaCorporal);
+    // Obtener registros de grasa existentes
+    let registrosGrasa = JSON.parse(localStorage.getItem('registros-grasa') || '[]');
+    
+    // Si se proporciona un porcentaje de grasa válido, agregarlo al seguimiento
+    if (!isNaN(grasaInicial) && grasaInicial > 0) {
+      // Agregar grasa inicial al seguimiento
+      registrosGrasa.push({
+        semana: 1,
+        grasa: grasaInicial,
+        fecha: fechaActual
+      });
+      
+      // Guardar registros de grasa actualizados en localStorage
+      localStorage.setItem('registros-grasa', JSON.stringify(registrosGrasa));
+      
+      // Actualizar datos de usuario con seguimiento de grasa
+      completeUserData.seguimientoGrasa = registrosGrasa;
+    }
+    
+    // MANEJO DEL REGISTRO DE MUSCULATURA
+    const muscInicial = parseFloat(userData.medidasCorporales.inicial.porcentajeMusculatura);
+    // Obtener registros de musculatura existentes
+    let registrosMusc = JSON.parse(localStorage.getItem('registros-musculatura') || '[]');
+    
+    // Si se proporciona un porcentaje de musculatura válido, agregarlo al seguimiento
+    if (!isNaN(muscInicial) && muscInicial > 0) {
+      // Agregar musculatura inicial al seguimiento
+      registrosMusc.push({
+        semana: 1,
+        musculo: muscInicial,
+        fecha: fechaActual
+      });
+      
+      // Guardar registros de musculatura actualizados en localStorage
+      localStorage.setItem('registros-musculatura', JSON.stringify(registrosMusc));
+      
+      // Actualizar datos de usuario con seguimiento de musculatura
+      completeUserData.seguimientoMusculatura = registrosMusc;
+    }
     
     // Guardar en localStorage
     localStorage.setItem('userData', JSON.stringify(completeUserData));
@@ -237,9 +315,7 @@ const Formulario = ({ onComplete }) => {
                 />
               </div>
               
-              {/* New field for hypertension */}
               <div className="form-group checkbox-group">
-
                 <label htmlFor="esHipertenso">
                 ¿Eres hipertenso?
                   <input
@@ -249,7 +325,6 @@ const Formulario = ({ onComplete }) => {
                     checked={userData.informacionPersonal.esHipertenso}
                     onChange={handlePersonalInfoChange}
                   />
-                  
                 </label>
               </div>
               
@@ -278,7 +353,7 @@ const Formulario = ({ onComplete }) => {
                   step="0.01"
                   min="30"
                   max="300"
-                  required
+                  
                 />
               </div>
               
@@ -294,6 +369,7 @@ const Formulario = ({ onComplete }) => {
                   min="100"
                   max="250"
                   required
+                  
                 />
               </div>
               
